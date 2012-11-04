@@ -6,8 +6,5 @@
 bin
 obj
 
-# NuGet
-packages
-
 # mstest test results
 TestResults
