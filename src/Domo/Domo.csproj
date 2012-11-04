@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{82BCF5CC-1467-46D2-A8B1-18B1405EA43A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Domo</RootNamespace>
+    <AssemblyName>Domo</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DI\Exceptions\ServiceScopeHasNotBeenDefinedException.cs" />
+    <Compile Include="DI\Activation\IInstanceFactory.cs" />
+    <Compile Include="DI\Activation\InstanceFactory.cs" />
+    <Compile Include="DI\Scanning\ConventionBasedServiceScanner.cs" />
+    <Compile Include="DI\Activation\ActivationContext.cs" />
+    <Compile Include="DI\Activation\IServiceActivator.cs" />
+    <Compile Include="DI\Caching\IServiceCache.cs" />
+    <Compile Include="DI\Caching\ServiceCache.cs" />
+    <Compile Include="DI\Activation\ScopedServiceActivator.cs" />
+    <Compile Include="DI\Activation\SingletonServiceActivator.cs" />
+    <Compile Include="DI\Activation\TransientServiceActivator.cs" />
+    <Compile Include="DI\Exceptions\InvalidLifeStyleException.cs" />
+    <Compile Include="DI\Scanning\IAssemblyScanner.cs" />
+    <Compile Include="DI\Exceptions\NoValidConstructorFoundException.cs" />
+    <Compile Include="DI\Scanning\IServiceRegistration.cs" />
+    <Compile Include="DI\Scanning\ServiceRegistration.cs" />
+    <Compile Include="DI\Exceptions\ServiceCouldNotBeCreatedException.cs" />
+    <Compile Include="DI\Scanning\AssemblyScanner.cs" />
+    <Compile Include="DI\ServiceLocator.cs" />
+    <Compile Include="DI\Service.cs" />
+    <Compile Include="DI\IServiceContainer.cs" />
+    <Compile Include="DI\Scanning\IServiceScanner.cs" />
+    <Compile Include="DI\IServiceLocator.cs" />
+    <Compile Include="DI\LifeStyle.cs" />
+    <Compile Include="DI\ServiceContainer.cs" />
+    <Compile Include="DI\Exceptions\ServiceNotRegisteredException.cs" />
+    <Compile Include="Extensions\ArrayExtensions.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Messaging\DI\MessageHandlerServiceScanner.cs" />
+    <Compile Include="Messaging\DI\ServiceScannerExtensions.cs" />
+    <Compile Include="Messaging\IMessageBus.cs" />
+    <Compile Include="Messaging\MessageBus.cs" />
+    <Compile Include="Messaging\ICommand.cs" />
+    <Compile Include="Messaging\ICommandHandler.cs" />
+    <Compile Include="Messaging\IMessage.cs" />
+    <Compile Include="Messaging\IMessageHandler.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
