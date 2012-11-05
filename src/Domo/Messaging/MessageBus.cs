@@ -29,8 +29,17 @@ namespace Domo.Messaging
 
         public void Send<TCommand>(TCommand command) where TCommand : ICommand
         {
-            var handler = _serviceLocator.Resolve<ICommandHandler<TCommand>>();
+            var handler = _serviceLocator.TryResolve<ICommandHandler<TCommand>>();
+            if (handler == null)
+                throw CreateSendCommandFailedException<TCommand>();
+
             handler.Handle(command);
+        }
+
+        private static SendCommandFailedException CreateSendCommandFailedException<TCommand>() where TCommand : ICommand
+        {
+            var message = string.Format(MessagingResources.NoCommandHandlerHasBeenRegistered, typeof(TCommand).Name);
+            return new SendCommandFailedException(message);
         }
     }
 }
