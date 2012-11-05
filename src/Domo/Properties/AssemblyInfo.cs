@@ -7,7 +7,7 @@ using System.Security;
 [assembly: AssemblyTitle("Domo")]
 [assembly: AssemblyDescription("Help library based on the Portable Class Library.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Tobias Persson")]
 [assembly: AssemblyCopyright("Copyright 2012 © Tobias Persson. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
