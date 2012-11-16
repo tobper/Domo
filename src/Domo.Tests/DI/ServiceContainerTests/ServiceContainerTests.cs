@@ -1,19 +1,19 @@
 using System;
 using Domo.DI;
-using Domo.DI.Scanning;
+using Domo.DI.Registration;
 
 namespace Domo.Tests.DI.ServiceContainerTests
 {
-    public class ServiceContainerTests : UnitTests<IServiceContainer>
+    public class ServiceContainerTests : UnitTests<IContainer>
     {
-        private Action<IServiceRegistration> _serviceRegistration;
+        private Action<ITypeRegistration> _serviceRegistration;
 
-        protected override IServiceContainer CreateTestInstance()
+        protected override IContainer CreateTestInstance()
         {
-            return ServiceContainer.Create(_serviceRegistration);
+            return Container.Create(_serviceRegistration);
         }
 
-        protected override void PerformTest()
+        protected override void RunTest()
         {
         }
 

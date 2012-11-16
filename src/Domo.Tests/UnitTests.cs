@@ -19,11 +19,22 @@ namespace Domo.Tests
             {
                 ExpectedException = GetExpectedException();
                 CreateMocks();
-                SetupGivens();
+                SetupPrerequisites();
                 SetupBehavior();
-                TestInstance = CreateTestInstance();
-                RunTest();
-                GetTestResult();
+
+                try
+                {
+                    TestInstance = CreateTestInstance();
+                    RunTest();
+                    GetTestResult();
+                }
+                catch (Exception e)
+                {
+                    ThrownException = e;
+
+                    if (e.GetType() != ExpectedException)
+                        throw;
+                }
             }
         }
 
@@ -42,7 +53,7 @@ namespace Domo.Tests
         {
         }
 
-        protected virtual void SetupGivens()
+        protected virtual void SetupPrerequisites()
         {
         }
 
@@ -52,7 +63,7 @@ namespace Domo.Tests
 
         protected abstract TTestInstance CreateTestInstance();
 
-        protected abstract void PerformTest();
+        protected abstract void RunTest();
 
         protected virtual void GetTestResult()
         {
@@ -60,21 +71,6 @@ namespace Domo.Tests
 
         protected virtual void CleanupAfterTest()
         {
-        }
-
-        private void RunTest()
-        {
-            try
-            {
-                PerformTest();
-            }
-            catch (Exception e)
-            {
-                ThrownException = e;
-
-                if (e.GetType() != ExpectedException)
-                    throw;
-            }
         }
     }
 }

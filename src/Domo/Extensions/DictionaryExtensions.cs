@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Domo.Extensions
 {
+    [DebuggerStepThrough]
     public static class DictionaryExtensions
     {
         public static void Add<TKey, TValue>(this IDictionary<TKey, List<TValue>> items, TKey key, TValue value)
@@ -22,6 +24,11 @@ namespace Domo.Extensions
                 return value;
 
             return default(TValue);
+        }
+
+        public static TValue TryGetValue<TKey, TValue>(this IDictionary<TKey, TValue> items, TKey key, Func<TKey, TValue> factoryDelegate)
+        {
+            return TryGetValue(items, key, () => factoryDelegate(key));
         }
 
         public static TValue TryGetValue<TKey, TValue>(this IDictionary<TKey, TValue> items, TKey key, Func<TValue> factoryDelegate)

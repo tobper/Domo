@@ -17,12 +17,12 @@ namespace Domo.Tests.Messaging
             return typeof(SendCommandFailedException);
         }
 
-        protected override void SetupGivens()
+        protected override void SetupPrerequisites()
         {
             GivenNoCommandHandlerHasBeenRegistered();
         }
 
-        protected override void PerformTest()
+        protected override void RunTest()
         {
             TestInstance.Send(new DummyCommand());
         }

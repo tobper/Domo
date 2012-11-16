@@ -5,7 +5,6 @@ namespace Domo.DI
         Default,
         Transient,
         Singleton,
-        Scoped,
 
         //ThreadLocal,
         //HttpContext,

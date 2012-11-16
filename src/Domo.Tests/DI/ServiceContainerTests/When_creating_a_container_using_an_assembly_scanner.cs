@@ -10,7 +10,7 @@ namespace Domo.Tests.DI.ServiceContainerTests
         {
         }
 
-        protected override void SetupGivens()
+        protected override void SetupPrerequisites()
         {
             GivenThatAnAssemblyScannerIsBeingUsed();
         }

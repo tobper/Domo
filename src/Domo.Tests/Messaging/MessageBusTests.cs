@@ -22,7 +22,7 @@ namespace Domo.Tests.Messaging
         protected void GivenNoCommandHandlerHasBeenRegistered()
         {
             _serviceLocator.
-                Setup(l => l.TryResolve<ICommandHandler<DummyCommand>>()).
+                Setup(l => l.TryResolve<ICommandHandler<DummyCommand>>(null)).
                 Returns((ICommandHandler<DummyCommand>)null);
         }
 

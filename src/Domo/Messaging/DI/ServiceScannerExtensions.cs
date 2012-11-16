@@ -1,12 +1,12 @@
-using Domo.DI.Scanning;
+using Domo.DI.Registration;
 
 namespace Domo.Messaging.DI
 {
     public static class ServiceScannerExtensions
     {
-        public static IAssemblyScanner UseMessageHandlerScanner(this IAssemblyScanner builder)
+        public static IAssemblyScanner UseMessageHandlerScanner(this IAssemblyScanner assemblyScanner)
         {
-            return builder.AddServiceScanner(new MessageHandlerServiceScanner());
+            return assemblyScanner.AddScanProcessor(new MessageHandlerScanProcessor());
         }
     }
 }
