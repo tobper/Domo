@@ -1,0 +1,22 @@
+using System;
+using Domo.DI.Activation;
+
+namespace Domo.Settings.DI.Activation
+{
+    public class UserSettingsActivator : SettingsActivator, IActivator
+    {
+        private readonly IUserSettings _userSettings;
+
+        public UserSettingsActivator(IUserSettings userSettings)
+        {
+            _userSettings = userSettings;
+        }
+
+        public object ActivateInstance(ActivationContext activationContext, Type type, string name)
+        {
+            return
+                GetGenericActivator(type).
+                ActivateInstance(_userSettings, name);
+        }
+    }
+}

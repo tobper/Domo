@@ -38,6 +38,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>MessagingResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Settings\SettingsResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SettingsResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DI\Activation\Activator.cs" />
@@ -76,6 +80,7 @@
     <Compile Include="DI\Exceptions\ServiceNotRegisteredException.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Extensions\SerializationExtensions.cs" />
     <Compile Include="Messaging\DI\MessageHandlerScanProcessor.cs" />
     <Compile Include="Messaging\DI\ServiceScannerExtensions.cs" />
     <Compile Include="Messaging\Exceptions\MessagingException.cs" />
@@ -92,6 +97,32 @@
       <DependentUpon>MessagingResources.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings\DI\Activation\SettingsActivator.cs" />
+    <Compile Include="Settings\IApplicationSettings.cs" />
+    <Compile Include="Settings\IUserSettings.cs" />
+    <Compile Include="Settings\DI\Activation\ApplicationSettingsActivator.cs" />
+    <Compile Include="Settings\DI\ApplicationSettingsAttribute.cs" />
+    <Compile Include="Settings\DI\Registration\SettingsScanProcessor.cs" />
+    <Compile Include="Settings\ServiceScannerExtensions.cs" />
+    <Compile Include="Settings\DI\SettingsAttribute.cs" />
+    <Compile Include="Settings\DI\SettingsScope.cs" />
+    <Compile Include="Settings\DI\Activation\UserSettingsActivator.cs" />
+    <Compile Include="Settings\DI\UserSettingsAttribute.cs" />
+    <Compile Include="Settings\ProviderBasedSettings\ProviderBasedApplicationSettings.cs" />
+    <Compile Include="Settings\ProviderBasedSettings\ProviderBasedUserSettings.cs" />
+    <Compile Include="Settings\ProviderBasedSettings\Serialization\ISettingsSerializer.cs" />
+    <Compile Include="Settings\ProviderBasedSettings\Serialization\JsonSettingsSerializer.cs" />
+    <Compile Include="Settings\ProviderBasedSettings\Serialization\SettingsSerializer.cs" />
+    <Compile Include="Settings\ProviderBasedSettings\Serialization\XmlSettingsSerializer.cs" />
+    <Compile Include="Settings\ProviderBasedSettings\Storage\ISettingsUsernameProvider.cs" />
+    <Compile Include="Settings\ProviderBasedSettings\Storage\MemoryStorageProvider.cs" />
+    <Compile Include="Settings\SettingsResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SettingsResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\ProviderBasedSettings\Storage\ISettingsStorageProvider.cs" />
+    <Compile Include="Settings\ProviderBasedSettings\Storage\Setting.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
