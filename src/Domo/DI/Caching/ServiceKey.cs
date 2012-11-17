@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics;
 
 namespace Domo.DI.Caching
 {
+    [DebuggerDisplay("{ServiceType.Name,nq}, {ServiceName,nq}")]
     public class ServiceKey
     {
         public Type ServiceType { get; private set; }

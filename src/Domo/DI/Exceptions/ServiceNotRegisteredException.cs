@@ -22,14 +22,14 @@ namespace Domo.DI
 
         private static string CreateMessage(Type serviceType)
         {
-            return string.Format("No service of type '{0}' has been registered in the container.", serviceType);
+            return string.Format("No service of type '{0}' has been registered.", serviceType);
         }
 
         private static string CreateMessage(Type serviceType, string serviceName)
         {
             return (serviceName == null)
                 ? CreateMessage(serviceType)
-                : string.Format("No service of type '{0}' with the name '{1}' has been registered in the container.", serviceType, serviceName);
+                : string.Format("No service of type '{0}' with the name '{1}' has been registered.", serviceType, serviceName);
         }
     }
 }

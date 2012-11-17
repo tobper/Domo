@@ -1,8 +1,10 @@
 using System;
 using Domo.DI.Activation;
+using Domo.DI.Registration;
 
 namespace Domo.Settings.DI.Activation
 {
+    [PreventAutomaticRegistration]
     public class ApplicationSettingsActivator : SettingsActivator, IActivator
     {
         private readonly IApplicationSettings _applicationSettings;

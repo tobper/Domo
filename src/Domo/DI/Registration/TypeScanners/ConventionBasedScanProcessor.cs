@@ -8,6 +8,9 @@ namespace Domo.DI.Registration.TypeScanners
     {
         public void ProcessType(ITypeRegistration typeRegistration, TypeInfo type)
         {
+            if (type.IsAbstract || type.IsInterface || type.IsGenericTypeDefinition)
+                return;
+
             // Extract interfaces with prefixes
             // I.e. SingletonServiceCache should register a IServiceCache service named Singleton
             foreach (var serviceType in type.ImplementedInterfaces)

@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Domo.DI.Registration;
 using Domo.Extensions;
 using System.Reflection;
 
 namespace Domo.Settings.ProviderBasedSettings.Storage
 {
+    [PreventAutomaticRegistration]
     public class MemoryStorageProvider : ISettingsStorageProvider
     {
         private readonly Dictionary<string, Setting> _settings = new Dictionary<string, Setting>();

@@ -21,8 +21,12 @@ namespace Domo.DI
         public void AddActivator(Type activatorType, string serviceName)
         {
             var member = new ServiceFamilyMember(activatorType, serviceName);
+            var activatorKey = serviceName ?? DefaultServiceName;
 
-            _activators.Add(serviceName ?? DefaultServiceName, member);
+            if (_activators.ContainsKey(activatorKey))
+                throw new ServiceAlreadyRegisteredException(serviceName, ServiceType);
+
+            _activators.Add(activatorKey, member);
         }
 
         public Type GetActivator(string serviceName)

@@ -2,12 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Domo.DI.Registration.TypeScanners;
 
 namespace Domo.DI.Registration
 {
     public class AssemblyScanner : IAssemblyScanner
     {
+        private static readonly Type PreventAutomaticRegistrationAttributeType = typeof(PreventAutomaticRegistrationAttribute);
+
         private readonly ITypeRegistration _typeRegistration;
         private readonly IList<Func<Assembly, bool>> _assemblyFilters = new List<Func<Assembly, bool>>();
         private readonly IList<Func<TypeInfo, bool>> _typeFilters = new List<Func<TypeInfo, bool>>();
@@ -16,6 +19,12 @@ namespace Domo.DI.Registration
         public AssemblyScanner(ITypeRegistration typeRegistration)
         {
             _typeRegistration = typeRegistration;
+
+            AddTypeFilter(type =>
+                !IsAnonymousType(type) &&
+                !IsManuallyRegisteredType(type) &&
+                !HasPreventionAttribute(type)
+            );
         }
 
         public IAssemblyScanner UseConventionBasedProcessor()
@@ -87,17 +96,27 @@ namespace Domo.DI.Registration
             return this;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static bool IsAnonymousType(TypeInfo type)
+        {
+            return type.Name.StartsWith("<>");
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static bool IsManuallyRegisteredType(TypeInfo type)
+        {
+            return type.Namespace.StartsWith("Domo.DI");
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static bool HasPreventionAttribute(TypeInfo type)
+        {
+            return type.IsDefined(PreventAutomaticRegistrationAttributeType);
+        }
+
         private IEnumerable<Assembly> GetAssembliesInPath(string path)
         {
             throw new NotImplementedException();
         }
-
-        //private IEnumerable<ServiceInfo> GetServicesInAssembly(Assembly assembly)
-        //{
-        //    return from type in assembly.DefinedTypes
-        //           from scanner in _typeScanners
-        //           from service in scanner.GetServices(type)
-        //           select service;
-        //}
     }
 }

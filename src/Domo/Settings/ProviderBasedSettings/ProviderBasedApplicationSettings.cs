@@ -1,9 +1,11 @@
 ﻿using System;
+using Domo.DI.Registration;
 using Domo.Settings.ProviderBasedSettings.Serialization;
 using Domo.Settings.ProviderBasedSettings.Storage;
 
 namespace Domo.Settings.ProviderBasedSettings
 {
+    [PreventAutomaticRegistration]
     public class ProviderBasedApplicationSettings : IApplicationSettings
     {
         private readonly ISettingsStorageProvider _storageProvider;

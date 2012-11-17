@@ -90,10 +90,10 @@ namespace Domo.DI.Registration
         {
             var activatorType = GetActivatorType(lifeStyle, serviceType);
 
+            _container.Register(serviceType, serviceName, activatorType);
+
             if (instanceType != serviceType)
                 _typeRedirector.AddRedirection(serviceType, serviceName, instanceType);
-
-            _container.Register(serviceType, serviceName, activatorType);
 
             return this;
         }

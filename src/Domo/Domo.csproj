@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DI\Activation\Activator.cs" />
+    <Compile Include="DI\Exceptions\ServiceAlreadyRegisteredException.cs" />
     <Compile Include="DI\Redirection\ITypeRedirector.cs" />
     <Compile Include="DI\Redirection\TypeRedirector.cs" />
     <Compile Include="DI\Caching\ServiceKey.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="DI\Creation\FactoryManager.cs" />
     <Compile Include="DI\Creation\IFactoryManager.cs" />
     <Compile Include="DI\IServiceFamily.cs" />
+    <Compile Include="DI\Registration\PreventAutomaticRegistrationAttribute.cs" />
     <Compile Include="DI\Registration\TypeScanners\ConventionBasedScanProcessor.cs" />
     <Compile Include="DI\Activation\ActivationContext.cs" />
     <Compile Include="DI\Activation\IActivator.cs" />
