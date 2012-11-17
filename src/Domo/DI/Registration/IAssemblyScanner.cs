@@ -11,6 +11,6 @@ namespace Domo.DI.Registration
         IAssemblyScanner ScanAssembly(Assembly assembly);
         IAssemblyScanner ScanAssemblyContaining<T>();
         IAssemblyScanner ScanDirectory(string path);
-        IAssemblyScanner UseConventionBasedScanner();
+        IAssemblyScanner UseConventionBasedProcessor();
     }
 }

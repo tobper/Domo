@@ -18,7 +18,7 @@ namespace Domo.DI.Registration
             _typeRegistration = typeRegistration;
         }
 
-        public IAssemblyScanner UseConventionBasedScanner()
+        public IAssemblyScanner UseConventionBasedProcessor()
         {
             return AddScanProcessor(new ConventionBasedScanProcessor());
         }

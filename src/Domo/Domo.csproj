@@ -81,8 +81,8 @@
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\SerializationExtensions.cs" />
-    <Compile Include="Messaging\DI\MessageHandlerScanProcessor.cs" />
-    <Compile Include="Messaging\DI\ServiceScannerExtensions.cs" />
+    <Compile Include="Messaging\DI\Registration\MessageHandlerScanProcessor.cs" />
+    <Compile Include="Messaging\DI\Registration\ScannerExtensions.cs" />
     <Compile Include="Messaging\Exceptions\MessagingException.cs" />
     <Compile Include="Messaging\Exceptions\SendCommandFailedException.cs" />
     <Compile Include="Messaging\IMessageBus.cs" />
@@ -103,7 +103,7 @@
     <Compile Include="Settings\DI\Activation\ApplicationSettingsActivator.cs" />
     <Compile Include="Settings\DI\ApplicationSettingsAttribute.cs" />
     <Compile Include="Settings\DI\Registration\SettingsScanProcessor.cs" />
-    <Compile Include="Settings\ServiceScannerExtensions.cs" />
+    <Compile Include="Settings\DI\Registration\ScannerExtensions.cs" />
     <Compile Include="Settings\DI\SettingsAttribute.cs" />
     <Compile Include="Settings\DI\SettingsScope.cs" />
     <Compile Include="Settings\DI\Activation\UserSettingsActivator.cs" />

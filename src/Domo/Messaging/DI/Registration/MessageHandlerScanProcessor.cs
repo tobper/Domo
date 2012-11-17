@@ -3,7 +3,7 @@ using System.Reflection;
 using Domo.DI;
 using Domo.DI.Registration;
 
-namespace Domo.Messaging.DI
+namespace Domo.Messaging.DI.Registration
 {
     public class MessageHandlerScanProcessor : IScanProcessor
     {

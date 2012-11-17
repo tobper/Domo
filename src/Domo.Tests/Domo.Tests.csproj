@@ -61,12 +61,12 @@
   <ItemGroup>
     <Compile Include="DI\Activation\SingletonActivatorTests\SingletonActivatorTests.cs" />
     <Compile Include="DI\Activation\SingletonActivatorTests\When_creating_an_empty_container.cs" />
-    <Compile Include="DI\ServiceContainerTests\ServiceContainerTests.cs" />
-    <Compile Include="DI\ServiceContainerTests\When_creating_a_container_using_an_assembly_scanner.cs" />
+    <Compile Include="DI\ContainerTests\ContainerTests.cs" />
+    <Compile Include="DI\ContainerTests\When_creating_a_container_using_an_assembly_scanner.cs" />
     <Compile Include="Messaging\MessageBusTests.cs" />
     <Compile Include="Messaging\When_sending_a_command_with_no_registered_command_handler.cs" />
     <Compile Include="UnitTests.cs" />
-    <Compile Include="DI\ServiceContainerTests\When_creating_a_container.cs" />
+    <Compile Include="DI\ContainerTests\When_creating_a_container.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

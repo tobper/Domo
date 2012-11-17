@@ -1,10 +1,10 @@
 ﻿using Domo.DI;
 using NUnit.Framework;
 
-namespace Domo.Tests.DI.ServiceContainerTests
+namespace Domo.Tests.DI.ContainerTests
 {
     [TestFixture]
-    public class When_creating_a_container : ServiceContainerTests
+    public class When_creating_a_container : ContainerTests
     {
         [Test]
         public void The_container_should_automatically_be_registered()

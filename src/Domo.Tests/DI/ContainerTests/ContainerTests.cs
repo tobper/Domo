@@ -2,15 +2,15 @@ using System;
 using Domo.DI;
 using Domo.DI.Registration;
 
-namespace Domo.Tests.DI.ServiceContainerTests
+namespace Domo.Tests.DI.ContainerTests
 {
-    public class ServiceContainerTests : UnitTests<IContainer>
+    public class ContainerTests : UnitTests<IContainer>
     {
-        private Action<ITypeRegistration> _serviceRegistration;
+        private Action<ITypeRegistration> _typeRegistration;
 
         protected override IContainer CreateTestInstance()
         {
-            return Container.Create(_serviceRegistration);
+            return Container.Create(_typeRegistration);
         }
 
         protected override void RunTest()
@@ -19,7 +19,7 @@ namespace Domo.Tests.DI.ServiceContainerTests
 
         protected void GivenNoRegistrationIsBeingUsed()
         {
-            _serviceRegistration = null;
+            _typeRegistration = null;
         }
 
         protected void GivenThatAnAssemblyScannerIsBeingUsed()

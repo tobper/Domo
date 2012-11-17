@@ -1,18 +1,16 @@
 using Domo.DI.Registration;
-using Domo.Settings.DI;
-using Domo.Settings.DI.Registration;
 using Domo.Settings.ProviderBasedSettings;
 using Domo.Settings.ProviderBasedSettings.Serialization;
 using Domo.Settings.ProviderBasedSettings.Storage;
 
-namespace Domo.Settings
+namespace Domo.Settings.DI.Registration
 {
-    public static class ServiceScannerExtensions
+    public static class ScannerExtensions
     {
         /// <summary>
         /// The SettingsScanner will automatically register all types marked with <see cref="SettingsAttribute"/>.
         /// </summary>
-        public static IAssemblyScanner UseSettingsScanner(this IAssemblyScanner assemblyScanner)
+        public static IAssemblyScanner UseSettingsProcessor(this IAssemblyScanner assemblyScanner)
         {
             return assemblyScanner.AddScanProcessor(new SettingsScanProcessor());
         }
