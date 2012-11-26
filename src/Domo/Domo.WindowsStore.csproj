@@ -102,6 +102,7 @@
     <Compile Include="DI\Activation\ActivationContext.cs" />
     <Compile Include="DI\Activation\Activator.cs" />
     <Compile Include="DI\Activation\IActivator.cs" />
+    <Compile Include="DI\Activation\LazyActivator.cs" />
     <Compile Include="DI\Activation\SingletonActivator.cs" />
     <Compile Include="DI\Activation\TransientActivator.cs" />
     <Compile Include="DI\Caching\IInstanceCache.cs" />

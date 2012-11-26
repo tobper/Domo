@@ -35,6 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DI\Activation\Activator.cs" />
+    <Compile Include="DI\Activation\LazyActivator.cs" />
     <Compile Include="DI\Exceptions\ServiceAlreadyRegisteredException.cs" />
     <Compile Include="DI\Redirection\ITypeRedirector.cs" />
     <Compile Include="DI\Redirection\TypeRedirector.cs" />

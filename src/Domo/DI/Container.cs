@@ -105,8 +105,17 @@ namespace Domo.DI
 
         public IActivator GetActivator(Type serviceType, string serviceName)
         {
+            var isLazy = serviceType.IsConstructedGenericType &&
+                         serviceType.GetGenericTypeDefinition() == typeof(Lazy<>);
+
+            if (isLazy)
+                serviceType = serviceType.GenericTypeArguments[0];
+
             var activatorType = GetActivatorType(serviceType, serviceName);
             var activator = GetActivator(activatorType);
+
+            if (isLazy)
+                activator = new LazyActivator(activator);
 
             return activator;
         }
