@@ -31,15 +31,9 @@ namespace Domo.Messaging
         {
             var handler = _serviceLocator.TryResolve<ICommandHandler<TCommand>>();
             if (handler == null)
-                throw CreateSendCommandFailedException<TCommand>();
+                throw new SendCommandFailedException(typeof(TCommand));
 
             handler.Handle(command);
-        }
-
-        private static SendCommandFailedException CreateSendCommandFailedException<TCommand>() where TCommand : ICommand
-        {
-            var message = string.Format(MessagingResources.NoCommandHandlerHasBeenRegistered, typeof(TCommand).Name);
-            return new SendCommandFailedException(message);
         }
     }
 }

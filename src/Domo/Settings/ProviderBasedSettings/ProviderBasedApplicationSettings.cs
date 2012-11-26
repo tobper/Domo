@@ -20,7 +20,7 @@ namespace Domo.Settings.ProviderBasedSettings
                 throw new ArgumentNullException("serializer");
 
             if (!storageProvider.SupportsSerializationType(serializer.SerializationType))
-                throw new NotSupportedException(SettingsResources.TheRegisteredProviderDoesNotSupportTheStorageTypeOfTheRegisteredSerializer);
+                throw new InvalidSerializationTypeException();
 
             _storageProvider = storageProvider;
             _serializer = serializer;

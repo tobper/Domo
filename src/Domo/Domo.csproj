@@ -33,17 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-    <EmbeddedResource Include="Messaging\MessagingResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>MessagingResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Settings\SettingsResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>SettingsResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="DI\Activation\Activator.cs" />
     <Compile Include="DI\Exceptions\ServiceAlreadyRegisteredException.cs" />
     <Compile Include="DI\Redirection\ITypeRedirector.cs" />
@@ -93,11 +82,6 @@
     <Compile Include="Messaging\ICommandHandler.cs" />
     <Compile Include="Messaging\IMessage.cs" />
     <Compile Include="Messaging\IMessageHandler.cs" />
-    <Compile Include="Messaging\MessagingResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MessagingResources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\DI\Activation\SettingsActivator.cs" />
     <Compile Include="Settings\IApplicationSettings.cs" />
@@ -110,6 +94,7 @@
     <Compile Include="Settings\DI\SettingsScope.cs" />
     <Compile Include="Settings\DI\Activation\UserSettingsActivator.cs" />
     <Compile Include="Settings\DI\UserSettingsAttribute.cs" />
+    <Compile Include="Settings\Exceptions\InvalidSerializationTypeException.cs" />
     <Compile Include="Settings\ProviderBasedSettings\ProviderBasedApplicationSettings.cs" />
     <Compile Include="Settings\ProviderBasedSettings\ProviderBasedUserSettings.cs" />
     <Compile Include="Settings\ProviderBasedSettings\Serialization\ISettingsSerializer.cs" />
@@ -118,11 +103,6 @@
     <Compile Include="Settings\ProviderBasedSettings\Serialization\XmlSettingsSerializer.cs" />
     <Compile Include="Settings\ProviderBasedSettings\Storage\ISettingsUsernameProvider.cs" />
     <Compile Include="Settings\ProviderBasedSettings\Storage\MemoryStorageProvider.cs" />
-    <Compile Include="Settings\SettingsResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SettingsResources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Settings\ProviderBasedSettings\Storage\ISettingsStorageProvider.cs" />
     <Compile Include="Settings\ProviderBasedSettings\Storage\Setting.cs" />
   </ItemGroup>
