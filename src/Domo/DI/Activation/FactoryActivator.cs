@@ -5,12 +5,12 @@ using Domo.DI.Redirection;
 
 namespace Domo.DI.Activation
 {
-    public abstract class Activator : IActivator
+    public abstract class FactoryActivator : IActivator
     {
         private readonly IFactoryManager _factoryManager;
         private readonly ITypeRedirector _typeRedirector;
 
-        protected Activator(IFactoryManager factoryManager, ITypeRedirector typeRedirector)
+        protected FactoryActivator(IFactoryManager factoryManager, ITypeRedirector typeRedirector)
         {
             _factoryManager = factoryManager;
             _typeRedirector = typeRedirector;

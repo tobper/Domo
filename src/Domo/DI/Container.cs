@@ -26,8 +26,8 @@ namespace Domo.DI
             _serviceFamilies = new Dictionary<Type, IServiceFamily>();
             _activators = new Dictionary<Type, IActivator>
             {
-                { typeof(SingletonActivator), new SingletonActivator(_factoryManager, singletonInstanceCache, typeRedirector) },
-                { typeof(TransientActivator), new TransientActivator(_factoryManager, typeRedirector) }
+                { typeof(SingletonFactoryActivator), new SingletonFactoryActivator(_factoryManager, singletonInstanceCache, typeRedirector) },
+                { typeof(TransientFactoryActivator), new TransientFactoryActivator(_factoryManager, typeRedirector) }
             };
 
             ITypeRegistration typeRegistration =

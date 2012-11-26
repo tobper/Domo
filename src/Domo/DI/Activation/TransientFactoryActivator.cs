@@ -4,9 +4,9 @@ using Domo.DI.Redirection;
 
 namespace Domo.DI.Activation
 {
-    public class TransientActivator : Activator
+    public class TransientFactoryActivator : FactoryActivator
     {
-        public TransientActivator(IFactoryManager factoryManager, ITypeRedirector typeRedirector)
+        public TransientFactoryActivator(IFactoryManager factoryManager, ITypeRedirector typeRedirector)
             : base(factoryManager, typeRedirector)
         {
         }

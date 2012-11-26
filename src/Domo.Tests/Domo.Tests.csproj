@@ -59,8 +59,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="DI\Activation\SingletonActivatorTests\SingletonActivatorTests.cs" />
-    <Compile Include="DI\Activation\SingletonActivatorTests\When_creating_an_empty_container.cs" />
+    <Compile Include="DI\Activation\SingletonFactoryActivatorTests\SingletonFactoryActivatorTests.cs" />
+    <Compile Include="DI\Activation\SingletonFactoryActivatorTests\When_creating_an_empty_container.cs" />
     <Compile Include="DI\ContainerTests\ContainerTests.cs" />
     <Compile Include="DI\ContainerTests\When_creating_a_container_using_an_assembly_scanner.cs" />
     <Compile Include="Messaging\MessageBusTests.cs" />

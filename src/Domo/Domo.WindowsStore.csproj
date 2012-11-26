@@ -100,11 +100,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DI\Activation\ActivationContext.cs" />
-    <Compile Include="DI\Activation\Activator.cs" />
+    <Compile Include="DI\Activation\FactoryActivator.cs" />
     <Compile Include="DI\Activation\IActivator.cs" />
     <Compile Include="DI\Activation\LazyActivator.cs" />
-    <Compile Include="DI\Activation\SingletonActivator.cs" />
-    <Compile Include="DI\Activation\TransientActivator.cs" />
+    <Compile Include="DI\Activation\SingletonFactoryActivator.cs" />
+    <Compile Include="DI\Activation\TransientFactoryActivator.cs" />
     <Compile Include="DI\Caching\IInstanceCache.cs" />
     <Compile Include="DI\Caching\InstanceCache.cs" />
     <Compile Include="DI\Caching\ServiceKey.cs" />

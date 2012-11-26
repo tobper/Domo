@@ -5,12 +5,11 @@ using Domo.DI.Caching;
 using Domo.DI.Creation;
 using Domo.DI.Redirection;
 using Moq;
+using ActivationContext = Domo.DI.Activation.ActivationContext;
 
-namespace Domo.Tests.DI.Activation.SingletonActivatorTests
+namespace Domo.Tests.DI.Activation.SingletonFactoryActivatorTests
 {
-    using ActivationContext = Domo.DI.Activation.ActivationContext;
-
-    public class SingletonActivatorTests : UnitTests<SingletonActivator>
+    public class SingletonFactoryActivatorTests : UnitTests<SingletonFactoryActivator>
     {
         private ActivationContext _activationContext;
 
@@ -47,9 +46,9 @@ namespace Domo.Tests.DI.Activation.SingletonActivatorTests
                 Returns(_redirectionType);
         }
 
-        protected override SingletonActivator CreateTestInstance()
+        protected override SingletonFactoryActivator CreateTestInstance()
         {
-            return new SingletonActivator(FactoryManager.Object, SingletonCache.Object, TypeRedirector.Object);
+            return new SingletonFactoryActivator(FactoryManager.Object, SingletonCache.Object, TypeRedirector.Object);
         }
 
         protected override void RunTest()

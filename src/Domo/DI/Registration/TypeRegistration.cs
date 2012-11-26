@@ -106,10 +106,10 @@ namespace Domo.DI.Registration
             switch (lifeStyle)
             {
                 case LifeStyle.Singleton:
-                    return typeof(SingletonActivator);
+                    return typeof(SingletonFactoryActivator);
 
                 case LifeStyle.Transient:
-                    return typeof(TransientActivator);
+                    return typeof(TransientFactoryActivator);
 
                 default:
                     throw new InvalidLifeStyleException(lifeStyle, serviceType);
