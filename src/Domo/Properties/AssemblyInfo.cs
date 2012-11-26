@@ -5,7 +5,7 @@ using System.Security;
 
 [assembly: AssemblyProduct("Domo")]
 [assembly: AssemblyTitle("Domo")]
-[assembly: AssemblyDescription("Help library based on the Portable Class Library.")]
+[assembly: AssemblyDescription("Help library...")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Tobias Persson")]
 [assembly: AssemblyCopyright("Copyright 2012 © Tobias Persson. All rights reserved.")]
