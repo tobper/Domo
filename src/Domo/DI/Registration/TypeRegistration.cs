@@ -94,7 +94,7 @@ namespace Domo.DI.Registration
 
             _container.Register(serviceType, serviceName, activatorType);
 
-            if (instanceType != serviceType)
+            if (instanceType != null && instanceType != serviceType)
                 _typeRedirector.AddRedirection(serviceType, serviceName, instanceType);
 
             return this;

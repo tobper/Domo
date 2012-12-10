@@ -8,6 +8,6 @@ namespace Domo.DI.Registration
         ITypeRegistration RegisterSingleton<TService>(TService instance, string serviceName = null) where TService : class;
         ITypeRegistration Register<TService>(LifeStyle lifeStyle = LifeStyle.Default, string serviceName = null);
         ITypeRegistration Register<TService, TInstance>(LifeStyle lifeStyle = LifeStyle.Default, string serviceName = null);
-        ITypeRegistration Register(Type serviceType, Type instanceType, LifeStyle lifeStyle = LifeStyle.Default, string serviceName = null);
+        ITypeRegistration Register(Type serviceType, Type instanceType = null, LifeStyle lifeStyle = LifeStyle.Default, string serviceName = null);
     }
 }
