@@ -96,6 +96,22 @@ namespace Domo.DI.Registration
             return this;
         }
 
+        public IAssemblyScanner ScanLoadedAssemblies()
+        {
+#if NETFX_CORE
+            throw new NotSupportedException("Scanning loaded assemblies is not supported in a Windows Store app.");
+#else
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+            foreach (var assembly in assemblies)
+            {
+                ScanAssembly(assembly);
+            }
+
+            return this;
+#endif
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool IsAnonymousType(TypeInfo type)
         {
