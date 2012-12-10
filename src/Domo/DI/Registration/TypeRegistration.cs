@@ -6,6 +6,8 @@ using Domo.DI.Redirection;
 
 namespace Domo.DI.Registration
 {
+    using ActivationContext = Activation.ActivationContext;
+
     public class TypeRegistration : ITypeRegistration
     {
         private readonly IContainer _container;

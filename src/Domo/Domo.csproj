@@ -2,75 +2,81 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{82BCF5CC-1467-46D2-A8B1-18B1405EA43A}</ProjectGuid>
+    <ProjectGuid>{29A6D213-52D5-4AB0-99D7-526C87561237}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Domo</RootNamespace>
     <AssemblyName>Domo</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>Bin\Debug\PCL\</OutputPath>
+    <OutputPath>Bin\Debug\Net45\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\PCL\</OutputPath>
+    <OutputPath>Bin\Release\Net45\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DI\Activation\ActivationContext.cs" />
     <Compile Include="DI\Activation\FactoryActivator.cs" />
+    <Compile Include="DI\Activation\IActivator.cs" />
     <Compile Include="DI\Activation\LazyActivator.cs" />
-    <Compile Include="DI\Exceptions\ServiceAlreadyRegisteredException.cs" />
-    <Compile Include="DI\Redirection\ITypeRedirector.cs" />
-    <Compile Include="DI\Redirection\TypeRedirector.cs" />
+    <Compile Include="DI\Activation\SingletonFactoryActivator.cs" />
+    <Compile Include="DI\Activation\TransientFactoryActivator.cs" />
+    <Compile Include="DI\Caching\IInstanceCache.cs" />
+    <Compile Include="DI\Caching\InstanceCache.cs" />
     <Compile Include="DI\Caching\ServiceKey.cs" />
+    <Compile Include="DI\Container.cs" />
     <Compile Include="DI\Creation\ConstructionFactory.cs" />
     <Compile Include="DI\Creation\ConstructionFactoryParameter.cs" />
     <Compile Include="DI\Creation\DelegateFactory.cs" />
-    <Compile Include="DI\Creation\IFactory.cs" />
     <Compile Include="DI\Creation\FactoryManager.cs" />
+    <Compile Include="DI\Creation\IFactory.cs" />
     <Compile Include="DI\Creation\IFactoryManager.cs" />
-    <Compile Include="DI\IServiceFamily.cs" />
-    <Compile Include="DI\Registration\PreventAutomaticRegistrationAttribute.cs" />
-    <Compile Include="DI\Registration\TypeScanners\ConventionBasedScanProcessor.cs" />
-    <Compile Include="DI\Activation\ActivationContext.cs" />
-    <Compile Include="DI\Activation\IActivator.cs" />
-    <Compile Include="DI\Caching\IInstanceCache.cs" />
-    <Compile Include="DI\Caching\InstanceCache.cs" />
-    <Compile Include="DI\Activation\SingletonFactoryActivator.cs" />
-    <Compile Include="DI\Activation\TransientFactoryActivator.cs" />
     <Compile Include="DI\Exceptions\InvalidLifeStyleException.cs" />
-    <Compile Include="DI\Registration\IAssemblyScanner.cs" />
     <Compile Include="DI\Exceptions\NoValidConstructorFoundException.cs" />
-    <Compile Include="DI\Registration\ITypeRegistration.cs" />
-    <Compile Include="DI\Registration\TypeRegistration.cs" />
+    <Compile Include="DI\Exceptions\ServiceAlreadyRegisteredException.cs" />
     <Compile Include="DI\Exceptions\ServiceCouldNotBeCreatedException.cs" />
+    <Compile Include="DI\Exceptions\ServiceNotRegisteredException.cs" />
+    <Compile Include="DI\IContainer.cs" />
+    <Compile Include="DI\IServiceFamily.cs" />
+    <Compile Include="DI\IServiceLocator.cs" />
+    <Compile Include="DI\LifeStyle.cs" />
+    <Compile Include="DI\Redirection\ITypeRedirector.cs" />
+    <Compile Include="DI\Redirection\TypeRedirector.cs" />
     <Compile Include="DI\Registration\AssemblyScanner.cs" />
+    <Compile Include="DI\Registration\IAssemblyScanner.cs" />
+    <Compile Include="DI\Registration\IScanProcessor.cs" />
+    <Compile Include="DI\Registration\ITypeRegistration.cs" />
+    <Compile Include="DI\Registration\PreventAutomaticRegistrationAttribute.cs" />
+    <Compile Include="DI\Registration\TypeRegistration.cs" />
+    <Compile Include="DI\Registration\TypeScanners\ConventionBasedScanProcessor.cs" />
     <Compile Include="DI\ServiceFamily.cs" />
     <Compile Include="DI\ServiceFamilyMember.cs" />
     <Compile Include="DI\ServiceLocator.cs" />
-    <Compile Include="DI\IContainer.cs" />
-    <Compile Include="DI\Registration\IScanProcessor.cs" />
-    <Compile Include="DI\IServiceLocator.cs" />
-    <Compile Include="DI\LifeStyle.cs" />
-    <Compile Include="DI\Container.cs" />
-    <Compile Include="DI\Exceptions\ServiceNotRegisteredException.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\SerializationExtensions.cs" />
@@ -78,38 +84,40 @@
     <Compile Include="Messaging\DI\Registration\ScannerExtensions.cs" />
     <Compile Include="Messaging\Exceptions\MessagingException.cs" />
     <Compile Include="Messaging\Exceptions\SendCommandFailedException.cs" />
-    <Compile Include="Messaging\IMessageBus.cs" />
-    <Compile Include="Messaging\MessageBus.cs" />
     <Compile Include="Messaging\ICommand.cs" />
     <Compile Include="Messaging\ICommandHandler.cs" />
     <Compile Include="Messaging\IMessage.cs" />
+    <Compile Include="Messaging\IMessageBus.cs" />
     <Compile Include="Messaging\IMessageHandler.cs" />
+    <Compile Include="Messaging\MessageBus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings\DI\Activation\SettingsActivator.cs" />
-    <Compile Include="Settings\IApplicationSettings.cs" />
-    <Compile Include="Settings\IUserSettings.cs" />
     <Compile Include="Settings\DI\Activation\ApplicationSettingsActivator.cs" />
+    <Compile Include="Settings\DI\Activation\SettingsActivator.cs" />
+    <Compile Include="Settings\DI\Activation\UserSettingsActivator.cs" />
     <Compile Include="Settings\DI\ApplicationSettingsAttribute.cs" />
-    <Compile Include="Settings\DI\Registration\SettingsScanProcessor.cs" />
     <Compile Include="Settings\DI\Registration\ScannerExtensions.cs" />
+    <Compile Include="Settings\DI\Registration\SettingsScanProcessor.cs" />
     <Compile Include="Settings\DI\SettingsAttribute.cs" />
     <Compile Include="Settings\DI\SettingsScope.cs" />
-    <Compile Include="Settings\DI\Activation\UserSettingsActivator.cs" />
     <Compile Include="Settings\DI\UserSettingsAttribute.cs" />
     <Compile Include="Settings\Exceptions\InvalidSerializationTypeException.cs" />
+    <Compile Include="Settings\IApplicationSettings.cs" />
+    <Compile Include="Settings\IUserSettings.cs" />
     <Compile Include="Settings\ProviderBasedSettings\ProviderBasedApplicationSettings.cs" />
     <Compile Include="Settings\ProviderBasedSettings\ProviderBasedUserSettings.cs" />
     <Compile Include="Settings\ProviderBasedSettings\Serialization\ISettingsSerializer.cs" />
     <Compile Include="Settings\ProviderBasedSettings\Serialization\JsonSettingsSerializer.cs" />
     <Compile Include="Settings\ProviderBasedSettings\Serialization\SettingsSerializer.cs" />
     <Compile Include="Settings\ProviderBasedSettings\Serialization\XmlSettingsSerializer.cs" />
+    <Compile Include="Settings\ProviderBasedSettings\Storage\ISettingsStorageProvider.cs" />
     <Compile Include="Settings\ProviderBasedSettings\Storage\ISettingsUsernameProvider.cs" />
     <Compile Include="Settings\ProviderBasedSettings\Storage\MemoryStorageProvider.cs" />
-    <Compile Include="Settings\ProviderBasedSettings\Storage\ISettingsStorageProvider.cs" />
     <Compile Include="Settings\ProviderBasedSettings\Storage\Setting.cs" />
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="DI\Scanning\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

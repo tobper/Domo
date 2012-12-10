@@ -1,8 +1,9 @@
 ﻿using System;
-using Domo.DI.Activation;
 
 namespace Domo.DI.Creation
 {
+    using ActivationContext = Activation.ActivationContext;
+
     public class DelegateFactory : IFactory
     {
         private readonly Func<ActivationContext, object> _factoryDelegate;

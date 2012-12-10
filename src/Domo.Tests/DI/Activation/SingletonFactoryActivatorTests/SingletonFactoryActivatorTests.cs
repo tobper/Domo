@@ -5,10 +5,11 @@ using Domo.DI.Caching;
 using Domo.DI.Creation;
 using Domo.DI.Redirection;
 using Moq;
-using ActivationContext = Domo.DI.Activation.ActivationContext;
 
 namespace Domo.Tests.DI.Activation.SingletonFactoryActivatorTests
 {
+    using ActivationContext = Domo.DI.Activation.ActivationContext;
+
     public class SingletonFactoryActivatorTests : UnitTests<SingletonFactoryActivator>
     {
         private ActivationContext _activationContext;

@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domo", "Domo\Domo.csproj", "{82BCF5CC-1467-46D2-A8B1-18B1405EA43A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domo.Tests", "Domo.Tests\Domo.Tests.csproj", "{B6C45570-889E-443C-BEEA-120C48A26B29}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{06C7B383-0658-405F-9FE7-B79A80FA2FAF}"
@@ -19,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{25953102
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domo.WindowsStore", "Domo\Domo.WindowsStore.csproj", "{5C6CA448-5CD2-4F7D-A120-431495031172}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domo", "Domo\Domo.csproj", "{29A6D213-52D5-4AB0-99D7-526C87561237}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,16 +31,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{82BCF5CC-1467-46D2-A8B1-18B1405EA43A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{82BCF5CC-1467-46D2-A8B1-18B1405EA43A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{82BCF5CC-1467-46D2-A8B1-18B1405EA43A}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{82BCF5CC-1467-46D2-A8B1-18B1405EA43A}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{82BCF5CC-1467-46D2-A8B1-18B1405EA43A}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{82BCF5CC-1467-46D2-A8B1-18B1405EA43A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{82BCF5CC-1467-46D2-A8B1-18B1405EA43A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{82BCF5CC-1467-46D2-A8B1-18B1405EA43A}.Release|ARM.ActiveCfg = Release|Any CPU
-		{82BCF5CC-1467-46D2-A8B1-18B1405EA43A}.Release|x64.ActiveCfg = Release|Any CPU
-		{82BCF5CC-1467-46D2-A8B1-18B1405EA43A}.Release|x86.ActiveCfg = Release|Any CPU
 		{B6C45570-889E-443C-BEEA-120C48A26B29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B6C45570-889E-443C-BEEA-120C48A26B29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6C45570-889E-443C-BEEA-120C48A26B29}.Debug|ARM.ActiveCfg = Debug|Any CPU
@@ -81,6 +71,16 @@ Global
 		{5C6CA448-5CD2-4F7D-A120-431495031172}.Release|x64.Build.0 = Release|x64
 		{5C6CA448-5CD2-4F7D-A120-431495031172}.Release|x86.ActiveCfg = Release|x86
 		{5C6CA448-5CD2-4F7D-A120-431495031172}.Release|x86.Build.0 = Release|x86
+		{29A6D213-52D5-4AB0-99D7-526C87561237}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29A6D213-52D5-4AB0-99D7-526C87561237}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29A6D213-52D5-4AB0-99D7-526C87561237}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{29A6D213-52D5-4AB0-99D7-526C87561237}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{29A6D213-52D5-4AB0-99D7-526C87561237}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{29A6D213-52D5-4AB0-99D7-526C87561237}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29A6D213-52D5-4AB0-99D7-526C87561237}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29A6D213-52D5-4AB0-99D7-526C87561237}.Release|ARM.ActiveCfg = Release|Any CPU
+		{29A6D213-52D5-4AB0-99D7-526C87561237}.Release|x64.ActiveCfg = Release|Any CPU
+		{29A6D213-52D5-4AB0-99D7-526C87561237}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

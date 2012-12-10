@@ -9,6 +9,8 @@ using Domo.Extensions;
 
 namespace Domo.DI
 {
+    using ActivationContext = Activation.ActivationContext;
+
     public class Container : IContainer
     {
         private readonly IDictionary<Type, IActivator> _activators;

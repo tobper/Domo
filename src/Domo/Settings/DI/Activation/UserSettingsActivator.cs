@@ -4,6 +4,8 @@ using Domo.DI.Registration;
 
 namespace Domo.Settings.DI.Activation
 {
+    using ActivationContext = Domo.DI.Activation.ActivationContext;
+
     [PreventAutomaticRegistration]
     public class UserSettingsActivator : SettingsActivator, IActivator
     {
