@@ -133,7 +133,9 @@ namespace Domo.DI.Registration
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool IsManuallyRegisteredType(TypeInfo type)
         {
-            return type.Namespace.StartsWith("Domo.DI");
+            return
+                type.Namespace != null &&
+                type.Namespace.StartsWith("Domo.DI");
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

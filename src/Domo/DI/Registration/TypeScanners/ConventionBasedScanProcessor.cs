@@ -8,7 +8,11 @@ namespace Domo.DI.Registration.TypeScanners
     {
         public void ProcessType(ITypeRegistration typeRegistration, TypeInfo type)
         {
-            if (type.IsAbstract || type.IsInterface || type.IsGenericTypeDefinition)
+            if (type.IsAbstract || type.IsInterface || type.IsGenericTypeDefinition || type.IsNested)
+                return;
+
+            if (type.Namespace != null &&
+                type.Namespace.StartsWith("System"))
                 return;
 
             // Extract interfaces with prefixes
@@ -29,7 +33,7 @@ namespace Domo.DI.Registration.TypeScanners
         private string GetServiceName(Type serviceType, string referenceName)
         {
             var serviceTypeName = Regex.Replace(serviceType.Name, "^I", string.Empty);
-            var match = Regex.Match(referenceName, "i?(.*?)" + serviceTypeName);
+            var match = Regex.Match(referenceName, "i?(.*?)" + serviceTypeName + "$");
 
             if (match.Success)
                 return match.Groups[1].Value;
