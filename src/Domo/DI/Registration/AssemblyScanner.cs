@@ -110,10 +110,12 @@ namespace Domo.DI.Registration
 
         public IAssemblyScanner ScanLoadedAssemblies()
         {
-#if NETFX_CORE
-            throw new NotSupportedException("Scanning loaded assemblies is not supported in a Windows Store app.");
-#else
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            var assemblies = GetLoadedAssemblies();
+
+            foreach (var assemblyFilter in _assemblyFilters)
+            {
+                assemblies = assemblies.Where(assemblyFilter);
+            }
 
             foreach (var assembly in assemblies)
             {
@@ -121,7 +123,6 @@ namespace Domo.DI.Registration
             }
 
             return this;
-#endif
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -144,9 +145,18 @@ namespace Domo.DI.Registration
             return type.IsDefined(PreventAutomaticRegistrationAttributeType);
         }
 
-        private IEnumerable<Assembly> GetAssembliesInPath(string path)
+        private static IEnumerable<Assembly> GetAssembliesInPath(string path)
         {
             throw new NotImplementedException();
+        }
+
+        private static IEnumerable<Assembly> GetLoadedAssemblies()
+        {
+#if NETFX_CORE
+            throw new NotSupportedException("Scanning loaded assemblies is not supported in a Windows Store app.");
+#else
+            return AppDomain.CurrentDomain.GetAssemblies();
+#endif
         }
     }
 }
