@@ -45,14 +45,13 @@ namespace Domo.DI
         {
             var service = TryResolve(serviceType, serviceName);
             if (service == null)
-                throw new ServiceNotRegisteredException(serviceType);
+                throw new ServiceNotRegisteredException(serviceType, serviceName);
 
             return service;
         }
 
         public object TryResolve(Type serviceType, string serviceName)
         {
-            // Todo: Container.Resolve throws in case of missing registration
             return Container.Resolve(serviceType, serviceName);
         }
     }

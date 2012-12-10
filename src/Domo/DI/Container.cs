@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Domo.DI.Activation;
 using Domo.DI.Caching;
 using Domo.DI.Creation;
@@ -84,7 +85,10 @@ namespace Domo.DI
         public object Resolve(Type serviceType, string serviceName)
         {
             var activationContext = CreateActivationContext();
-            var serviceActivator = GetActivator(serviceType, serviceName);
+            var serviceActivator = TryGetActivator(serviceType, serviceName);
+
+            if (serviceActivator == null)
+                return null;
 
             return serviceActivator.ActivateInstance(activationContext, serviceType, serviceName);
         }
@@ -93,14 +97,14 @@ namespace Domo.DI
         {
             var serviceFamily = _serviceFamilies.TryGetValue(serviceType);
             if (serviceFamily == null)
-                throw new ServiceNotRegisteredException(serviceType);
+                yield break;
 
             var activationContext = CreateActivationContext();
             var familyMembers = serviceFamily.GetMembers();
 
             foreach (var familyMember in familyMembers)
             {
-                var activator = GetActivator(familyMember.ActivatorType);
+                var activator = TryGetActivator(familyMember.ActivatorType);
                 var instance = activator.ActivateInstance(activationContext, serviceType, familyMember.ServiceName);
 
                 yield return instance;
@@ -109,6 +113,15 @@ namespace Domo.DI
 
         public IActivator GetActivator(Type serviceType, string serviceName)
         {
+            var activator = TryGetActivator(serviceType, serviceName);
+            if (activator == null)
+                throw new ServiceNotRegisteredException(serviceType, serviceName);
+
+            return activator;
+        }
+
+        private IActivator TryGetActivator(Type serviceType, string serviceName)
+        {
             var isLazy = serviceType.IsConstructedGenericType &&
                          serviceType.GetGenericTypeDefinition() == typeof(Lazy<>);
 
@@ -116,7 +129,12 @@ namespace Domo.DI
                 serviceType = serviceType.GenericTypeArguments[0];
 
             var activatorType = GetActivatorType(serviceType, serviceName);
-            var activator = GetActivator(activatorType);
+            if (activatorType == null)
+                return null;
+
+            var activator = TryGetActivator(activatorType);
+            if (activator == null)
+                return null;
 
             if (isLazy)
                 activator = new LazyActivator(activator);
@@ -124,7 +142,7 @@ namespace Domo.DI
             return activator;
         }
 
-        private IActivator GetActivator(Type activatorType)
+        private IActivator TryGetActivator(Type activatorType)
         {
             return _activators.TryGetValue(activatorType, CreateServiceActivator);
         }
@@ -133,11 +151,11 @@ namespace Domo.DI
         {
             var serviceFamily = _serviceFamilies.TryGetValue(serviceType);
             if (serviceFamily == null)
-                throw new ServiceNotRegisteredException(serviceType);
+                return null;
 
             var activator = serviceFamily.GetActivator(serviceName);
             if (activator == null)
-                throw new ServiceNotRegisteredException(serviceType, serviceName);
+                return null;
 
             return activator;
         }
