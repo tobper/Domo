@@ -12,7 +12,7 @@ namespace Domo.Settings.DI.Registration
         /// </summary>
         public static IAssemblyScanner UseSettingsProcessor(this IAssemblyScanner assemblyScanner)
         {
-            return assemblyScanner.AddScanProcessor(new SettingsScanProcessor());
+            return assemblyScanner.UseScanProcessor<SettingsScanProcessor>();
         }
 
         public static ITypeRegistration RegisterProviderBasedSettings<TSerializer, TStorageProvider>(this ITypeRegistration typeRegistration)

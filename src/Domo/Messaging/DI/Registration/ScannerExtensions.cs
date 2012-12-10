@@ -6,7 +6,7 @@ namespace Domo.Messaging.DI.Registration
     {
         public static IAssemblyScanner UseMessageHandlerProcessor(this IAssemblyScanner assemblyScanner)
         {
-            return assemblyScanner.AddScanProcessor(new MessageHandlerScanProcessor());
+            return assemblyScanner.UseScanProcessor<MessageHandlerScanProcessor>();
         }
     }
 }

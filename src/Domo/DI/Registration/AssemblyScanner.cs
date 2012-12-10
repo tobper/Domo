@@ -29,7 +29,25 @@ namespace Domo.DI.Registration
 
         public IAssemblyScanner UseConventionBasedProcessor()
         {
-            return AddScanProcessor(new ConventionBasedScanProcessor());
+            return UseScanProcessor(new ConventionBasedScanProcessor());
+        }
+
+        public IAssemblyScanner UseScanProcessor(IScanProcessor scanProcessor)
+        {
+            _typeScanners.Add(scanProcessor);
+            return this;
+        }
+
+        public IAssemblyScanner UseScanProcessor(Func<IScanProcessor> scanProcessorDelegate)
+        {
+            var scanProcessor = scanProcessorDelegate();
+            return UseScanProcessor(scanProcessor);
+        }
+
+        public IAssemblyScanner UseScanProcessor<T>() where T : IScanProcessor, new()
+        {
+            var scanProcessor = new T();
+            return UseScanProcessor(scanProcessor);
         }
 
         public IAssemblyScanner AddAssemblyFilter(Func<Assembly, bool> assemblyFilter)
@@ -41,12 +59,6 @@ namespace Domo.DI.Registration
         public IAssemblyScanner AddTypeFilter(Func<TypeInfo, bool> typeFilter)
         {
             _typeFilters.Add(typeFilter);
-            return this;
-        }
-
-        public IAssemblyScanner AddScanProcessor(IScanProcessor scanProcessor)
-        {
-            _typeScanners.Add(scanProcessor);
             return this;
         }
 

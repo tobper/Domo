@@ -7,11 +7,13 @@ namespace Domo.DI.Registration
     {
         IAssemblyScanner AddAssemblyFilter(Func<Assembly, bool> assemblyFilter);
         IAssemblyScanner AddTypeFilter(Func<TypeInfo, bool> typeFilter);
-        IAssemblyScanner AddScanProcessor(IScanProcessor scanProcessor);
         IAssemblyScanner ScanAssembly(Assembly assembly);
         IAssemblyScanner ScanAssemblyContaining<T>();
         IAssemblyScanner ScanDirectory(string path);
         IAssemblyScanner ScanLoadedAssemblies();
         IAssemblyScanner UseConventionBasedProcessor();
+        IAssemblyScanner UseScanProcessor(IScanProcessor scanProcessor);
+        IAssemblyScanner UseScanProcessor(Func<IScanProcessor> scanProcessorDelegate);
+        IAssemblyScanner UseScanProcessor<T>() where T : IScanProcessor, new();
     }
 }
