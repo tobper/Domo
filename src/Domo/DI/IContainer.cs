@@ -8,6 +8,8 @@ namespace Domo.DI
 {
     public interface IContainer
     {
+        IServiceLocator ServiceLocator { get; }
+
         void Register(Action<ITypeRegistration> registration);
         void Register(Type serviceType, string serviceName, Type activatorType);
 

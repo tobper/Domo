@@ -16,15 +16,15 @@ namespace Domo.DI
         private readonly IDictionary<Type, IActivator> _activators;
         private readonly IDictionary<Type, IServiceFamily> _serviceFamilies;
         private readonly IFactoryManager _factoryManager;
-        private readonly IServiceLocator _serviceLocator;
 
         private Container()
         {
             IInstanceCache singletonInstanceCache = new InstanceCache();
             ITypeRedirector typeRedirector = new TypeRedirector();
 
+            ServiceLocator = new ServiceLocator(this);
+
             _factoryManager = new FactoryManager(this);
-            _serviceLocator = new ServiceLocator(this);
             _serviceFamilies = new Dictionary<Type, IServiceFamily>();
             _activators = new Dictionary<Type, IActivator>
             {
@@ -38,12 +38,14 @@ namespace Domo.DI
             typeRegistration.
                 RegisterSingleton<IContainer>(this).
                 RegisterSingleton(_factoryManager).
-                RegisterSingleton(_serviceLocator).
+                RegisterSingleton(ServiceLocator).
                 RegisterSingleton(singletonInstanceCache, "Singleton").
                 RegisterSingleton(typeRedirector).
                 RegisterSingleton(typeRegistration).
                 Register<IAssemblyScanner, AssemblyScanner>(LifeStyle.Singleton);
         }
+
+        public IServiceLocator ServiceLocator { get; private set; }
 
         public static IContainer Create(Action<ITypeRegistration> registration = null, Action<IAssemblyScanner> scanner = null)
         {
@@ -60,14 +62,14 @@ namespace Domo.DI
 
         public void Register(Action<ITypeRegistration> registration)
         {
-            var typeRegistration = _serviceLocator.Resolve<ITypeRegistration>();
+            var typeRegistration = ServiceLocator.Resolve<ITypeRegistration>();
 
             registration(typeRegistration);
         }
 
         public void Scan(Action<IAssemblyScanner> scanner)
         {
-            var assemblyScanner = _serviceLocator.Resolve<IAssemblyScanner>();
+            var assemblyScanner = ServiceLocator.Resolve<IAssemblyScanner>();
 
             scanner(assemblyScanner);
         }
