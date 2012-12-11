@@ -31,25 +31,25 @@ namespace Domo.Settings.ProviderBasedSettings
             _serializer = serializer;
         }
 
-        public T Load<T>(string key = null)
+        public T Load<T>(string name = null)
         {
             var user = _usernameProvider.GetUserName();
-            var data = _storageProvider.Load(typeof(T), user, key, _serializer.SerializationType);
+            var data = _storageProvider.Load(typeof(T), user, name, _serializer.SerializationType);
             var value = _serializer.Deserialize<T>(data);
             return value;
         }
 
-        public void Save<T>(T value, string key = null)
+        public void Save<T>(T value, string name = null)
         {
             var user = _usernameProvider.GetUserName();
             var data = _serializer.Serialize(value);
-            _storageProvider.Save(typeof(T), user, key, data);
+            _storageProvider.Save(typeof(T), user, name, data);
         }
 
-        public bool Exists<T>(string key = null)
+        public bool Exists<T>(string name = null)
         {
             var user = _usernameProvider.GetUserName();
-            return _storageProvider.Exists(typeof(T), user, key);
+            return _storageProvider.Exists(typeof(T), user, name);
         }
     }
 }

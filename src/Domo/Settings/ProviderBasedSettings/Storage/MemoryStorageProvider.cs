@@ -15,7 +15,7 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
 
         protected void Add(Setting setting)
         {
-            var completeKey = GetKey(setting.Type, setting.User, setting.Key);
+            var completeKey = GetKey(setting.Type, setting.User, setting.Name);
             _settings[completeKey] = setting;
         }
 
@@ -25,19 +25,19 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
             return true;
         }
 
-        public object Load(Type valueType, string user, string key, Type storageType)
+        public object Load(Type valueType, string user, string name, Type storageType)
         {
-            var completeKey = GetKey(valueType, user, key);
+            var completeKey = GetKey(valueType, user, name);
             var setting = _settings.TryGetValue(completeKey);
 
             return setting != null ? setting.Value : null;
         }
 
-        public void Save(Type valueType, string user, string key, object value)
+        public void Save(Type valueType, string user, string name, object value)
         {
             var setting = new Setting
             {
-                Key = key,
+                Name = name,
                 Type = valueType,
                 User = user,
                 Version = GetTypeVersion(valueType),
@@ -47,9 +47,9 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
             Add(setting);
         }
 
-        public bool Exists(Type valueType, string user, string key)
+        public bool Exists(Type valueType, string user, string name)
         {
-            var completeKey = GetKey(valueType, user, key);
+            var completeKey = GetKey(valueType, user, name);
             return _settings.ContainsKey(completeKey);
         }
 
@@ -69,9 +69,9 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
             });
         }
 
-        private static string GetKey(Type valueType, string user, string key)
+        private static string GetKey(Type valueType, string user, string name)
         {
-            return string.Format("{0}, {1} - {2}", user, valueType.FullName, key);
+            return string.Format("{0}, {1} - {2}", user, valueType.FullName, name);
         }
     }
 }

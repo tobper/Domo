@@ -20,9 +20,9 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
                 storageType == typeof(byte[]);
         }
 
-        public object Load(Type valueType, string user, string key, Type storageType)
+        public object Load(Type valueType, string user, string name, Type storageType)
         {
-            const string sql = "SELECT [Value] FROM [Settings] WHERE [Type] = @Type AND [User] = @User AND [Key] = @Key";
+            const string sql = "SELECT [Value] FROM [Settings] WHERE [Type] = @Type AND [User] = @User AND [Name] = @Name";
 
             using (var connection = CreateConnection())
             {
@@ -30,16 +30,16 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
 
                 command.Parameters.AddWithValue("@Type", valueType.Name);
                 command.Parameters.AddWithValue("@User", user);
-                command.Parameters.AddWithValue("@Key", (object)key ?? DBNull.Value);
+                command.Parameters.AddWithValue("@Name", (object)name ?? DBNull.Value);
 
                 return command.ExecuteScalar();
             }
         }
 
-        public void Save(Type valueType, string user, string key, object value)
+        public void Save(Type valueType, string user, string name, object value)
         {
-            const string sqlInsert = "INSERT [Settings] VALUES(@Type, @User, @Key, @Value, @Version)";
-            const string sqlUpdate = "UPDATE [Settings] SET [Value] = @Value, [Version] = @Version WHERE [Type] = @Type AND [User] = @User AND [Key] = @Key";
+            const string sqlInsert = "INSERT [Settings] VALUES(@Type, @User, @Name, @Value, @Version)";
+            const string sqlUpdate = "UPDATE [Settings] SET [Value] = @Value, [Version] = @Version WHERE [Type] = @Type AND [User] = @User AND [Name] = @Name";
 
             using (var connection = CreateConnection())
             {
@@ -48,7 +48,7 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
                 command.Parameters.AddWithValue("@Value", value);
                 command.Parameters.AddWithValue("@Type", valueType.Name);
                 command.Parameters.AddWithValue("@User", user);
-                command.Parameters.AddWithValue("@Key", (object)key ?? DBNull.Value);
+                command.Parameters.AddWithValue("@Name", (object)name ?? DBNull.Value);
                 command.Parameters.AddWithValue("@Version", valueType.Assembly.GetName().Version.ToString());
 
                 var updatedRows = command.ExecuteNonQuery();
@@ -60,9 +60,9 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
             }
         }
 
-        public bool Exists(Type valueType, string user, string key)
+        public bool Exists(Type valueType, string user, string name)
         {
-            const string sql = "SELECT COUNT(*) FROM [Settings] WHERE [Type] = @Type AND [User] = @User AND [Key] = @Key";
+            const string sql = "SELECT COUNT(*) FROM [Settings] WHERE [Type] = @Type AND [User] = @User AND [Name] = @Name";
 
             using (var connection = CreateConnection())
             {
@@ -70,7 +70,7 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
 
                 command.Parameters.AddWithValue("@Type", valueType.Name);
                 command.Parameters.AddWithValue("@User", user);
-                command.Parameters.AddWithValue("@Key", (object)key ?? DBNull.Value);
+                command.Parameters.AddWithValue("@Name", (object)name ?? DBNull.Value);
 
                 var rowCount = (int)command.ExecuteScalar();
 
@@ -80,7 +80,7 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
 
         public IEnumerable<Setting> LoadAll(Type storageType)
         {
-            const string sql = "SELECT [Type], [User], [Key], [Value] FROM [Settings]";
+            const string sql = "SELECT [Type], [User], [Name], [Value] FROM [Settings]";
 
             using (var connection = CreateConnection())
             {
@@ -92,7 +92,7 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
                     {
                         yield return new Setting
                         {
-                            Key = (string)reader["Key"],
+                            Name = (string)reader["Name"],
                             Type = Type.GetType((string)reader["Type"]),
                             User = (string)reader["User"],
                             Value = reader["Value"],
