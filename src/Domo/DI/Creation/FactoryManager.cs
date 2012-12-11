@@ -49,7 +49,7 @@ namespace Domo.DI.Creation
                 var serviceName = GetServiceName(serviceType, parameter.Name);
                 var activator = _container.GetActivator(serviceType, serviceName);
 
-                return new ConstructionFactoryParameter(activator, serviceType);
+                return new ConstructionFactoryParameter(activator, serviceType, serviceName);
             });
 
             return new ConstructionFactory(constructor, factoryParameters);

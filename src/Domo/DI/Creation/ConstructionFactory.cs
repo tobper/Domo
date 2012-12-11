@@ -26,8 +26,9 @@ namespace Domo.DI.Creation
         {
             var activator = parameter.Activator;
             var activationType = parameter.ActivationType;
+            var argumentName = parameter.ArgumentName;
 
-            return activator.ActivateInstance(activationContext, activationType);
+            return activator.ActivateInstance(activationContext, activationType, argumentName);
         }
     }
 }
