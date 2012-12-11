@@ -15,24 +15,24 @@ namespace Domo.Settings.DI.Registration
             return assemblyScanner.UseScanProcessor<SettingsScanProcessor>();
         }
 
-        public static ITypeRegistration RegisterProviderBasedSettings<TSerializer, TStorageProvider>(this ITypeRegistration typeRegistration)
-            where TSerializer : ISettingsSerializer
-            where TStorageProvider : ISettingsStorageProvider
+        public static ITypeRegistration RegisterProviderBasedSettings<TSettingsSerializer, TSettingsStorageProvider>(this ITypeRegistration typeRegistration)
+            where TSettingsSerializer : ISettingsSerializer
+            where TSettingsStorageProvider : ISettingsStorageProvider
         {
             return typeRegistration.
-                Register<ISettingsSerializer, TSerializer>().
-                Register<ISettingsStorageProvider, TStorageProvider>().
+                Register<ISettingsSerializer, TSettingsSerializer>().
+                Register<ISettingsStorageProvider, TSettingsStorageProvider>().
                 Register<IApplicationSettings, ProviderBasedApplicationSettings>();
         }
 
-        public static ITypeRegistration RegisterProviderBasedSettings<TSerializer, TStorageProvider, TUsernameProvider>(this ITypeRegistration typeRegistration)
-            where TSerializer : ISettingsSerializer
-            where TStorageProvider : ISettingsStorageProvider
-            where TUsernameProvider : ISettingsUsernameProvider
+        public static ITypeRegistration RegisterProviderBasedSettings<TSettingsSerializer, TSettingsStorageProvider, TSettingsUsernameProvider>(this ITypeRegistration typeRegistration)
+            where TSettingsSerializer : ISettingsSerializer
+            where TSettingsStorageProvider : ISettingsStorageProvider
+            where TSettingsUsernameProvider : ISettingsUsernameProvider
         {
             return typeRegistration.
-                RegisterProviderBasedSettings<TSerializer, TStorageProvider>().
-                Register<ISettingsUsernameProvider, TUsernameProvider>().
+                RegisterProviderBasedSettings<TSettingsSerializer, TSettingsStorageProvider>().
+                Register<ISettingsUsernameProvider, TSettingsUsernameProvider>().
                 Register<IUserSettings, ProviderBasedUserSettings>();
         }
     }

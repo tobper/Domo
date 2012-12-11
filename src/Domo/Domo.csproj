@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
@@ -109,9 +110,11 @@
     <Compile Include="Settings\ProviderBasedSettings\Serialization\JsonSettingsSerializer.cs" />
     <Compile Include="Settings\ProviderBasedSettings\Serialization\SettingsSerializer.cs" />
     <Compile Include="Settings\ProviderBasedSettings\Serialization\XmlSettingsSerializer.cs" />
+    <Compile Include="Settings\ProviderBasedSettings\Storage\SqlServerSettingsStorageProvider.cs" />
     <Compile Include="Settings\ProviderBasedSettings\Storage\ISettingsStorageProvider.cs" />
     <Compile Include="Settings\ProviderBasedSettings\Storage\ISettingsUsernameProvider.cs" />
     <Compile Include="Settings\ProviderBasedSettings\Storage\MemoryStorageProvider.cs" />
+    <Compile Include="Settings\ProviderBasedSettings\Storage\PrincipalSettingsUsernameProvider.cs" />
     <Compile Include="Settings\ProviderBasedSettings\Storage\Setting.cs" />
   </ItemGroup>
   <ItemGroup>
