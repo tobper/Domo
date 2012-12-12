@@ -33,7 +33,7 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
             {
                 var command = new SqlCommand(sql, connection);
 
-                command.Parameters.AddWithValue("@Type", valueType.GUID);
+                command.Parameters.AddWithValue("@Type", valueType.FullName);
                 command.Parameters.AddWithValue("@User", (object)user ?? DBNull.Value);
                 command.Parameters.AddWithValue("@Name", (object)name ?? DBNull.Value);
 
@@ -57,7 +57,7 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
                 var command = new SqlCommand(sqlUpdate, connection);
 
                 command.Parameters.AddWithValue("@Value", value);
-                command.Parameters.AddWithValue("@Type", valueType.GUID);
+                command.Parameters.AddWithValue("@Type", valueType.FullName);
                 command.Parameters.AddWithValue("@User", (object)user ?? DBNull.Value);
                 command.Parameters.AddWithValue("@Name", (object)name ?? DBNull.Value);
                 command.Parameters.AddWithValue("@Version", valueType.Assembly.GetName().Version.ToString());
@@ -84,7 +84,7 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
             {
                 var command = new SqlCommand(sql, connection);
 
-                command.Parameters.AddWithValue("@Type", valueType.GUID);
+                command.Parameters.AddWithValue("@Type", valueType.FullName);
                 command.Parameters.AddWithValue("@User", (object)user ?? DBNull.Value);
                 command.Parameters.AddWithValue("@Name", (object)name ?? DBNull.Value);
 
@@ -108,7 +108,7 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
                     {
                         yield return new Setting
                         {
-                            Type = Type.GetTypeFromCLSID((Guid)reader["Type"]),
+                            Type = Type.GetType((string)reader["Type"]),
                             User = (string)reader["User"],
                             Name = (string)reader["Name"],
                             Value = reader["Value"],
@@ -124,7 +124,7 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
             const string sqlCheck = "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'Settings'";
             const string sqlCreate = "CREATE TABLE [dbo].[Settings] " +
                                      "( " +
-                                     "  [Type] UNIQUEIDENTIFIER NOT NULL, " +
+                                     "  [Type] NVARCHAR(250) NOT NULL, " +
                                      "  [User] NVARCHAR(100) NULL, " +
                                      "  [Name] NVARCHAR(100) NULL, " +
                                      "  [Value] NTEXT NULL, " +
