@@ -100,6 +100,13 @@ namespace Domo.DI.Registration
             return this;
         }
 
+        public ITypeRegistration RegisterActivator(Type serviceType, Type activatorType, string serviceName = null)
+        {
+            _container.Register(serviceType, serviceName, activatorType);
+
+            return this;
+        }
+
         private Type GetActivatorType(LifeStyle lifeStyle, Type serviceType)
         {
             if (lifeStyle == LifeStyle.Default)

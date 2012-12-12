@@ -13,7 +13,7 @@ namespace Domo.Settings.DI.Registration
             if (settingsAttribute != null)
             {
                 var activatorType = GetActivatorType(settingsAttribute.Scope);
-                typeRegistration.Register(type.AsType(), activatorType);
+                typeRegistration.RegisterActivator(type.AsType(), activatorType);
             }
         }
 
