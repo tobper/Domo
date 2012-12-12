@@ -35,14 +35,16 @@ namespace Domo.Settings.ProviderBasedSettings
         {
             var user = _usernameProvider.GetUserName();
             var data = _storageProvider.Load(typeof(T), user, name, _serializer.SerializationType);
-            var value = _serializer.Deserialize<T>(data);
+            var value = DeserializeValue<T>(data);
+
             return value;
         }
 
         public void Save<T>(T value, string name = null)
         {
             var user = _usernameProvider.GetUserName();
-            var data = _serializer.Serialize(value);
+            var data = SerializeValue(value);
+
             _storageProvider.Save(typeof(T), user, name, data);
         }
 
@@ -50,6 +52,22 @@ namespace Domo.Settings.ProviderBasedSettings
         {
             var user = _usernameProvider.GetUserName();
             return _storageProvider.Exists(typeof(T), user, name);
+        }
+
+        private object SerializeValue<T>(T value)
+        {
+            if (Equals(value, default(T)))
+                return null;
+            
+            return _serializer.Serialize(value);
+        }
+
+        private T DeserializeValue<T>(object data)
+        {
+            if (data == null)
+                return default(T);
+
+            return _serializer.Deserialize<T>(data);
         }
     }
 }

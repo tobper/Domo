@@ -6,30 +6,35 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
 {
     public class SqlServerSettingsStorageProvider : ISettingsStorageProvider
     {
-        private readonly string _settingsConnectionString;
+        private readonly string _connectionString;
 
-        public SqlServerSettingsStorageProvider(string settingsConnectionString)
+        public SqlServerSettingsStorageProvider(string sqlServerSettingsConnectionString)
         {
-            _settingsConnectionString = settingsConnectionString;
+            _connectionString = sqlServerSettingsConnectionString;
+
+            VerifySettingsTableExists();
         }
 
         public bool SupportsSerializationType(Type storageType)
         {
-            return
-                storageType == typeof(string) ||
-                storageType == typeof(byte[]);
+            return storageType == typeof(string);
         }
 
         public object Load(Type valueType, string user, string name, Type storageType)
         {
-            const string sql = "SELECT [Value] FROM [Settings] WHERE [Type] = @Type AND [User] = @User AND [Name] = @Name";
+            const string sql =
+                "SELECT [Value] " +
+                "FROM [dbo].[Settings] " +
+                "WHERE [Type] = @Type " +
+                "  AND (@User IS NULL OR [User] = @User) " +
+                "  AND (@Name IS NULL OR [Name] = @Name)";
 
             using (var connection = CreateConnection())
             {
                 var command = new SqlCommand(sql, connection);
 
-                command.Parameters.AddWithValue("@Type", valueType.Name);
-                command.Parameters.AddWithValue("@User", user);
+                command.Parameters.AddWithValue("@Type", valueType.GUID);
+                command.Parameters.AddWithValue("@User", (object)user ?? DBNull.Value);
                 command.Parameters.AddWithValue("@Name", (object)name ?? DBNull.Value);
 
                 return command.ExecuteScalar();
@@ -38,16 +43,22 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
 
         public void Save(Type valueType, string user, string name, object value)
         {
-            const string sqlInsert = "INSERT [Settings] VALUES(@Type, @User, @Name, @Value, @Version)";
-            const string sqlUpdate = "UPDATE [Settings] SET [Value] = @Value, [Version] = @Version WHERE [Type] = @Type AND [User] = @User AND [Name] = @Name";
+            const string sqlInsert = "INSERT [dbo].[Settings] VALUES(@Type, @User, @Name, @Value, @Version)";
+            const string sqlUpdate =
+                "UPDATE [dbo].[Settings] " +
+                "SET [Value] = @Value, " +
+                "    [Version] = @Version " +
+                "WHERE [Type] = @Type " +
+                "  AND (@User IS NULL OR [User] = @User) " +
+                "  AND (@Name IS NULL OR [Name] = @Name)";
 
             using (var connection = CreateConnection())
             {
                 var command = new SqlCommand(sqlUpdate, connection);
 
                 command.Parameters.AddWithValue("@Value", value);
-                command.Parameters.AddWithValue("@Type", valueType.Name);
-                command.Parameters.AddWithValue("@User", user);
+                command.Parameters.AddWithValue("@Type", valueType.GUID);
+                command.Parameters.AddWithValue("@User", (object)user ?? DBNull.Value);
                 command.Parameters.AddWithValue("@Name", (object)name ?? DBNull.Value);
                 command.Parameters.AddWithValue("@Version", valueType.Assembly.GetName().Version.ToString());
 
@@ -62,14 +73,19 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
 
         public bool Exists(Type valueType, string user, string name)
         {
-            const string sql = "SELECT COUNT(*) FROM [Settings] WHERE [Type] = @Type AND [User] = @User AND [Name] = @Name";
+            const string sql =
+                "SELECT COUNT(*) " +
+                "FROM [dbo].[Settings] " +
+                "WHERE [Type] = @Type " +
+                "  AND (@User IS NULL OR [User] = @User) " +
+                "  AND (@Name IS NULL OR [Name] = @Name)";
 
             using (var connection = CreateConnection())
             {
                 var command = new SqlCommand(sql, connection);
 
-                command.Parameters.AddWithValue("@Type", valueType.Name);
-                command.Parameters.AddWithValue("@User", user);
+                command.Parameters.AddWithValue("@Type", valueType.GUID);
+                command.Parameters.AddWithValue("@User", (object)user ?? DBNull.Value);
                 command.Parameters.AddWithValue("@Name", (object)name ?? DBNull.Value);
 
                 var rowCount = (int)command.ExecuteScalar();
@@ -80,7 +96,7 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
 
         public IEnumerable<Setting> LoadAll(Type storageType)
         {
-            const string sql = "SELECT [Type], [User], [Name], [Value] FROM [Settings]";
+            const string sql = "SELECT [Type], [User], [Name], [Value] FROM [dbo].[Settings]";
 
             using (var connection = CreateConnection())
             {
@@ -92,9 +108,9 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
                     {
                         yield return new Setting
                         {
-                            Name = (string)reader["Name"],
-                            Type = Type.GetType((string)reader["Type"]),
+                            Type = Type.GetTypeFromCLSID((Guid)reader["Type"]),
                             User = (string)reader["User"],
+                            Name = (string)reader["Name"],
                             Value = reader["Value"],
                             Version = new Version((string)reader["Version"])
                         };
@@ -103,9 +119,35 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
             }
         }
 
+        private void VerifySettingsTableExists()
+        {
+            const string sqlCheck = "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'Settings'";
+            const string sqlCreate = "CREATE TABLE [dbo].[Settings] " +
+                                     "( " +
+                                     "  [Type] UNIQUEIDENTIFIER NOT NULL, " +
+                                     "  [User] NVARCHAR(100) NULL, " +
+                                     "  [Name] NVARCHAR(100) NULL, " +
+                                     "  [Value] NTEXT NULL, " +
+                                     "  [Version] NVARCHAR(20) NOT NULL, " +
+                                     ") " +
+                                     "CREATE CLUSTERED INDEX [IX_Settings] ON [dbo].[Settings] ([Type]) " +
+                                     "CREATE UNIQUE INDEX [IX_Settings_Lookup] ON [dbo].[Settings] ([Type], [User], [Name])";
+
+            using (var connection = CreateConnection())
+            {
+                var command = new SqlCommand(sqlCheck, connection);
+                var exists = (int)command.ExecuteScalar() == 1;
+                if (exists)
+                    return;
+
+                command.CommandText = sqlCreate;
+                command.ExecuteNonQuery();
+            }
+        }
+
         private SqlConnection CreateConnection()
         {
-            var connection = new SqlConnection(_settingsConnectionString);
+            var connection = new SqlConnection(_connectionString);
             connection.Open();
 
             return connection;
