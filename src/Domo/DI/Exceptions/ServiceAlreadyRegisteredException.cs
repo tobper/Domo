@@ -7,6 +7,11 @@ namespace Domo.DI
         public string ServiceName { get; private set; }
         public Type ServiceType { get; private set; }
 
+        public ServiceAlreadyRegisteredException(ServiceIdentity identity)
+            : this(identity.ServiceName, identity.ServiceType)
+        {
+        }
+
         public ServiceAlreadyRegisteredException(string serviceName, Type serviceType)
             : base(CreateMessage(serviceName, serviceType))
         {

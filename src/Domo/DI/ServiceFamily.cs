@@ -7,9 +7,7 @@ namespace Domo.DI
 {
     public class ServiceFamily : IServiceFamily
     {
-        private const string DefaultServiceName = "Default";
-
-        private readonly IDictionary<string, ServiceFamilyMember> _activators = new Dictionary<string, ServiceFamilyMember>(StringComparer.OrdinalIgnoreCase);
+        private readonly IDictionary<ServiceIdentity, ServiceFamilyMember> _members = new Dictionary<ServiceIdentity, ServiceFamilyMember>();
 
         public Type ServiceType { get; private set; }
 
@@ -18,20 +16,28 @@ namespace Domo.DI
             ServiceType = serviceType;
         }
 
-        public void AddActivator(Type activatorType, string serviceName)
+        public void AddActivator(ServiceIdentity identity, Type activatorType)
         {
-            var member = new ServiceFamilyMember(activatorType, serviceName);
-            var activatorKey = serviceName ?? DefaultServiceName;
+            if (activatorType == null)
+                throw new ArgumentNullException("activatorType");
 
-            if (_activators.ContainsKey(activatorKey))
-                throw new ServiceAlreadyRegisteredException(serviceName, ServiceType);
+            if (identity == null)
+                throw new ArgumentNullException("identity");
 
-            _activators.Add(activatorKey, member);
+            if (identity.ServiceType != ServiceType)
+                throw new ArgumentException("An activator can not be added with an identity that does not have the same ServiceType as the family.", "identity");
+
+            if (_members.ContainsKey(identity))
+                throw new ServiceAlreadyRegisteredException(identity);
+
+            var member = new ServiceFamilyMember(activatorType, identity);
+
+            _members.Add(identity, member);
         }
 
-        public Type GetActivator(string serviceName)
+        public Type GetActivator(ServiceIdentity identity)
         {
-            var member = _activators.TryGetValue(serviceName ?? DefaultServiceName);
+            var member = _members.TryGetValue(identity);
             if (member == null)
                 return null;
 
@@ -40,7 +46,7 @@ namespace Domo.DI
 
         public ServiceFamilyMember[] GetMembers()
         {
-            return _activators.Values.ToArray();
+            return _members.Values.ToArray();
         }
     }
 }

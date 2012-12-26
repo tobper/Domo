@@ -5,12 +5,12 @@ namespace Domo.DI
     public class ServiceFamilyMember
     {
         public Type ActivatorType { get; private set; }
-        public string ServiceName { get; private set; }
+        public ServiceIdentity Identity { get; private set; }
 
-        public ServiceFamilyMember(Type activatorType, string serviceName)
+        public ServiceFamilyMember(Type activatorType, ServiceIdentity identity)
         {
             ActivatorType = activatorType;
-            ServiceName = serviceName;
+            Identity = identity;
         }
     }
 }

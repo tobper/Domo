@@ -11,18 +11,19 @@ namespace Domo.DI.Activation
             _realActivator = realActivator;
         }
 
-        public object ActivateInstance(ActivationContext activationContext, Type type, string name = null)
+        public object ActivateService(IInjectionContext context, ServiceIdentity identity)
         {
-            var serviceType = type.GenericTypeArguments[0];
-            var factory = GetFactory(activationContext, name, serviceType);
-            var lazy = System.Activator.CreateInstance(type, factory);
+            var realServiceType = identity.ServiceType.GenericTypeArguments[0];
+            var realIdentity = new ServiceIdentity(realServiceType, identity.ServiceName);
+            var realFactoryDelegate = GetFactoryDelegate(context, realIdentity);
+            var lazy = Activator.CreateInstance(identity.ServiceType, realFactoryDelegate);
 
             return lazy;
         }
 
-        private Func<object> GetFactory(ActivationContext activationContext, string name, Type serviceType)
+        private Func<object> GetFactoryDelegate(IInjectionContext context, ServiceIdentity realIdentity)
         {
-            return () => _realActivator.ActivateInstance(activationContext, serviceType, name);
+            return () => _realActivator.ActivateService(context, realIdentity);
         }
     }
 }

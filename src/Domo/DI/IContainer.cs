@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Domo.DI.Activation;
-using Domo.DI.Creation;
 using Domo.DI.Registration;
 
 namespace Domo.DI
@@ -11,13 +10,12 @@ namespace Domo.DI
         IServiceLocator ServiceLocator { get; }
 
         void Register(Action<ITypeRegistration> registration);
-        void Register(Type serviceType, string serviceName, Type activatorType);
+        void Register(ServiceIdentity identity, Type activatorType);
 
-        object Resolve(Type serviceType, string serviceName);
+        object Resolve(ServiceIdentity identity);
         IEnumerable<object> ResolveAll(Type serviceType);
 
-        IActivator GetActivator(Type serviceType, string serviceName);
-        IFactory GetFactory(Type serviceType);
+        IActivator GetActivator(ServiceIdentity identity);
         void Scan(Action<IAssemblyScanner> scanner);
     }
 }

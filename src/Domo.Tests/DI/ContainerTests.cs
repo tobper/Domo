@@ -2,7 +2,7 @@ using System;
 using Domo.DI;
 using Domo.DI.Registration;
 
-namespace Domo.Tests.DI.ContainerTests
+namespace Domo.Tests.DI
 {
     public class ContainerTests : UnitTests<IContainer>
     {

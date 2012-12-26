@@ -7,7 +7,7 @@ namespace Domo.Extensions
     [DebuggerStepThrough]
     public static class DictionaryExtensions
     {
-        public static void Add<TKey, TValue>(this IDictionary<TKey, List<TValue>> items, TKey key, TValue value)
+        public static void Add<TKey, TValue>(this IDictionary<TKey, ICollection<TValue>> items, TKey key, TValue value)
         {
             var list = TryGetValue(items, key, () => new List<TValue>());
 

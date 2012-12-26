@@ -6,8 +6,8 @@ namespace Domo.DI
     {
         Type ServiceType { get; }
 
-        void AddActivator(Type activatorType, string serviceName);
-        Type GetActivator(string serviceName);
+        void AddActivator(ServiceIdentity identity, Type activatorType);
+        Type GetActivator(ServiceIdentity identity);
         ServiceFamilyMember[] GetMembers();
     }
 }

@@ -1,49 +1,43 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Domo.DI.Activation;
 using Domo.DI.Caching;
 using Domo.DI.Creation;
-using Domo.DI.Redirection;
 using Domo.DI.Registration;
 using Domo.Extensions;
 
 namespace Domo.DI
 {
-    using ActivationContext = Activation.ActivationContext;
-
     public class Container : IContainer
     {
-        private readonly IDictionary<Type, IActivator> _activators;
         private readonly IDictionary<Type, IServiceFamily> _serviceFamilies;
-        private readonly IFactoryManager _factoryManager;
+        private readonly IActivatorContainer _activators;
 
         private Container()
         {
             IInstanceCache singletonInstanceCache = new InstanceCache();
-            ITypeRedirector typeRedirector = new TypeRedirector();
+            IIdentityManager identityManager = new IdentityManager();
+            IFactoryContainer factoryContainer = new FactoryContainer(this);
 
             ServiceLocator = new ServiceLocator(this);
 
-            _factoryManager = new FactoryManager(this);
             _serviceFamilies = new Dictionary<Type, IServiceFamily>();
-            _activators = new Dictionary<Type, IActivator>
-            {
-                { typeof(SingletonFactoryActivator), new SingletonFactoryActivator(_factoryManager, singletonInstanceCache, typeRedirector) },
-                { typeof(TransientFactoryActivator), new TransientFactoryActivator(_factoryManager, typeRedirector) }
-            };
+            _activators = new ActivatorContainer(
+                factoryContainer,
+                new SingletonActivator(factoryContainer, identityManager, singletonInstanceCache),
+                new TransientActivator(factoryContainer, identityManager));
 
             ITypeRegistration typeRegistration =
-                new TypeRegistration(this, _factoryManager, singletonInstanceCache, typeRedirector);
+                new TypeRegistration(this, factoryContainer, singletonInstanceCache, identityManager);
 
             typeRegistration.
                 RegisterSingleton<IContainer>(this).
-                RegisterSingleton(_factoryManager).
+                RegisterSingleton(factoryContainer).
                 RegisterSingleton(ServiceLocator).
                 RegisterSingleton(singletonInstanceCache, "Singleton").
-                RegisterSingleton(typeRedirector).
+                RegisterSingleton(identityManager).
                 RegisterSingleton(typeRegistration).
-                Register<IAssemblyScanner, AssemblyScanner>(LifeStyle.Singleton);
+                Register<IAssemblyScanner, AssemblyScanner>(lifeStyle: LifeStyle.Singleton);
         }
 
         public IServiceLocator ServiceLocator { get; private set; }
@@ -75,22 +69,22 @@ namespace Domo.DI
             scanner(assemblyScanner);
         }
 
-        public void Register(Type serviceType, string serviceName, Type activatorType)
+        public void Register(ServiceIdentity identity, Type activatorType)
         {
             _serviceFamilies.
-                TryGetValue(serviceType, () => new ServiceFamily(serviceType)).
-                AddActivator(activatorType, serviceName);
+                TryGetValue(identity.ServiceType, () => new ServiceFamily(identity.ServiceType)).
+                AddActivator(identity, activatorType);
         }
 
-        public object Resolve(Type serviceType, string serviceName)
+        public object Resolve(ServiceIdentity identity)
         {
-            var activationContext = CreateActivationContext();
-            var serviceActivator = TryGetActivator(serviceType, serviceName);
-
-            if (serviceActivator == null)
+            var activator = TryGetActivator(identity);
+            if (activator == null)
                 return null;
 
-            return serviceActivator.ActivateInstance(activationContext, serviceType, serviceName);
+            var context = CreateInjectionContext();
+
+            return activator.ActivateService(context, identity);
         }
 
         public IEnumerable<object> ResolveAll(Type serviceType)
@@ -99,42 +93,45 @@ namespace Domo.DI
             if (serviceFamily == null)
                 yield break;
 
-            var activationContext = CreateActivationContext();
+            var context = CreateInjectionContext();
             var familyMembers = serviceFamily.GetMembers();
 
             foreach (var familyMember in familyMembers)
             {
-                var activator = TryGetActivator(familyMember.ActivatorType);
-                var instance = activator.ActivateInstance(activationContext, serviceType, familyMember.ServiceName);
+                var activator = _activators[familyMember.ActivatorType];
+                var instance = activator.ActivateService(context, familyMember.Identity);
 
                 yield return instance;
             }
         }
 
-        public IActivator GetActivator(Type serviceType, string serviceName)
+        // Todo: GetActivator will throw if service has not been registered but Resolve(...) will not
+        public IActivator GetActivator(ServiceIdentity identity)
         {
-            var activator = TryGetActivator(serviceType, serviceName);
+            var activator = TryGetActivator(identity);
             if (activator == null)
-                throw new ServiceNotRegisteredException(serviceType, serviceName);
+                throw new ServiceNotRegisteredException(identity);
 
             return activator;
         }
 
-        private IActivator TryGetActivator(Type serviceType, string serviceName)
+        private IActivator TryGetActivator(ServiceIdentity identity)
         {
-            var isLazy = serviceType.IsConstructedGenericType &&
-                         serviceType.GetGenericTypeDefinition() == typeof(Lazy<>);
+            var isLazy = identity.ServiceType.IsConstructedGenericType &&
+                         identity.ServiceType.GetGenericTypeDefinition() == typeof(Lazy<>);
 
             if (isLazy)
-                serviceType = serviceType.GenericTypeArguments[0];
+            {
+                identity = new ServiceIdentity(
+                    identity.ServiceType.GenericTypeArguments[0],
+                    identity.ServiceName);
+            }
 
-            var activatorType = GetActivatorType(serviceType, serviceName);
+            var activatorType = GetActivatorType(identity);
             if (activatorType == null)
                 return null;
 
-            var activator = TryGetActivator(activatorType);
-            if (activator == null)
-                return null;
+            var activator = _activators[activatorType];
 
             if (isLazy)
                 activator = new LazyActivator(activator);
@@ -142,57 +139,22 @@ namespace Domo.DI
             return activator;
         }
 
-        private IActivator TryGetActivator(Type activatorType)
+        private Type GetActivatorType(ServiceIdentity identity)
         {
-            return _activators.TryGetValue(activatorType, CreateServiceActivator);
-        }
-
-        private Type GetActivatorType(Type serviceType, string serviceName)
-        {
-            var serviceFamily = _serviceFamilies.TryGetValue(serviceType);
+            var serviceFamily = _serviceFamilies.TryGetValue(identity.ServiceType);
             if (serviceFamily == null)
                 return null;
 
-            var activator = serviceFamily.GetActivator(serviceName);
+            var activator = serviceFamily.GetActivator(identity);
             if (activator == null)
                 return null;
 
             return activator;
         }
 
-        private IActivator CreateServiceActivator(Type activatorType)
+        private IInjectionContext CreateInjectionContext()
         {
-            var activationContext = CreateActivationContext();
-            var serviceFactory = _factoryManager.GetFactory(activatorType);
-
-            return (IActivator)serviceFactory.CreateInstance(activationContext);
-        }
-
-        public IFactory GetFactory(Type serviceType)
-        {
-            return _factoryManager.GetFactory(serviceType);
-        }
-
-        //private TService CreateInstance<TService>()
-        //{
-        //    var serviceType = typeof(TService);
-        //    var instance = (TService)CreateInstance(serviceType);
-
-        //    return instance;
-        //}
-
-        //private object CreateInstance(Type type)
-        //{
-        //    var activationContext = CreateActivationContext();
-        //    var factory = _factoryManager.GetFactory(type);
-        //    var instance = factory.CreateInstance(activationContext);
-
-        //    return instance;
-        //}
-
-        private ActivationContext CreateActivationContext()
-        {
-            return new ActivationContext(this);
+            return new InjectionContext(this);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Domo.DI;
 using NUnit.Framework;
 
-namespace Domo.Tests.DI.ContainerTests
+namespace Domo.Tests.DI
 {
     [TestFixture]
     public class When_creating_a_container : ContainerTests
@@ -9,8 +9,7 @@ namespace Domo.Tests.DI.ContainerTests
         [Test]
         public void The_container_should_automatically_be_registered()
         {
-            var containerType = typeof(IContainer);
-            var container = TestInstance.Resolve(containerType, null);
+            var container = Resolve<IContainer>();
 
             Assert.IsNotNull(container);
         }
@@ -18,8 +17,7 @@ namespace Domo.Tests.DI.ContainerTests
         [Test]
         public void The_service_locator_should_automatically_be_registered()
         {
-            var serviceLocatoreType = typeof(IServiceLocator);
-            var serviceLocator = TestInstance.Resolve(serviceLocatoreType, null);
+            var serviceLocator = Resolve<IServiceLocator>();
 
             Assert.IsNotNull(serviceLocator);
         }
@@ -27,6 +25,15 @@ namespace Domo.Tests.DI.ContainerTests
         protected override void SetupPrerequisites()
         {
             GivenNoRegistrationIsBeingUsed();
+        }
+
+        private object Resolve<T>()
+        {
+            var serviceType = typeof(T);
+            var identity = new ServiceIdentity(serviceType);
+            var instance = TestInstance.Resolve(identity);
+
+            return instance;
         }
     }
 }

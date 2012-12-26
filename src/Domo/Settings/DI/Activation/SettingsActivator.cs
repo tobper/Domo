@@ -6,40 +6,40 @@ namespace Domo.Settings.DI.Activation
 {
     public abstract class SettingsActivator
     {
-        private readonly IDictionary<Type, IGenericActivator> _genericActivators;
+        private readonly IDictionary<Type, IGenericLoader> _genericActivators;
 
         protected SettingsActivator()
         {
-            _genericActivators = new Dictionary<Type, IGenericActivator>();
+            _genericActivators = new Dictionary<Type, IGenericLoader>();
         }
 
-        protected IGenericActivator GetGenericActivator(Type settingsType)
+        protected IGenericLoader GetGenericLoader(Type settingsType)
         {
-            return _genericActivators.TryGetValue(settingsType, CreateGenericActivator);
+            return _genericActivators.TryGetValue(settingsType, CreateGenericLoader);
         }
 
-        private static IGenericActivator CreateGenericActivator(Type settingsType)
+        private static IGenericLoader CreateGenericLoader(Type settingsType)
         {
-            var genericActivatorType = typeof(GenericActivator<>).MakeGenericType(settingsType);
-            var genericActivator = (IGenericActivator)Activator.CreateInstance(genericActivatorType);
+            var genericLoaderType = typeof(GenericLoader<>).MakeGenericType(settingsType);
+            var genericLoader = (IGenericLoader)Activator.CreateInstance(genericLoaderType);
 
-            return genericActivator;
+            return genericLoader;
         }
 
-        protected interface IGenericActivator
+        protected interface IGenericLoader
         {
-            object ActivateInstance(IApplicationSettings activationContext, string name);
-            object ActivateInstance(IUserSettings userSettings, string name);
+            object LoadInstance(IApplicationSettings activationContext, string name);
+            object LoadInstance(IUserSettings userSettings, string name);
         }
 
-        private class GenericActivator<TSettings> : IGenericActivator
+        private class GenericLoader<TSettings> : IGenericLoader
         {
-            public object ActivateInstance(IApplicationSettings applicationSettings, string name)
+            public object LoadInstance(IApplicationSettings applicationSettings, string name)
             {
                 return applicationSettings.Load<TSettings>(name);
             }
 
-            public object ActivateInstance(IUserSettings userSettings, string name)
+            public object LoadInstance(IUserSettings userSettings, string name)
             {
                 return userSettings.Load<TSettings>(name);
             }

@@ -14,15 +14,17 @@ namespace Domo.Messaging.DI.Registration
         {
             foreach (var serviceType in type.ImplementedInterfaces)
             {
-                if (!serviceType.IsConstructedGenericType)
-                    continue;
-
-                var typeDefinition = serviceType.GetGenericTypeDefinition();
-
-                if (typeDefinition == CommandHandlerTypeDefinition ||
-                    typeDefinition == MessageHandlerTypeDefinition)
+                if (serviceType.IsConstructedGenericType)
                 {
-                    typeRegistration.Register(serviceType, type.AsType(), LifeStyle.Transient);
+                    var typeDefinition = serviceType.GetGenericTypeDefinition();
+
+                    if (typeDefinition == CommandHandlerTypeDefinition ||
+                        typeDefinition == MessageHandlerTypeDefinition)
+                    {
+                        var identity = new ServiceIdentity(serviceType);
+
+                        typeRegistration.Register(identity, type, LifeStyle.Transient);
+                    }
                 }
             }
         }

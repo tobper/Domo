@@ -7,17 +7,16 @@ namespace Domo.DI
         public Type ServiceType { get; private set; }
         public string ServiceName { get; private set; }
 
-        public ServiceNotRegisteredException(Type serviceType)
-            : base(CreateMessage(serviceType))
-        {
-            ServiceType = serviceType;
-        }
-
-        public ServiceNotRegisteredException(Type serviceType, string serviceName)
+        public ServiceNotRegisteredException(Type serviceType, string serviceName = null)
             : base(CreateMessage(serviceType, serviceName))
         {
             ServiceType = serviceType;
             ServiceName = serviceName;
+        }
+
+        public ServiceNotRegisteredException(ServiceIdentity identity)
+            : this(identity.ServiceType, identity.ServiceName)
+        {
         }
 
         private static string CreateMessage(Type serviceType)

@@ -52,7 +52,9 @@ namespace Domo.DI
 
         public object TryResolve(Type serviceType, string serviceName)
         {
-            return Container.Resolve(serviceType, serviceName);
+            var identity = new ServiceIdentity(serviceType, serviceName);
+
+            return Container.Resolve(identity);
         }
     }
 }

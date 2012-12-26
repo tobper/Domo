@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -64,6 +65,8 @@ namespace Domo.DI.Registration
 
         public IAssemblyScanner ScanAssembly(Assembly assembly)
         {
+            Trace.WriteLine("Domo: Scanning assembly {0}.", assembly.FullName);
+
             var types = assembly.DefinedTypes;
 
             foreach (var typeFilter in _typeFilters)

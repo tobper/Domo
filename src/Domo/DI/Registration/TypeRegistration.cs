@@ -2,31 +2,28 @@ using System;
 using Domo.DI.Activation;
 using Domo.DI.Caching;
 using Domo.DI.Creation;
-using Domo.DI.Redirection;
 
 namespace Domo.DI.Registration
 {
-    using ActivationContext = Activation.ActivationContext;
-
     public class TypeRegistration : ITypeRegistration
     {
         private readonly IContainer _container;
-        private readonly IFactoryManager _factoryManager;
+        private readonly IFactoryContainer _factoryContainer;
         private readonly IInstanceCache _singletonInstanceCache;
-        private readonly ITypeRedirector _typeRedirector;
+        private readonly IIdentityManager _identityManager;
 
         public LifeStyle DefaultLifeStyle { get; private set; }
 
         public TypeRegistration(
             IContainer container,
-            IFactoryManager factoryManager,
+            IFactoryContainer factoryContainer,
             IInstanceCache singletonInstanceCache,
-            ITypeRedirector typeRedirector)
+            IIdentityManager identityManager)
         {
             _container = container;
-            _factoryManager = factoryManager;
+            _factoryContainer = factoryContainer;
             _singletonInstanceCache = singletonInstanceCache;
-            _typeRedirector = typeRedirector;
+            _identityManager = identityManager;
 
             DefaultLifeStyle = LifeStyle.Singleton;
         }
@@ -41,68 +38,86 @@ namespace Domo.DI.Registration
             return this;
         }
 
-        public ITypeRegistration RegisterSingleton<TService>(TService instance, string serviceName) where TService : class
-        {
-            if (instance == null)
-                throw new ArgumentNullException("instance");
-
-            var serviceType = typeof(TService);
-            var activatorType = GetActivatorType(LifeStyle.Singleton, serviceType);
-
-            _container.Register(serviceType, serviceName, activatorType);
-            _singletonInstanceCache.Add(serviceType, serviceName, instance);
-
-            return this;
-        }
-
-        public ITypeRegistration RegisterDelegate<TService>(Func<ActivationContext, object> factoryDelegate, LifeStyle lifeStyle)
+        public ITypeRegistration RegisterDelegate<TService>(Func<IInjectionContext, TService> factoryDelegate, string serviceName, LifeStyle lifeStyle)
         {
             if (factoryDelegate == null)
                 throw new ArgumentNullException("factoryDelegate");
 
             var serviceType = typeof(TService);
             var activatorType = GetActivatorType(lifeStyle, serviceType);
-            var factory = new DelegateFactory(factoryDelegate);
+            var factory = new DelegateFactory<TService>(factoryDelegate);
+            var identity = new ServiceIdentity(serviceType, serviceName);
 
-            _factoryManager.AddFactory(serviceType, factory);
-            _container.Register(serviceType, null, activatorType);
+            _factoryContainer.AddFactory(serviceType, factory);
+            _container.Register(identity, activatorType);
 
             return this;
         }
 
-        public ITypeRegistration Register<TService>(LifeStyle lifeStyle, string serviceName)
+        public ITypeRegistration RegisterDelegate(Func<IInjectionContext, object> factoryDelegate, ServiceIdentity identity, LifeStyle lifeStyle)
+        {
+            if (factoryDelegate == null)
+                throw new ArgumentNullException("factoryDelegate");
+
+            var activatorType = GetActivatorType(lifeStyle, identity.ServiceType);
+            var factory = new DelegateFactory(factoryDelegate);
+
+            _factoryContainer.AddFactory(identity.ServiceType, factory);
+            _container.Register(identity, activatorType);
+
+            return this;
+        }
+
+        public ITypeRegistration RegisterSingleton<TService>(TService instance, string serviceName) where TService : class
+        {
+            if (instance == null)
+                throw new ArgumentNullException("instance");
+
+            var serviceType = typeof(TService);
+            var identity = new ServiceIdentity(serviceType, serviceName);
+            var activatorType = GetActivatorType(LifeStyle.Singleton, serviceType);
+
+            _container.Register(identity, activatorType);
+            _singletonInstanceCache.Add(identity, instance);
+
+            return this;
+        }
+
+        public ITypeRegistration Register<TService>(string serviceName, LifeStyle lifeStyle)
         {
             var serviceType = typeof(TService);
             var activatorType = GetActivatorType(lifeStyle, serviceType);
+            var identity = new ServiceIdentity(serviceType, serviceName);
 
-            _container.Register(serviceType, serviceName, activatorType);
+            _container.Register(identity, activatorType);
 
             return this;
         }
 
-        public ITypeRegistration Register<TService, TInstance>(LifeStyle lifeStyle, string serviceName)
+        public ITypeRegistration Register<TService, TInstance>(string serviceName, LifeStyle lifeStyle)
         {
             var serviceType = typeof(TService);
             var instanceType = typeof(TInstance);
+            var identity = new ServiceIdentity(serviceType, serviceName);
 
-            return Register(serviceType, instanceType, lifeStyle, serviceName);
+            return Register(identity, instanceType, lifeStyle);
         }
 
-        public ITypeRegistration Register(Type serviceType, Type instanceType, LifeStyle lifeStyle, string serviceName)
+        public ITypeRegistration Register(ServiceIdentity identity, Type instanceType, LifeStyle lifeStyle)
         {
-            var activatorType = GetActivatorType(lifeStyle, serviceType);
+            var activatorType = GetActivatorType(lifeStyle, identity.ServiceType);
 
-            _container.Register(serviceType, serviceName, activatorType);
+            _container.Register(identity, activatorType);
 
-            if (instanceType != null && instanceType != serviceType)
-                _typeRedirector.AddRedirection(serviceType, serviceName, instanceType);
+            if (instanceType != identity.ServiceType)
+                _identityManager.AddAlias(identity, instanceType);
 
             return this;
         }
 
-        public ITypeRegistration RegisterActivator(Type serviceType, Type activatorType, string serviceName = null)
+        public ITypeRegistration RegisterActivator(ServiceIdentity identity, Type activatorType)
         {
-            _container.Register(serviceType, serviceName, activatorType);
+            _container.Register(identity, activatorType);
 
             return this;
         }
@@ -115,10 +130,10 @@ namespace Domo.DI.Registration
             switch (lifeStyle)
             {
                 case LifeStyle.Singleton:
-                    return typeof(SingletonFactoryActivator);
+                    return typeof(SingletonActivator);
 
                 case LifeStyle.Transient:
-                    return typeof(TransientFactoryActivator);
+                    return typeof(TransientActivator);
 
                 default:
                     throw new InvalidLifeStyleException(lifeStyle, serviceType);

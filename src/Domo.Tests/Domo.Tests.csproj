@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -59,14 +59,23 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="DI\Activation\SingletonFactoryActivatorTests\SingletonFactoryActivatorTests.cs" />
-    <Compile Include="DI\Activation\SingletonFactoryActivatorTests\When_creating_an_empty_container.cs" />
-    <Compile Include="DI\ContainerTests\ContainerTests.cs" />
-    <Compile Include="DI\ContainerTests\When_creating_a_container_using_an_assembly_scanner.cs" />
+    <Compile Include="DI\Activation\SingletonActivatorTests.cs" />
+    <Compile Include="DI\Activation\When_activating_an_existing_service.cs">
+      <DependentUpon>SingletonActivatorTests.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DI\Activation\When_activating_a_service.cs">
+      <DependentUpon>SingletonActivatorTests.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DI\ContainerTests.cs" />
+    <Compile Include="DI\When_creating_a_container_using_an_assembly_scanner.cs">
+      <DependentUpon>ContainerTests.cs</DependentUpon>
+    </Compile>
     <Compile Include="Messaging\MessageBusTests.cs" />
     <Compile Include="Messaging\When_sending_a_command_with_no_registered_command_handler.cs" />
     <Compile Include="UnitTests.cs" />
-    <Compile Include="DI\ContainerTests\When_creating_a_container.cs" />
+    <Compile Include="DI\When_creating_a_container.cs">
+      <DependentUpon>ContainerTests.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

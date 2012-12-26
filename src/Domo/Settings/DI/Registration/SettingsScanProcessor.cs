@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using Domo.DI;
 using Domo.DI.Registration;
 using Domo.Settings.DI.Activation;
 
@@ -13,7 +14,10 @@ namespace Domo.Settings.DI.Registration
             if (settingsAttribute != null)
             {
                 var activatorType = GetActivatorType(settingsAttribute.Scope);
-                typeRegistration.RegisterActivator(type.AsType(), activatorType);
+                var identity = new ServiceIdentity(type);
+                // Todo: Settings are only registered without name so it is not possible to load settings based on other argument names.
+
+                typeRegistration.RegisterActivator(identity, activatorType);
             }
         }
 

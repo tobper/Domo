@@ -1,11 +1,9 @@
-using System;
+using Domo.DI;
 using Domo.DI.Activation;
 using Domo.DI.Registration;
 
 namespace Domo.Settings.DI.Activation
 {
-    using ActivationContext = Domo.DI.Activation.ActivationContext;
-
     [PreventAutomaticRegistration]
     public class ApplicationSettingsActivator : SettingsActivator, IActivator
     {
@@ -16,11 +14,11 @@ namespace Domo.Settings.DI.Activation
             _applicationSettings = applicationSettings;
         }
 
-        public object ActivateInstance(ActivationContext activationContext, Type type, string name)
+        public object ActivateService(IInjectionContext context, ServiceIdentity identity)
         {
             return
-                GetGenericActivator(type).
-                ActivateInstance(_applicationSettings, name);
+                GetGenericLoader(identity.ServiceType).
+                LoadInstance(_applicationSettings, identity.ServiceName);
         }
     }
 }

@@ -1,6 +1,4 @@
-using System;
 using System.Reflection;
-using System.Text.RegularExpressions;
 
 namespace Domo.DI.Registration.TypeScanners
 {
@@ -19,26 +17,12 @@ namespace Domo.DI.Registration.TypeScanners
             // I.e. SingletonServiceCache should register a IServiceCache service named Singleton
             foreach (var serviceType in type.ImplementedInterfaces)
             {
-                var serviceName = GetServiceName(serviceType, type.Name);
-                if (serviceName == null)
+                var identity = serviceType.GetServiceIdentity(type.Name);
+                if (identity == null)
                     continue;
 
-                if (serviceName == string.Empty)
-                    serviceName = null;
-
-                typeRegistration.Register(serviceType, type.AsType(), serviceName: serviceName);
+                typeRegistration.Register(identity, type.AsType());
             }
-        }
-
-        private string GetServiceName(Type serviceType, string referenceName)
-        {
-            var serviceTypeName = Regex.Replace(serviceType.Name, "^I", string.Empty);
-            var match = Regex.Match(referenceName, "i?(.*?)" + serviceTypeName + "$");
-
-            if (match.Success)
-                return match.Groups[1].Value;
-
-            return null;
         }
     }
 }
