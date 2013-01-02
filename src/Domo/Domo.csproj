@@ -45,8 +45,8 @@
     <Compile Include="DI\Activation\IInjectionContext.cs" />
     <Compile Include="DI\Activation\ConstructorActivator.cs" />
     <Compile Include="DI\Activation\IActivator.cs" />
-    <Compile Include="DI\Activation\IdentityManager.cs" />
-    <Compile Include="DI\Activation\IIdentityManager.cs" />
+    <Compile Include="DI\Activation\TypeSubstitution.cs" />
+    <Compile Include="DI\Activation\ITypeSubstitution.cs" />
     <Compile Include="DI\Activation\LazyActivator.cs" />
     <Compile Include="DI\Activation\SingletonActivator.cs" />
     <Compile Include="DI\Activation\TransientActivator.cs" />
@@ -125,7 +125,6 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="DI\Activation\Activation.cd" />
-    <None Include="DI\Creation\Creation.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

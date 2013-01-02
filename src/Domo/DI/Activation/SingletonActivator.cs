@@ -5,8 +5,8 @@ namespace Domo.DI.Activation
 {
     public class SingletonActivator : ConstructorActivator
     {
-        public SingletonActivator(IFactoryContainer factoryContainer, IIdentityManager identityManager, IInstanceCache singletonInstanceCache)
-            : base(factoryContainer, identityManager, singletonInstanceCache)
+        public SingletonActivator(IFactoryContainer factoryContainer, ITypeSubstitution typeSubstitution, IInstanceCache singletonInstanceCache)
+            : base(factoryContainer, typeSubstitution, singletonInstanceCache)
         {
         }
     }

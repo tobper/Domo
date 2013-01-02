@@ -10,7 +10,7 @@ namespace Domo.DI.Registration
         private readonly IContainer _container;
         private readonly IFactoryContainer _factoryContainer;
         private readonly IInstanceCache _singletonInstanceCache;
-        private readonly IIdentityManager _identityManager;
+        private readonly ITypeSubstitution _typeSubstitution;
 
         public LifeStyle DefaultLifeStyle { get; private set; }
 
@@ -18,12 +18,12 @@ namespace Domo.DI.Registration
             IContainer container,
             IFactoryContainer factoryContainer,
             IInstanceCache singletonInstanceCache,
-            IIdentityManager identityManager)
+            ITypeSubstitution typeSubstitution)
         {
             _container = container;
             _factoryContainer = factoryContainer;
             _singletonInstanceCache = singletonInstanceCache;
-            _identityManager = identityManager;
+            _typeSubstitution = typeSubstitution;
 
             DefaultLifeStyle = LifeStyle.Singleton;
         }
@@ -110,7 +110,7 @@ namespace Domo.DI.Registration
             _container.Register(identity, activatorType);
 
             if (instanceType != identity.ServiceType)
-                _identityManager.AddAlias(identity, instanceType);
+                _typeSubstitution.AddSubstitution(identity, instanceType);
 
             return this;
         }

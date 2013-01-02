@@ -16,7 +16,7 @@ namespace Domo.DI
         private Container()
         {
             IInstanceCache singletonInstanceCache = new InstanceCache();
-            IIdentityManager identityManager = new IdentityManager();
+            ITypeSubstitution typeSubstitution = new TypeSubstitution();
             IFactoryContainer factoryContainer = new FactoryContainer(this);
 
             ServiceLocator = new ServiceLocator(this);
@@ -24,18 +24,18 @@ namespace Domo.DI
             _serviceFamilies = new Dictionary<Type, IServiceFamily>();
             _activators = new ActivatorContainer(
                 factoryContainer,
-                new SingletonActivator(factoryContainer, identityManager, singletonInstanceCache),
-                new TransientActivator(factoryContainer, identityManager));
+                new SingletonActivator(factoryContainer, typeSubstitution, singletonInstanceCache),
+                new TransientActivator(factoryContainer, typeSubstitution));
 
             ITypeRegistration typeRegistration =
-                new TypeRegistration(this, factoryContainer, singletonInstanceCache, identityManager);
+                new TypeRegistration(this, factoryContainer, singletonInstanceCache, typeSubstitution);
 
             typeRegistration.
                 RegisterSingleton<IContainer>(this).
                 RegisterSingleton(factoryContainer).
                 RegisterSingleton(ServiceLocator).
                 RegisterSingleton(singletonInstanceCache, "Singleton").
-                RegisterSingleton(identityManager).
+                RegisterSingleton(typeSubstitution).
                 RegisterSingleton(typeRegistration).
                 Register<IAssemblyScanner, AssemblyScanner>(lifeStyle: LifeStyle.Singleton);
         }
