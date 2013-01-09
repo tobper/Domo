@@ -99,33 +99,36 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DI\Activation\ActivationContext.cs" />
-    <Compile Include="DI\Activation\FactoryActivator.cs" />
+    <Compile Include="DI\Activation\ActivatorContainer.cs" />
+    <Compile Include="DI\Activation\ConstructorActivator.cs" />
     <Compile Include="DI\Activation\IActivator.cs" />
+    <Compile Include="DI\Activation\IActivatorContainer.cs" />
+    <Compile Include="DI\Activation\IInjectionContext.cs" />
+    <Compile Include="DI\Activation\ITypeSubstitution.cs" />
     <Compile Include="DI\Activation\LazyActivator.cs" />
-    <Compile Include="DI\Activation\SingletonFactoryActivator.cs" />
-    <Compile Include="DI\Activation\TransientFactoryActivator.cs" />
+    <Compile Include="DI\Activation\SingletonActivator.cs" />
+    <Compile Include="DI\Activation\TransientActivator.cs" />
+    <Compile Include="DI\Activation\TypeSubstitution.cs" />
     <Compile Include="DI\Caching\IInstanceCache.cs" />
     <Compile Include="DI\Caching\InstanceCache.cs" />
-    <Compile Include="DI\Caching\ServiceKey.cs" />
     <Compile Include="DI\Container.cs" />
-    <Compile Include="DI\Creation\ConstructionFactory.cs" />
-    <Compile Include="DI\Creation\ConstructionFactoryParameter.cs" />
+    <Compile Include="DI\Creation\ConstructorFactory.cs" />
+    <Compile Include="DI\Creation\ConstructorFactoryParameter.cs" />
     <Compile Include="DI\Creation\DelegateFactory.cs" />
-    <Compile Include="DI\Creation\FactoryManager.cs" />
+    <Compile Include="DI\Creation\FactoryContainer.cs" />
     <Compile Include="DI\Creation\IFactory.cs" />
-    <Compile Include="DI\Creation\IFactoryManager.cs" />
+    <Compile Include="DI\Creation\IFactoryContainer.cs" />
+    <Compile Include="DI\Exceptions\InvalidActivatorTypeException.cs" />
     <Compile Include="DI\Exceptions\InvalidLifeStyleException.cs" />
     <Compile Include="DI\Exceptions\NoValidConstructorFoundException.cs" />
     <Compile Include="DI\Exceptions\ServiceAlreadyRegisteredException.cs" />
     <Compile Include="DI\Exceptions\ServiceCouldNotBeCreatedException.cs" />
     <Compile Include="DI\Exceptions\ServiceNotRegisteredException.cs" />
     <Compile Include="DI\IContainer.cs" />
+    <Compile Include="DI\InjectionContext.cs" />
     <Compile Include="DI\IServiceFamily.cs" />
     <Compile Include="DI\IServiceLocator.cs" />
     <Compile Include="DI\LifeStyle.cs" />
-    <Compile Include="DI\Redirection\ITypeRedirector.cs" />
-    <Compile Include="DI\Redirection\TypeRedirector.cs" />
     <Compile Include="DI\Registration\AssemblyScanner.cs" />
     <Compile Include="DI\Registration\IAssemblyScanner.cs" />
     <Compile Include="DI\Registration\IScanProcessor.cs" />
@@ -133,8 +136,10 @@
     <Compile Include="DI\Registration\PreventAutomaticRegistrationAttribute.cs" />
     <Compile Include="DI\Registration\TypeRegistration.cs" />
     <Compile Include="DI\Registration\TypeScanners\ConventionBasedScanProcessor.cs" />
+    <Compile Include="DI\ServiceExtensions.cs" />
     <Compile Include="DI\ServiceFamily.cs" />
     <Compile Include="DI\ServiceFamilyMember.cs" />
+    <Compile Include="DI\ServiceIdentity.cs" />
     <Compile Include="DI\ServiceLocator.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
@@ -174,8 +179,9 @@
     <Compile Include="Settings\ProviderBasedSettings\Storage\MemoryStorageProvider.cs" />
     <Compile Include="Settings\ProviderBasedSettings\Storage\Setting.cs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="DI\Scanning\" />
+    <None Include="DI\Activation\Activation.cd" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>

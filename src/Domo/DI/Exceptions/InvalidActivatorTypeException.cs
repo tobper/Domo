@@ -1,9 +1,8 @@
 using System;
-using System.Diagnostics.Tracing;
 
 namespace Domo.DI
 {
-    public class InvalidActivatorTypeException : EventSourceException
+    public class InvalidActivatorTypeException : Exception
     {
         protected Type ActivatorType { get; private set; }
 

@@ -65,7 +65,7 @@ namespace Domo.DI.Registration
 
         public IAssemblyScanner ScanAssembly(Assembly assembly)
         {
-            Trace.WriteLine("Domo: Scanning assembly {0}.", assembly.FullName);
+            Debug.WriteLine("Domo: Scanning assembly {0}.", assembly.FullName);
 
             var types = assembly.DefinedTypes;
 
