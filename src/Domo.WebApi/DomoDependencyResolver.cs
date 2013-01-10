@@ -5,11 +5,11 @@ using Domo.DI;
 
 namespace Domo.WebApi
 {
-    public class DependencyResolver : IDependencyResolver
+    public class DomoDependencyResolver : IDependencyResolver
     {
         private readonly IContainer _container;
 
-        public DependencyResolver(IContainer container)
+        public DomoDependencyResolver(IContainer container)
         {
             _container = container;
         }

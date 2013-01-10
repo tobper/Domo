@@ -57,10 +57,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiControllerScanProcessor.cs" />
-    <Compile Include="DependencyResolver.cs" />
+    <Compile Include="DomoApiControllerScanProcessor.cs" />
+    <Compile Include="DomoDependencyResolver.cs" />
     <Compile Include="HttpConfigurationExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScannerExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

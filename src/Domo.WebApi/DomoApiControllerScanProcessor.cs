@@ -6,11 +6,11 @@ using Domo.DI.Registration;
 
 namespace Domo.WebApi
 {
-    public class ApiControllerScanProcessor : IScanProcessor
+    public class DomoApiControllerScanProcessor : IScanProcessor
     {
         private readonly Type _controllerType;
 
-        public ApiControllerScanProcessor()
+        public DomoApiControllerScanProcessor()
         {
             _controllerType = typeof(ApiController);
         }

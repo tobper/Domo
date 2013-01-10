@@ -6,11 +6,11 @@ namespace Domo.WebApi
 {
     public static class HttpConfigurationExtensions
     {
-        public static void SetDomoDependencyResolver(IContainer container)
+        public static void SetDomoDependencyResolver(this HttpConfiguration httpConfiguration, IContainer container)
         {
             var dependencyResolver = container.ServiceLocator.Resolve<IDependencyResolver>("Domo");
 
-            GlobalConfiguration.Configuration.DependencyResolver = dependencyResolver;
+            httpConfiguration.DependencyResolver = dependencyResolver;
         }
     }
 }
