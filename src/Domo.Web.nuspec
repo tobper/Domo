@@ -16,6 +16,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="Domo.Web\bin\release\**" target="lib" />
+    <file src="Domo.Web\bin\release\Domo.Web.*" target="lib" />
   </files>
 </package>

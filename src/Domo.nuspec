@@ -12,6 +12,6 @@
     <tags>Dependency Injection</tags>
   </metadata>
   <files>
-    <file src="Domo\bin\release\**" target="lib" />
+    <file src="Domo\bin\release\**\Domo.*" target="lib" />
   </files>
 </package>
