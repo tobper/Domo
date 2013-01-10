@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>Domo.WebApi</id>
+        <version>0.0</version>
+        <title>Domo WebApi</title>
+        <authors>Tobias Persson</authors>
+        <owners>Tobias Persson</owners>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Library for .Net development.</description>
+        <copyright>Copyright 2013 © Tobias Persson. All rights reserved.</copyright>
+        <tags>Dependency Injection</tags>
+    </metadata>
+    <dependencies>
+      <dependency id="Domo.Web" version="[0.5,1.0)" />
+      <dependency id="Microsoft.AspNet.WebApi.WebHost" version="[4.0.20710.0, 4.1)" />
+    </dependencies>
+    <files>
+        <file src="Domo.WebApi\Bin\Release\Domo.WebApi.dll" target="lib\net45\Domo.WebApi.dll" />
+        <file src="Domo.WebApi\Bin\Release\Domo.WebApi.pdb" target="lib\net45\Domo.WebApi.pdb" />
+    </files>
+</package>

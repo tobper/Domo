@@ -3,8 +3,8 @@ using System.Resources;
 using System.Reflection;
 using System.Security;
 
-[assembly: AssemblyProduct("Domo")]
-[assembly: AssemblyTitle("Domo")]
+[assembly: AssemblyProduct("Domo WebApi")]
+[assembly: AssemblyTitle("Domo WebApi")]
 [assembly: AssemblyDescription("Help library...")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Tobias Persson")]

@@ -103,6 +103,11 @@ namespace Domo.DI.Registration
             return Register(identity, instanceType, lifeStyle);
         }
 
+        public ITypeRegistration Register(ServiceIdentity identity, LifeStyle lifeStyle)
+        {
+            return Register(identity, identity.ServiceType, lifeStyle);
+        }
+
         public ITypeRegistration Register(ServiceIdentity identity, Type instanceType, LifeStyle lifeStyle)
         {
             var activatorType = GetActivatorType(lifeStyle, identity.ServiceType);

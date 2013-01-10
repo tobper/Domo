@@ -3,11 +3,11 @@
     <metadata>
         <id>Domo</id>
         <version>0.0</version>
-        <title />
+        <title>Domo</title>
         <authors>Tobias Persson</authors>
-        <owners />
+        <owners>Tobias Persson</owners>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Help library...</description>
+        <description>Library for Net/WP/WinStore development.</description>
         <copyright>Copyright 2013 © Tobias Persson. All rights reserved.</copyright>
         <tags>Dependency Injection</tags>
     </metadata>
