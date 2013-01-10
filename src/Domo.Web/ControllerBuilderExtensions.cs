@@ -5,11 +5,11 @@ namespace Domo.Web
 {
     public static class ControllerBuilderExtensions
     {
-        public static void SetDomoControllerFactory(IContainer container)
+        public static void SetDomoControllerFactory(this ControllerBuilder controllerBuilder, IContainer container)
         {
             var controllerFactory = container.ServiceLocator.Resolve<IControllerFactory>("Domo");
 
-            ControllerBuilder.Current.SetControllerFactory(controllerFactory);
+            controllerBuilder.SetControllerFactory(controllerFactory);
         }
     }
 }
