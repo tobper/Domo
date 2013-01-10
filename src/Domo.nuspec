@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
-    <metadata>
-        <id>Domo</id>
-        <version>0.0</version>
-        <title>Domo</title>
-        <authors>Tobias Persson</authors>
-        <owners>Tobias Persson</owners>
-        <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Library for Net/WP/WinStore development.</description>
-        <copyright>Copyright 2013 © Tobias Persson. All rights reserved.</copyright>
-        <tags>Dependency Injection</tags>
-    </metadata>
-    <files>
-        <file src="Domo\bin\release\**" target="lib" />
-    </files>
+  <metadata>
+    <id>Domo</id>
+    <version>0.0</version>
+    <title>Domo</title>
+    <authors>Tobias Persson</authors>
+    <owners>Tobias Persson</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Library for Net/WP/WinStore development.</description>
+    <copyright>Copyright 2013 © Tobias Persson. All rights reserved.</copyright>
+    <tags>Dependency Injection</tags>
+  </metadata>
+  <files>
+    <file src="Domo\bin\release\**" target="lib" />
+  </files>
 </package>
