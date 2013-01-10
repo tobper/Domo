@@ -12,11 +12,6 @@
         <tags>Dependency Injection</tags>
     </metadata>
     <files>
-        <file src="Domo\Bin\Release\Net45\Domo.dll" target="lib\net45\Domo.dll" />
-        <file src="Domo\Bin\Release\Net45\Domo.pdb" target="lib\net45\Domo.pdb" />
-        <file src="Domo\Bin\Release\WindowsStore\Domo.dll" target="lib\netcore45\Domo.dll" />
-        <file src="Domo\Bin\Release\WindowsStore\Domo.pdb" target="lib\netcore45\Domo.pdb" />
-        <file src="Domo\Bin\Release\WindowsPhone\Domo.dll" target="lib\wp8\Domo.dll" />
-        <file src="Domo\Bin\Release\WindowsPhone\Domo.pdb" target="lib\wp8\Domo.pdb" />
+        <file src="Domo\bin\release\**" target="lib" />
     </files>
 </package>

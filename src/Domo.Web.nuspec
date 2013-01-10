@@ -10,16 +10,15 @@
         <description>Library for .Net development.</description>
         <copyright>Copyright 2013 © Tobias Persson. All rights reserved.</copyright>
         <tags>Dependency Injection</tags>
+		<dependencies>
+		  <dependency id="Domo" version="[0.5,1.0)" />
+		  <dependency id="Microsoft.AspNet.Mvc" version="[4.0.20710.0, 4.1)" />
+		</dependencies>
+		<references>
+		  <reference file="System.Web.Mvc.dll" />
+		</references>
     </metadata>
-    <dependencies>
-      <dependency id="Domo" version="[0.5,1.0)" />
-      <dependency id="Microsoft.AspNet.Mvc" version="[4.0.20710.0, 4.1)" />
-    </dependencies>
-    <references>
-      <reference file="System.Web.Mvc.dll" />
-    </references>
-    <files>
-        <file src="Domo.Web\Bin\Release\Domo.Web.dll" target="lib\net45\Domo.Web.dll" />
-        <file src="Domo.Web\Bin\Release\Domo.Web.pdb" target="lib\net45\Domo.Web.pdb" />
-    </files>
+	<files>
+        <file src="Domo.Web\bin\release\**" target="lib" />
+	</files>
 </package>

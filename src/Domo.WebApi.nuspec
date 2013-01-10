@@ -10,13 +10,12 @@
         <description>Library for .Net development.</description>
         <copyright>Copyright 2013 © Tobias Persson. All rights reserved.</copyright>
         <tags>Dependency Injection</tags>
+		<dependencies>
+		  <dependency id="Domo.Web" version="[0.5,1.0)" />
+		  <dependency id="Microsoft.AspNet.WebApi.WebHost" version="[4.0.20710.0, 4.1)" />
+		</dependencies>
     </metadata>
-    <dependencies>
-      <dependency id="Domo.Web" version="[0.5,1.0)" />
-      <dependency id="Microsoft.AspNet.WebApi.WebHost" version="[4.0.20710.0, 4.1)" />
-    </dependencies>
-    <files>
-        <file src="Domo.WebApi\Bin\Release\Domo.WebApi.dll" target="lib\net45\Domo.WebApi.dll" />
-        <file src="Domo.WebApi\Bin\Release\Domo.WebApi.pdb" target="lib\net45\Domo.WebApi.pdb" />
-    </files>
+	<files>
+        <file src="Domo\bin\release\**" target="lib" />
+	</files>
 </package>
