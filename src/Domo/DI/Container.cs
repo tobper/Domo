@@ -71,6 +71,9 @@ namespace Domo.DI
 
         public void Register(ServiceIdentity identity, Type activatorType)
         {
+            if (!activatorType.Implements<IActivator>())
+                throw new InvalidActivatorTypeException(activatorType);
+
             _serviceFamilies.
                 TryGetValue(identity.ServiceType, () => new ServiceFamily(identity.ServiceType)).
                 AddActivator(identity, activatorType);

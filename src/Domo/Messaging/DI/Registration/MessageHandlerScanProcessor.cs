@@ -23,7 +23,7 @@ namespace Domo.Messaging.DI.Registration
                     {
                         var identity = new ServiceIdentity(serviceType);
 
-                        typeRegistration.Register(identity, type, LifeStyle.Transient);
+                        typeRegistration.Register(identity, type.AsType(), LifeStyle.Transient);
                     }
                 }
             }

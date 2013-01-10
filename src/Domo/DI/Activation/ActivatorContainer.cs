@@ -31,9 +31,6 @@ namespace Domo.DI.Activation
 
         private IActivator CreateActivator(Type activatorType)
         {
-            if (!typeof(IActivator).IsAssignableFrom(activatorType))
-                throw new InvalidActivatorTypeException(activatorType);
-
             return (IActivator)_factoryContainer.CreateInstance(activatorType);
         }
     }

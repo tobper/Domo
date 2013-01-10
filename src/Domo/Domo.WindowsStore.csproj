@@ -144,6 +144,7 @@
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\SerializationExtensions.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Messaging\DI\Registration\MessageHandlerScanProcessor.cs" />
     <Compile Include="Messaging\DI\Registration\ScannerExtensions.cs" />
     <Compile Include="Messaging\Exceptions\MessagingException.cs" />

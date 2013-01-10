@@ -14,7 +14,7 @@ namespace Domo.Settings.DI.Registration
             if (settingsAttribute != null)
             {
                 var activatorType = GetActivatorType(settingsAttribute.Scope);
-                var identity = new ServiceIdentity(type);
+                var identity = new ServiceIdentity(type.AsType());
                 // Todo: Settings are only registered without name so it is not possible to load settings based on other argument names.
 
                 typeRegistration.RegisterActivator(identity, activatorType);
