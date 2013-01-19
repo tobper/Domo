@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Domo.Communication;
 using Domo.DI;
 using Moq;
@@ -59,9 +60,9 @@ namespace Domo.Tests.Communication
                 _result = result;
             }
 
-            public int Handle(DummyQuery query)
+            public Task<int> Handle(DummyQuery query)
             {
-                return _result;
+                return Task.FromResult(_result);
             }
         }
     }

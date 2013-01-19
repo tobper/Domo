@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Domo.DI;
 
 namespace Domo.Communication
@@ -18,7 +19,7 @@ namespace Domo.Communication
             if (handler == null)
                 throw new RequestQueryFailedException(typeof(TQuery), typeof(TResult));
 
-            return Task.Run(() => handler.Handle(query));
+            return handler.Handle(query);
         }
 
         public Task Post<TMessage>(TMessage message) where TMessage : IMessage
@@ -27,13 +28,9 @@ namespace Domo.Communication
             if (handlers.Length == 0)
                 return null;
 
-            return Task.Run(() =>
-            {
-                foreach (var handler in handlers)
-                {
-                    handler.Handle(message);
-                }
-            });
+            return Task.WhenAll(
+                from handler in handlers
+                select handler.Handle(message));
         }
 
         public Task Send<TCommand>(TCommand command) where TCommand : ICommand
@@ -42,7 +39,7 @@ namespace Domo.Communication
             if (handler == null)
                 throw new SendCommandFailedException(typeof(TCommand));
 
-            return Task.Run(() => handler.Handle(command));
+            return handler.Handle(command);
         }
     }
 }

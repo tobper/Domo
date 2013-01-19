@@ -1,7 +1,10 @@
+using System.Threading.Tasks;
+
 namespace Domo.Communication
 {
-    public interface IMessageHandler<in TCommand> where TCommand : IMessage
+    public interface IMessageHandler<in TMessage>
+        where TMessage : IMessage
     {
-        void Handle(TCommand command);
+        Task Handle(TMessage message);
     }
 }

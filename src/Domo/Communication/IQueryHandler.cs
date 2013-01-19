@@ -1,8 +1,10 @@
+using System.Threading.Tasks;
+
 namespace Domo.Communication
 {
-    public interface IQueryHandler<in TQuery, out TResult>
+    public interface IQueryHandler<in TQuery, TResult>
         where TQuery : IQuery
     {
-        TResult Handle(TQuery query);
+        Task<TResult> Handle(TQuery query);
     }
 }
