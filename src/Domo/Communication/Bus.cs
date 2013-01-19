@@ -1,15 +1,24 @@
 ﻿using System.Threading.Tasks;
 using Domo.DI;
 
-namespace Domo.Messaging
+namespace Domo.Communication
 {
-    public class MessageBus : IMessageBus
+    public class Bus : IBus
     {
         private readonly IServiceLocator _serviceLocator;
 
-        public MessageBus(IServiceLocator serviceLocator)
+        public Bus(IServiceLocator serviceLocator)
         {
             _serviceLocator = serviceLocator;
+        }
+
+        public TResult Request<TQuery, TResult>(TQuery query) where TQuery : IQuery
+        {
+            var handler = _serviceLocator.TryResolve<IQueryHandler<TQuery, TResult>>();
+            if (handler == null)
+                throw new RequestQueryFailedException(typeof(TQuery), typeof(TResult));
+
+            return handler.Handle(query);
         }
 
         public void Post<TMessage>(TMessage message) where TMessage : IMessage

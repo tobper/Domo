@@ -59,6 +59,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Communication\When_requesting_a_query_with_a_valid_query_handler.cs" />
+    <Compile Include="Communication\When_requesting_a_query_with_no_registered_query_handler.cs" />
     <Compile Include="DI\Activation\SingletonActivatorTests.cs" />
     <Compile Include="DI\Activation\When_activating_an_existing_service.cs">
       <DependentUpon>SingletonActivatorTests.cs</DependentUpon>
@@ -70,8 +72,8 @@
     <Compile Include="DI\When_creating_a_container_using_an_assembly_scanner.cs">
       <DependentUpon>ContainerTests.cs</DependentUpon>
     </Compile>
-    <Compile Include="Messaging\MessageBusTests.cs" />
-    <Compile Include="Messaging\When_sending_a_command_with_no_registered_command_handler.cs" />
+    <Compile Include="Communication\BusTests.cs" />
+    <Compile Include="Communication\When_sending_a_command_with_no_registered_command_handler.cs" />
     <Compile Include="UnitTests.cs" />
     <Compile Include="DI\When_creating_a_container.cs">
       <DependentUpon>ContainerTests.cs</DependentUpon>

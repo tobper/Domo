@@ -1,6 +1,6 @@
 using System;
 
-namespace Domo.Messaging
+namespace Domo.Communication
 {
     public class MessagingException : Exception
     {

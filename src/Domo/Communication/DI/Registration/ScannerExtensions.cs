@@ -1,6 +1,6 @@
 using Domo.DI.Registration;
 
-namespace Domo.Messaging.DI.Registration
+namespace Domo.Communication.DI.Registration
 {
     public static class ScannerExtensions
     {

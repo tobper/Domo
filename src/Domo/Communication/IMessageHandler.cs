@@ -1,4 +1,4 @@
-namespace Domo.Messaging
+namespace Domo.Communication
 {
     public interface IMessageHandler<in TCommand> where TCommand : IMessage
     {
