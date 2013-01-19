@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Domo.Settings.ProviderBasedSettings.Storage
 {
@@ -7,10 +7,9 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
     {
         bool SupportsSerializationType(Type storageType);
 
-        object Load(Type valueType, string user, string name, Type storageType);
-        void Save(Type valueType, string user, string name, object value);
-        bool Exists(Type valueType, string user, string name);
-
-        IEnumerable<Setting> LoadAll(Type storageType);
+        Task<object> Load(Type valueType, string user, string name, Type storageType);
+        Task<Setting[]> LoadAll(Type storageType);
+        Task Save(Type valueType, string user, string name, object value);
+        Task<bool> Exists(Type valueType, string user, string name);
     }
 }

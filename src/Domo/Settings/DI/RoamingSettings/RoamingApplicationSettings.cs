@@ -1,29 +1,34 @@
-﻿using Windows.Storage;
+﻿using System.Threading.Tasks;
+using Windows.Storage;
+using Domo.Extensions;
 
 namespace Domo.Settings.DI.RoamingSettings
 {
     public class RoamingApplicationSettings : IApplicationSettings
     {
-        public T Load<T>(string key = null)
+        public Task<T> Load<T>(string key = null)
         {
             var combinedKey = GetKey<T>(key);
             var value = (T)ApplicationData.Current.RoamingSettings.Values[combinedKey];
 
-            return value;
+            return value.AsTaskResult();
         }
 
-        public void Save<T>(T value, string key = null)
+        public Task Save<T>(T value, string key = null)
         {
             var combinedKey = GetKey<T>(key);
 
             ApplicationData.Current.RoamingSettings.Values[combinedKey] = value;
+
+            return null;
         }
 
-        public bool Exists<T>(string key = null)
+        public Task<bool> Exists<T>(string key = null)
         {
             var combinedKey = GetKey<T>(key);
+            var exists = ApplicationData.Current.RoamingSettings.Values.ContainsKey(combinedKey);
 
-            return ApplicationData.Current.RoamingSettings.Values.ContainsKey(combinedKey);
+            return exists.AsTaskResult();
         }
 
         private static string GetKey<T>(string key)

@@ -1,9 +1,11 @@
-﻿namespace Domo.Settings
+﻿using System.Threading.Tasks;
+
+namespace Domo.Settings
 {
     public interface IApplicationSettings
     {
-        T Load<T>(string name = null);
-        void Save<T>(T value, string name = null);
-        bool Exists<T>(string name = null);
+        Task<T> Load<T>(string name = null);
+        Task Save<T>(T value, string name = null);
+        Task<bool> Exists<T>(string name = null);
     }
 }

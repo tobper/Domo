@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Domo.DI.Registration;
 using Domo.Settings.ProviderBasedSettings.Serialization;
 using Domo.Settings.ProviderBasedSettings.Storage;
@@ -31,27 +32,29 @@ namespace Domo.Settings.ProviderBasedSettings
             _serializer = serializer;
         }
 
-        public T Load<T>(string name = null)
+        public async Task<T> Load<T>(string name = null)
         {
-            var user = _usernameProvider.GetUserName();
-            var data = _storageProvider.Load(typeof(T), user, name, _serializer.SerializationType);
+            var user = await _usernameProvider.GetUserName();
+            var data = await _storageProvider.Load(typeof(T), user, name, _serializer.SerializationType);
             var value = DeserializeValue<T>(data);
 
             return value;
         }
 
-        public void Save<T>(T value, string name = null)
+        public async Task Save<T>(T value, string name = null)
         {
-            var user = _usernameProvider.GetUserName();
+            var user = await _usernameProvider.GetUserName();
             var data = SerializeValue(value);
 
-            _storageProvider.Save(typeof(T), user, name, data);
+            await _storageProvider.Save(typeof(T), user, name, data);
         }
 
-        public bool Exists<T>(string name = null)
+        public async Task<bool> Exists<T>(string name = null)
         {
-            var user = _usernameProvider.GetUserName();
-            return _storageProvider.Exists(typeof(T), user, name);
+            var user = await _usernameProvider.GetUserName();
+            var result = await _storageProvider.Exists(typeof(T), user, name);
+
+            return result;
         }
 
         private object SerializeValue<T>(T value)

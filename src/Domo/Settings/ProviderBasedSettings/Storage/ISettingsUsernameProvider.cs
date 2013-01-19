@@ -1,7 +1,9 @@
+using System.Threading.Tasks;
+
 namespace Domo.Settings.ProviderBasedSettings.Storage
 {
     public interface ISettingsUsernameProvider
     {
-        string GetUserName();
+        Task<string> GetUserName();
     }
 }

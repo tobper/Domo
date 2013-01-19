@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace Domo.Settings.ProviderBasedSettings.Storage
 {
@@ -20,7 +21,7 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
             return storageType == typeof(string);
         }
 
-        public object Load(Type valueType, string user, string name, Type storageType)
+        public async Task<object> Load(Type valueType, string user, string name, Type storageType)
         {
             const string sql =
                 "SELECT [Value] " +
@@ -37,11 +38,11 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
                 command.Parameters.AddWithValue("@User", (object)user ?? DBNull.Value);
                 command.Parameters.AddWithValue("@Name", (object)name ?? DBNull.Value);
 
-                return command.ExecuteScalar();
+                return await command.ExecuteScalarAsync();
             }
         }
 
-        public void Save(Type valueType, string user, string name, object value)
+        public async Task Save(Type valueType, string user, string name, object value)
         {
             const string sqlInsert = "INSERT [dbo].[Settings] VALUES(@Type, @User, @Name, @Value, @Version)";
             const string sqlUpdate =
@@ -66,12 +67,12 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
                 if (updatedRows == 0)
                 {
                     command.CommandText = sqlInsert;
-                    command.ExecuteNonQuery();
+                    await command.ExecuteNonQueryAsync();
                 }
             }
         }
 
-        public bool Exists(Type valueType, string user, string name)
+        public async Task<bool> Exists(Type valueType, string user, string name)
         {
             const string sql =
                 "SELECT COUNT(*) " +
@@ -88,34 +89,37 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
                 command.Parameters.AddWithValue("@User", (object)user ?? DBNull.Value);
                 command.Parameters.AddWithValue("@Name", (object)name ?? DBNull.Value);
 
-                var rowCount = (int)command.ExecuteScalar();
+                var rowCount = (int)await command.ExecuteScalarAsync();
 
                 return rowCount > 0;
             }
         }
 
-        public IEnumerable<Setting> LoadAll(Type storageType)
+        public async Task<Setting[]> LoadAll(Type storageType)
         {
             const string sql = "SELECT [Type], [User], [Name], [Value] FROM [dbo].[Settings]";
 
             using (var connection = CreateConnection())
             {
                 var command = new SqlCommand(sql, connection);
+                var result = new List<Setting>();
 
-                using (var reader = command.ExecuteReader())
+                using (var reader = await command.ExecuteReaderAsync())
                 {
                     while (reader.Read())
                     {
-                        yield return new Setting
+                        result.Add(new Setting
                         {
                             Type = Type.GetType((string)reader["Type"]),
                             User = (string)reader["User"],
                             Name = (string)reader["Name"],
                             Value = reader["Value"],
                             Version = new Version((string)reader["Version"])
-                        };
+                        });
                     }
                 }
+
+                return result.ToArray();
             }
         }
 

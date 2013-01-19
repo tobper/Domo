@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Domo.DI.Registration;
 using Domo.Extensions;
 using System.Reflection;
@@ -25,15 +26,16 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
             return true;
         }
 
-        public object Load(Type valueType, string user, string name, Type storageType)
+        public Task<object> Load(Type valueType, string user, string name, Type storageType)
         {
             var completeKey = GetKey(valueType, user, name);
             var setting = _settings.TryGetValue(completeKey);
+            var value = setting != null ? setting.Value : null;
 
-            return setting != null ? setting.Value : null;
+            return value.AsTaskResult();
         }
 
-        public void Save(Type valueType, string user, string name, object value)
+        public Task Save(Type valueType, string user, string name, object value)
         {
             var setting = new Setting
             {
@@ -45,17 +47,23 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
             };
 
             Add(setting);
+
+            return null;
         }
 
-        public bool Exists(Type valueType, string user, string name)
+        public Task<bool> Exists(Type valueType, string user, string name)
         {
             var completeKey = GetKey(valueType, user, name);
-            return _settings.ContainsKey(completeKey);
+            var exists = _settings.ContainsKey(completeKey);
+
+            return exists.AsTaskResult();
         }
 
-        public IEnumerable<Setting> LoadAll(Type storageType)
+        public Task<Setting[]> LoadAll(Type storageType)
         {
-            return _settings.Values.ToArray();
+            return _settings.Values.
+                ToArray().
+                AsTaskResult();
         }
 
         private Version GetTypeVersion(Type valueType)

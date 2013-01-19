@@ -149,6 +149,7 @@
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\SerializationExtensions.cs" />
+    <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Communication\DI\Registration\ScannerExtensions.cs" />
     <Compile Include="Communication\Exceptions\MessagingException.cs" />
