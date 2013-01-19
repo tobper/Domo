@@ -4,9 +4,9 @@ namespace Domo.Communication.DI.Registration
 {
     public static class ScannerExtensions
     {
-        public static IAssemblyScanner UseMessageHandlerProcessor(this IAssemblyScanner assemblyScanner)
+        public static IAssemblyScanner UseCommunicationsProcessor(this IAssemblyScanner assemblyScanner)
         {
-            return assemblyScanner.UseScanProcessor<MessageHandlerScanProcessor>();
+            return assemblyScanner.UseScanProcessor<CommunicationsScanProcessor>();
         }
     }
 }

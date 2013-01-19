@@ -100,6 +100,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Communication\Bus.cs" />
+    <Compile Include="Communication\DI\Registration\CommunicationsScanProcessor.cs" />
     <Compile Include="Communication\IBus.cs" />
     <Compile Include="Communication\IQuery.cs" />
     <Compile Include="Communication\IQueryHandler.cs" />
@@ -149,7 +150,6 @@
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\SerializationExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
-    <Compile Include="Communication\DI\Registration\MessageHandlerScanProcessor.cs" />
     <Compile Include="Communication\DI\Registration\ScannerExtensions.cs" />
     <Compile Include="Communication\Exceptions\MessagingException.cs" />
     <Compile Include="Communication\Exceptions\SendCommandFailedException.cs" />

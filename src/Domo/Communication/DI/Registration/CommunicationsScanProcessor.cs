@@ -6,7 +6,7 @@ using Domo.DI.Registration;
 
 namespace Domo.Communication.DI.Registration
 {
-    public class MessageHandlerScanProcessor : IScanProcessor
+    public class CommunicationsScanProcessor : IScanProcessor
     {
         private static readonly Type[] HandlerTypeDefinitions = new[]
         {
