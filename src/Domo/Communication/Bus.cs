@@ -12,22 +12,22 @@ namespace Domo.Communication
             _serviceLocator = serviceLocator;
         }
 
-        public TResult Request<TQuery, TResult>(TQuery query) where TQuery : IQuery
+        public Task<TResult> Request<TQuery, TResult>(TQuery query) where TQuery : IQuery
         {
             var handler = _serviceLocator.TryResolve<IQueryHandler<TQuery, TResult>>();
             if (handler == null)
                 throw new RequestQueryFailedException(typeof(TQuery), typeof(TResult));
 
-            return handler.Handle(query);
+            return Task.Run(() => handler.Handle(query));
         }
 
-        public void Post<TMessage>(TMessage message) where TMessage : IMessage
+        public Task Post<TMessage>(TMessage message) where TMessage : IMessage
         {
             var handlers = _serviceLocator.ResolveAll<IMessageHandler<TMessage>>();
             if (handlers.Length == 0)
-                return;
+                return null;
 
-            Task.Run(() =>
+            return Task.Run(() =>
             {
                 foreach (var handler in handlers)
                 {
@@ -36,13 +36,13 @@ namespace Domo.Communication
             });
         }
 
-        public void Send<TCommand>(TCommand command) where TCommand : ICommand
+        public Task Send<TCommand>(TCommand command) where TCommand : ICommand
         {
             var handler = _serviceLocator.TryResolve<ICommandHandler<TCommand>>();
             if (handler == null)
                 throw new SendCommandFailedException(typeof(TCommand));
 
-            handler.Handle(command);
+            return Task.Run(() => handler.Handle(command));
         }
     }
 }

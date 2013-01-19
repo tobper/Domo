@@ -18,9 +18,9 @@ namespace Domo.Tests.Communication
             GivenAValidQueryHandlerHasBeenRegistered(result: 5);
         }
 
-        protected override void RunTest()
+        protected override async void RunTest()
         {
-            _result = TestInstance.Request<DummyQuery, int>(new DummyQuery());
+            _result = await TestInstance.Request<DummyQuery, int>(new DummyQuery());
         }
     }
 }
