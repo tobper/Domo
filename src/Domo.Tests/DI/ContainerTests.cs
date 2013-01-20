@@ -6,11 +6,11 @@ namespace Domo.Tests.DI
 {
     public class ContainerTests : UnitTests<IContainer>
     {
-        private Action<ITypeRegistration> _typeRegistration;
+        private ContainerConfigurationDelegate _containerConfigurationDelegate;
 
         protected override IContainer CreateTestInstance()
         {
-            return Container.Create(_typeRegistration);
+            return Container.Create(_containerConfigurationDelegate);
         }
 
         protected override void RunTest()
@@ -19,11 +19,12 @@ namespace Domo.Tests.DI
 
         protected void GivenNoRegistrationIsBeingUsed()
         {
-            _typeRegistration = null;
+            _containerConfigurationDelegate = (c, r, s) => {};
         }
 
-        protected void GivenThatAnAssemblyScannerIsBeingUsed()
+        protected void GivenThatAnAssemblyScannerIsBeingUsed(Action<IAssemblyScanner> scanner)
         {
+            _containerConfigurationDelegate = (c, r, s) => scanner(s);
         }
     }
 }

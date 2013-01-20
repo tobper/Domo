@@ -1,3 +1,4 @@
+using Domo.DI.Registration;
 using NUnit.Framework;
 
 namespace Domo.Tests.DI
@@ -12,7 +13,11 @@ namespace Domo.Tests.DI
 
         protected override void SetupPrerequisites()
         {
-            GivenThatAnAssemblyScannerIsBeingUsed();
+            GivenThatAnAssemblyScannerIsBeingUsed(SetupAssemblyScanner);
+        }
+
+        private void SetupAssemblyScanner(IAssemblyScanner scanner)
+        {
         }
     }
 }

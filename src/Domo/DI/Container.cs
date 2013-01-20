@@ -37,20 +37,18 @@ namespace Domo.DI
                 RegisterSingleton(singletonInstanceCache, "Singleton").
                 RegisterSingleton(typeSubstitution).
                 RegisterSingleton(typeRegistration).
-                Register<IAssemblyScanner, AssemblyScanner>(lifeStyle: LifeStyle.Singleton);
+                Register<IAssemblyScanner, AssemblyScanner>();
         }
 
         public IServiceLocator ServiceLocator { get; private set; }
 
-        public static IContainer Create(Action<ITypeRegistration> registration = null, Action<IAssemblyScanner> scanner = null)
+        public static IContainer Create(ContainerConfigurationDelegate configuration)
         {
             IContainer container = new Container();
+            var typeRegistration = container.ServiceLocator.Resolve<ITypeRegistration>();
+            var assemblyScanner = container.ServiceLocator.Resolve<IAssemblyScanner>();
 
-            if (registration != null)
-                container.Register(registration);
-
-            if (scanner != null)
-                container.Scan(scanner);
+            configuration(container, typeRegistration, assemblyScanner);
 
             return container;
         }

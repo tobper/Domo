@@ -53,6 +53,7 @@
     <Compile Include="DI\Caching\IInstanceCache.cs" />
     <Compile Include="DI\Caching\InstanceCache.cs" />
     <Compile Include="DI\Container.cs" />
+    <Compile Include="DI\ContainerConfigurationDelegate.cs" />
     <Compile Include="DI\Creation\ConstructorFactory.cs" />
     <Compile Include="DI\Creation\ConstructorFactoryParameter.cs" />
     <Compile Include="DI\Creation\DelegateFactory.cs" />
