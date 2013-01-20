@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Domo.DI.Registration;
 using Domo.Settings.ProviderBasedSettings.Serialization;
 using Domo.Settings.ProviderBasedSettings.Storage;
+using Domo.Extensions;
 
 namespace Domo.Settings.ProviderBasedSettings
 {
@@ -33,6 +35,14 @@ namespace Domo.Settings.ProviderBasedSettings
             var value = _serializer.Deserialize<T>(data);
 
             return value;
+        }
+
+        public async Task<T[]> LoadAll<T>()
+        {
+            var settings = await _storageProvider.LoadAll(typeof(T), _serializer.SerializationType);
+            var values = settings.Convert(s => _serializer.Deserialize<T>(s.Value));
+
+            return values;
         }
 
         public async Task Save<T>(T value, string name = null)

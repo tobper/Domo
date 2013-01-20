@@ -35,6 +35,21 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
             return value.AsTaskResult();
         }
 
+        public Task<Setting[]> LoadAll(Type storageType)
+        {
+            return _settings.Values.
+                ToArray().
+                AsTaskResult();
+        }
+
+        public Task<Setting[]> LoadAll(Type valueType, Type storageType)
+        {
+            return _settings.Values.
+                Where(s => s.Type == valueType).
+                ToArray().
+                AsTaskResult();
+        }
+
         public Task Save(Type valueType, string user, string name, object value)
         {
             var setting = new Setting
@@ -57,13 +72,6 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
             var exists = _settings.ContainsKey(completeKey);
 
             return exists.AsTaskResult();
-        }
-
-        public Task<Setting[]> LoadAll(Type storageType)
-        {
-            return _settings.Values.
-                ToArray().
-                AsTaskResult();
         }
 
         private Version GetTypeVersion(Type valueType)

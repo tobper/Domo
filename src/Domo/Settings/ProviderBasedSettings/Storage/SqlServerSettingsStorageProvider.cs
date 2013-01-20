@@ -38,7 +38,9 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
                 command.Parameters.AddWithValue("@User", (object)user ?? DBNull.Value);
                 command.Parameters.AddWithValue("@Name", (object)name ?? DBNull.Value);
 
-                return await command.ExecuteScalarAsync();
+                var value = await command.ExecuteScalarAsync();
+
+                return Convert.ChangeType(value, storageType);
             }
         }
 
@@ -113,7 +115,37 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
                             Type = Type.GetType((string)reader["Type"]),
                             User = (string)reader["User"],
                             Name = (string)reader["Name"],
-                            Value = reader["Value"],
+                            Value = Convert.ChangeType(reader["Value"], storageType),
+                            Version = new Version((string)reader["Version"])
+                        });
+                    }
+                }
+
+                return result.ToArray();
+            }
+        }
+
+        public async Task<Setting[]> LoadAll(Type valueType, Type storageType)
+        {
+            const string sql = "SELECT [Type], [User], [Name], [Value] FROM [dbo].[Settings] WHERE [Type] = @Type";
+
+            using (var connection = CreateConnection())
+            {
+                var command = new SqlCommand(sql, connection);
+                var result = new List<Setting>();
+
+                command.Parameters.AddWithValue("@Type", valueType.FullName);
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    while (reader.Read())
+                    {
+                        result.Add(new Setting
+                        {
+                            Type = valueType,
+                            User = (string)reader["User"],
+                            Name = (string)reader["Name"],
+                            Value = Convert.ChangeType(reader["Value"], storageType),
                             Version = new Version((string)reader["Version"])
                         });
                     }

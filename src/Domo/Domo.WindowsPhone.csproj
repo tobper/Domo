@@ -151,7 +151,6 @@
     <Compile Include="Settings\DI\ApplicationSettingsAttribute.cs" />
     <Compile Include="Settings\DI\Registration\ScannerExtensions.cs" />
     <Compile Include="Settings\DI\Registration\SettingsScanProcessor.cs" />
-    <Compile Include="Settings\DI\RoamingSettings\RoamingApplicationSettings.cs" />
     <Compile Include="Settings\DI\SettingsAttribute.cs" />
     <Compile Include="Settings\DI\SettingsScope.cs" />
     <Compile Include="Settings\DI\UserSettingsAttribute.cs" />
@@ -168,6 +167,7 @@
     <Compile Include="Settings\ProviderBasedSettings\Storage\ISettingsUsernameProvider.cs" />
     <Compile Include="Settings\ProviderBasedSettings\Storage\MemoryStorageProvider.cs" />
     <Compile Include="Settings\ProviderBasedSettings\Storage\Setting.cs" />
+    <Compile Include="Settings\RoamingApplicationSettings.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

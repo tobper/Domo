@@ -9,6 +9,7 @@ namespace Domo.Settings.ProviderBasedSettings.Storage
 
         Task<object> Load(Type valueType, string user, string name, Type storageType);
         Task<Setting[]> LoadAll(Type storageType);
+        Task<Setting[]> LoadAll(Type valueType, Type storageType);
         Task Save(Type valueType, string user, string name, object value);
         Task<bool> Exists(Type valueType, string user, string name);
     }
