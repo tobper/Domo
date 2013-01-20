@@ -25,7 +25,7 @@ namespace Domo.DI.Registration
             _singletonInstanceCache = singletonInstanceCache;
             _typeSubstitution = typeSubstitution;
 
-            DefaultLifeStyle = LifeStyle.Singleton;
+            DefaultLifeStyle = LifeStyle.Transient;
         }
 
         public ITypeRegistration SetDefaultLifeStyle(LifeStyle lifeStyle)
