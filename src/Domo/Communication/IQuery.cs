@@ -4,6 +4,6 @@ namespace Domo.Communication
 {
     public interface IQuery
     {
-        Guid Id { get; set; }
+        Guid TransactionId { get; set; }
     }
 }

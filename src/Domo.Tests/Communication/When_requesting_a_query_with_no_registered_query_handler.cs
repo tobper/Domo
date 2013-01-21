@@ -24,7 +24,7 @@ namespace Domo.Tests.Communication
 
         protected override void RunTest()
         {
-            TestInstance.Request<DummyQuery, int>(new DummyQuery());
+            TestInstance.Request<Dummy>();
         }
     }
 }

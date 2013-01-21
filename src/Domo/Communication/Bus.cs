@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Domo.DI;
 
@@ -13,9 +14,17 @@ namespace Domo.Communication
             _serviceLocator = serviceLocator;
         }
 
-        public Task<TResult> Request<TQuery, TResult>(TQuery query) where TQuery : IQuery
+        public Task<TResult> Request<TResult>()
         {
-            var handler = _serviceLocator.TryResolve<IQueryHandler<TQuery, TResult>>();
+            var query = new EmptyQuery();
+            var result = Request<TResult, IQuery>(query);
+
+            return result;
+        }
+
+        public Task<TResult> Request<TResult, TQuery>(TQuery query) where TQuery : IQuery
+        {
+            var handler = _serviceLocator.TryResolve<IQueryHandler<TResult, TQuery>>();
             if (handler == null)
                 throw new RequestQueryFailedException(typeof(TQuery), typeof(TResult));
 
@@ -40,6 +49,16 @@ namespace Domo.Communication
                 throw new SendCommandFailedException(typeof(TCommand));
 
             return handler.Handle(command);
+        }
+
+        private class EmptyQuery : IQuery
+        {
+            public Guid TransactionId { get; set; }
+
+            public EmptyQuery()
+            {
+                TransactionId = Guid.NewGuid();
+            }
         }
     }
 }

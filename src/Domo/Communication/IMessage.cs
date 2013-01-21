@@ -4,6 +4,6 @@ namespace Domo.Communication
 {
     public interface IMessage
     {
-        Guid Id { get; set; }
+        Guid TransactionId { get; set; }
     }
 }

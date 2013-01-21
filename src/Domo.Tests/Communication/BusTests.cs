@@ -20,11 +20,11 @@ namespace Domo.Tests.Communication
             return new Bus(_serviceLocator.Object);
         }
 
-        protected void GivenAValidQueryHandlerHasBeenRegistered(int result)
+        protected void GivenAValidQueryHandlerHasBeenRegistered(string name)
         {
             _serviceLocator.
-                Setup(l => l.TryResolve<IQueryHandler<DummyQuery, int>>(null)).
-                Returns(new DummyQueryHandler(result));
+                Setup(l => l.TryResolve<IQueryHandler<Dummy, IQuery>>(null)).
+                Returns(new DummyQueryHandler(name));
         }
 
         protected void GivenNoCommandHandlerHasBeenRegistered()
@@ -37,32 +37,36 @@ namespace Domo.Tests.Communication
         protected void GivenNoQueryHandlerHasBeenRegistered()
         {
             _serviceLocator.
-                Setup(l => l.TryResolve<IQueryHandler<DummyQuery, int>>(null)).
-                Returns((IQueryHandler<DummyQuery, int>)null);
+                Setup(l => l.TryResolve<IQueryHandler<Dummy, IQuery>>(null)).
+                Returns((IQueryHandler<Dummy, IQuery>)null);
         }
 
         protected class DummyCommand : ICommand
         {
-            public Guid Id { get; set; }
+            public Guid TransactionId { get; set; }
+            public string Name { get; set; }
         }
 
-        protected class DummyQuery : IQuery
+        protected class Dummy
         {
-            public Guid Id { get; set; }
+            public string Name { get; set; }
         }
 
-        private class DummyQueryHandler : IQueryHandler<DummyQuery, int>
+        private class DummyQueryHandler : IQueryHandler<Dummy, IQuery>
         {
-            private readonly int _result;
+            private readonly string _name;
 
-            public DummyQueryHandler(int result)
+            public DummyQueryHandler(string name)
             {
-                _result = result;
+                _name = name;
             }
 
-            public Task<int> Handle(DummyQuery query)
+            public async Task<Dummy> Handle(IQuery query)
             {
-                return Task.FromResult(_result);
+                return new Dummy
+                {
+                    Name = _name
+                };
             }
         }
     }
