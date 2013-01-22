@@ -36,12 +36,12 @@ namespace Domo.Settings.DI.Activation
         {
             public object LoadInstance(IApplicationSettings applicationSettings, string name)
             {
-                return applicationSettings.Load<TSettings>(name);
+                return applicationSettings.Load<TSettings>(name).Result;
             }
 
             public object LoadInstance(IUserSettings userSettings, string name)
             {
-                return userSettings.Load<TSettings>(name);
+                return userSettings.Load<TSettings>(name).Result;
             }
         }
     }
