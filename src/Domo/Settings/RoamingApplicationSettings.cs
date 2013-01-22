@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Security;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Foundation.Collections;
@@ -6,6 +7,7 @@ using Domo.Extensions;
 
 namespace Domo.Settings
 {
+    [SecuritySafeCritical]
     public class RoamingApplicationSettings : IApplicationSettings
     {
         private static IPropertySet Settings
@@ -13,6 +15,7 @@ namespace Domo.Settings
             get { return ApplicationData.Current.RoamingSettings.Values; }
         }
 
+        [SecuritySafeCritical]
         public Task<T> Load<T>(string key = null)
         {
             var settingsKey = GetSettingsKey<T>(key);
@@ -21,6 +24,7 @@ namespace Domo.Settings
             return value.AsTaskResult();
         }
 
+        [SecuritySafeCritical]
         public Task<T[]> LoadAll<T>()
         {
             var settingsKey = GetSettingsKey<T>(null);
@@ -36,6 +40,7 @@ namespace Domo.Settings
             });
         }
 
+        [SecuritySafeCritical]
         public Task Save<T>(T value, string key = null)
         {
             var settingsKey = GetSettingsKey<T>(key);
@@ -45,6 +50,7 @@ namespace Domo.Settings
             return null;
         }
 
+        [SecuritySafeCritical]
         public Task<bool> Exists<T>(string key = null)
         {
             var settingsKey = GetSettingsKey<T>(key);
