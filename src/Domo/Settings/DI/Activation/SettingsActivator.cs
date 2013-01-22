@@ -33,15 +33,16 @@ namespace Domo.Settings.DI.Activation
         }
 
         private class GenericLoader<TSettings> : IGenericLoader
+            where TSettings : class, new()
         {
             public object LoadInstance(IApplicationSettings applicationSettings, string name)
             {
-                return applicationSettings.Load<TSettings>(name).Result;
+                return applicationSettings.Load<TSettings>(name).Result ?? new TSettings();
             }
 
             public object LoadInstance(IUserSettings userSettings, string name)
             {
-                return userSettings.Load<TSettings>(name).Result;
+                return userSettings.Load<TSettings>(name).Result ?? new TSettings();
             }
         }
     }
