@@ -87,8 +87,6 @@
     <Compile Include="Communication\Bus.cs" />
     <Compile Include="Communication\DI\Registration\CommunicationsScanProcessor.cs" />
     <Compile Include="Communication\IBus.cs" />
-    <Compile Include="Communication\IQuery.cs" />
-    <Compile Include="Communication\IQueryHandler.cs" />
     <Compile Include="DI\Activation\ActivatorContainer.cs" />
     <Compile Include="DI\Activation\ConstructorActivator.cs" />
     <Compile Include="DI\Activation\IActivator.cs" />
@@ -140,7 +138,6 @@
     <Compile Include="Communication\DI\Registration\ScannerExtensions.cs" />
     <Compile Include="Communication\Exceptions\MessagingException.cs" />
     <Compile Include="Communication\Exceptions\SendCommandFailedException.cs" />
-    <Compile Include="Communication\Exceptions\RequestQueryFailedException.cs" />
     <Compile Include="Communication\ICommand.cs" />
     <Compile Include="Communication\ICommandHandler.cs" />
     <Compile Include="Communication\IMessage.cs" />

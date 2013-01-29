@@ -59,8 +59,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Communication\When_requesting_a_query_with_a_valid_query_handler.cs" />
-    <Compile Include="Communication\When_requesting_a_query_with_no_registered_query_handler.cs" />
     <Compile Include="DI\Activation\SingletonActivatorTests.cs" />
     <Compile Include="DI\Activation\When_activating_an_existing_service.cs">
       <DependentUpon>SingletonActivatorTests.cs</DependentUpon>

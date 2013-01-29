@@ -11,8 +11,7 @@ namespace Domo.Communication.DI.Registration
         private static readonly Type[] HandlerTypeDefinitions = new[]
         {
             typeof(ICommandHandler<>),
-            typeof(IMessageHandler<>),
-            typeof(IQueryHandler<,>)
+            typeof(IMessageHandler<>)
         };
 
         public void ProcessType(ITypeRegistration typeRegistration, TypeInfo type)
