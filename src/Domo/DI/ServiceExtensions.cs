@@ -1,19 +1,21 @@
 using System;
+using System.Text.RegularExpressions;
 
 namespace Domo.DI
 {
     public static class ServiceExtensions
     {
-        // IFoo, "SpecialFoo" -> IFoo, "Special"
-        // IFoo, "Foo"        -> IFoo, null
-        // Foo, "SpecialFoo"  -> Foo, "Special"
-        // Foo, "Foo"         -> Foo, null
-        // IFoo, "Something"  -> null
+        // IFoo, "SpecialFoo"      -> IFoo, "Special"
+        // IFoo, "Foo"             -> IFoo, null
+        // IFoo<int>, "SpecialFoo" -> IFoo<int>, "Special"
+        // IFoo<int>, "Foo"        -> IFoo<int>, null
+        // Foo, "SpecialFoo"       -> Foo, "Special"
+        // Foo, "Foo"              -> Foo, null
+        // IFoo, "Something"       -> null
         public static ServiceIdentity GetServiceIdentity(this Type serviceType, string referenceName)
         {
-            var serviceTypeName = (serviceType.Name.StartsWith("I"))
-                ? serviceType.Name.Substring(1)
-                : serviceType.Name;
+            // Strip away potential leading I and trailing generic construct.
+            var serviceTypeName = Regex.Replace(serviceType.Name, @"^I|`\d+$", string.Empty);
 
             if (referenceName.EndsWith(serviceTypeName, StringComparison.OrdinalIgnoreCase))
             {
