@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace Domo.Extensions
 {
-    [DebuggerStepThrough]
+    [DebuggerNonUserCode]
     public static class DictionaryExtensions
     {
         public static void Add<TKey, TValue>(this IDictionary<TKey, ICollection<TValue>> items, TKey key, TValue value)
@@ -28,7 +28,21 @@ namespace Domo.Extensions
 
         public static TValue TryGetValue<TKey, TValue>(this IDictionary<TKey, TValue> items, TKey key, Func<TKey, TValue> factoryDelegate)
         {
-            return TryGetValue(items, key, () => factoryDelegate(key));
+            TValue value;
+
+            if (!items.TryGetValue(key, out value))
+            {
+                lock (items)
+                {
+                    if (!items.TryGetValue(key, out value))
+                    {
+                        value = factoryDelegate(key);
+                        items.Add(key, value);
+                    }
+                }
+            }
+
+            return value;
         }
 
         public static TValue TryGetValue<TKey, TValue>(this IDictionary<TKey, TValue> items, TKey key, Func<TValue> factoryDelegate)

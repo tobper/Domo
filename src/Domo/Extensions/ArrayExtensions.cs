@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics;
 
 namespace Domo.Extensions
 {
+    [DebuggerNonUserCode]
     public static class ArrayExtensions
     {
         public static TConverted[] Convert<TOriginal, TConverted>(this TOriginal[] items, Func<TOriginal, TConverted> converter)
