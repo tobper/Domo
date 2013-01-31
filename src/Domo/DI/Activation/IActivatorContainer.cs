@@ -4,6 +4,6 @@ namespace Domo.DI.Activation
 {
     internal interface IActivatorContainer
     {
-        IActivator this[Type activatorType] { get; }
+        IActivator GetActivator(Type activatorType);
     }
 }

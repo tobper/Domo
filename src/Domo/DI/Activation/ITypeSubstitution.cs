@@ -4,7 +4,7 @@ namespace Domo.DI.Activation
 {
     public interface ITypeSubstitution
     {
-        void AddSubstitution(ServiceIdentity identity, Type realServiceType);
-        Type TryGetSubstitutedType(ServiceIdentity identity);
+        void AddConcreteType(ServiceIdentity identity, Type concreteType);
+        Type TryGetConcreteType(ServiceIdentity identity);
     }
 }

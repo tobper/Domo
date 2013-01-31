@@ -42,13 +42,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DI\Activation\ActivationDelegate.cs" />
     <Compile Include="DI\Activation\ActivatorContainer.cs" />
     <Compile Include="DI\Activation\IInjectionContext.cs" />
-    <Compile Include="DI\Activation\ConstructorActivator.cs" />
+    <Compile Include="DI\Activation\FactoryActivator.cs" />
     <Compile Include="DI\Activation\IActivator.cs" />
     <Compile Include="DI\Activation\TypeSubstitution.cs" />
     <Compile Include="DI\Activation\ITypeSubstitution.cs" />
-    <Compile Include="DI\Activation\LazyActivator.cs" />
     <Compile Include="DI\Activation\SingletonActivator.cs" />
     <Compile Include="DI\Activation\TransientActivator.cs" />
     <Compile Include="DI\Caching\IInstanceCache.cs" />

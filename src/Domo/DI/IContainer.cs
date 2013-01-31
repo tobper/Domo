@@ -15,7 +15,7 @@ namespace Domo.DI
         object Resolve(ServiceIdentity identity);
         IEnumerable<object> ResolveAll(Type serviceType);
 
-        IActivator GetActivator(ServiceIdentity identity);
+        ActivationDelegate GetActivationDelegate(ServiceIdentity identity);
         void Scan(Action<IAssemblyScanner> scanner);
     }
 }

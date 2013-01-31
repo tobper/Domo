@@ -17,14 +17,14 @@ namespace Domo.Tests.DI.Activation
         protected Mock<IContainer> Container { get; private set; }
         protected Mock<IFactoryContainer> FactoryManager { get; private set; }
         protected Mock<IInstanceCache> SingletonCache { get; private set; }
-        protected Mock<ITypeSubstitution> TypeRedirector { get; private set; }
+        protected Mock<ITypeSubstitution> TypeSubstitution { get; private set; }
 
         protected override void CreateMocks()
         {
             Container = new Mock<IContainer>(MockBehavior.Strict);
             FactoryManager = new Mock<IFactoryContainer>(MockBehavior.Strict);
             SingletonCache = new Mock<IInstanceCache>(MockBehavior.Strict);
-            TypeRedirector = new Mock<ITypeSubstitution>(MockBehavior.Strict);
+            TypeSubstitution = new Mock<ITypeSubstitution>(MockBehavior.Strict);
 
             _serviceIdentity = new ServiceIdentity(typeof(Type));
             _realServiceType = null;
@@ -32,14 +32,14 @@ namespace Domo.Tests.DI.Activation
 
         protected override void SetupBehavior()
         {
-            TypeRedirector.
-                Setup(c => c.TryGetSubstitutedType(_serviceIdentity)).
+            TypeSubstitution.
+                Setup(c => c.TryGetConcreteType(_serviceIdentity)).
                 Returns(_realServiceType);
         }
 
         protected override SingletonActivator CreateTestInstance()
         {
-            return new SingletonActivator(FactoryManager.Object, TypeRedirector.Object, SingletonCache.Object);
+            return new SingletonActivator(FactoryManager.Object, TypeSubstitution.Object, SingletonCache.Object);
         }
 
         protected override void RunTest()

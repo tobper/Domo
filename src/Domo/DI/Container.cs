@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Domo.DI.Activation;
 using Domo.DI.Caching;
 using Domo.DI.Creation;
@@ -72,20 +73,23 @@ namespace Domo.DI
             if (!activatorType.Implements<IActivator>())
                 throw new InvalidActivatorTypeException(activatorType);
 
+            var activator = _activators.GetActivator(activatorType);
+
             _serviceFamilies.
                 TryGetValue(identity.ServiceType, () => new ServiceFamily(identity.ServiceType)).
-                AddActivator(identity, activatorType);
+                AddActivator(identity, activator);
         }
 
         public object Resolve(ServiceIdentity identity)
         {
-            var activator = TryGetActivator(identity);
-            if (activator == null)
+            var activationDelegate = GetActivationDelegate(identity);
+            if (activationDelegate == null)
                 return null;
 
             var context = CreateInjectionContext();
+            var instance = activationDelegate(context);
 
-            return activator.ActivateService(context, identity);
+            return instance;
         }
 
         public IEnumerable<object> ResolveAll(Type serviceType)
@@ -95,32 +99,29 @@ namespace Domo.DI
                 yield break;
 
             var context = CreateInjectionContext();
-            var familyMembers = serviceFamily.GetMembers();
+            var activationDelegates = serviceFamily.GetAllActivationDelegates();
 
-            foreach (var familyMember in familyMembers)
+            foreach (var activationDelegate in activationDelegates)
             {
-                var activator = _activators[familyMember.ActivatorType];
-                var instance = activator.ActivateService(context, familyMember.Identity);
+                var instance = activationDelegate(context);
 
                 yield return instance;
             }
         }
 
         // Todo: GetActivator will throw if service has not been registered but Resolve(...) will not
-        public IActivator GetActivator(ServiceIdentity identity)
+        public ActivationDelegate GetActivationDelegate(ServiceIdentity identity)
         {
-            var activator = TryGetActivator(identity);
+            var activator = TryGetActivationDelegate(identity);
             if (activator == null)
                 throw new ServiceNotRegisteredException(identity);
 
             return activator;
         }
 
-        private IActivator TryGetActivator(ServiceIdentity identity)
+        private ActivationDelegate TryGetActivationDelegate(ServiceIdentity identity)
         {
-            var isLazy = identity.ServiceType.IsConstructedGenericType &&
-                         identity.ServiceType.GetGenericTypeDefinition() == typeof(Lazy<>);
-
+            var isLazy = IsLazyIdentity(identity);
             if (isLazy)
             {
                 identity = new ServiceIdentity(
@@ -128,29 +129,34 @@ namespace Domo.DI
                     identity.ServiceName);
             }
 
-            var activatorType = GetActivatorType(identity);
-            if (activatorType == null)
-                return null;
-
-            var activator = _activators[activatorType];
-
-            if (isLazy)
-                activator = new LazyActivator(activator);
-
-            return activator;
-        }
-
-        private Type GetActivatorType(ServiceIdentity identity)
-        {
             var serviceFamily = _serviceFamilies.TryGetValue(identity.ServiceType);
             if (serviceFamily == null)
                 return null;
 
-            var activator = serviceFamily.GetActivator(identity);
-            if (activator == null)
-                return null;
+            var activationDelegate = serviceFamily.GetActivationDelegate(identity);
 
-            return activator;
+            if (isLazy)
+                activationDelegate = CreateLazyActivationDelegate(identity.ServiceType, activationDelegate);
+
+            return activationDelegate;
+        }
+
+        private static bool IsLazyIdentity(ServiceIdentity identity)
+        {
+            return identity.ServiceType.IsConstructedGenericType &&
+                   identity.ServiceType.GetGenericTypeDefinition() == typeof(Lazy<>);
+        }
+
+        private static ActivationDelegate CreateLazyActivationDelegate(Type serviceType, ActivationDelegate activationDelegate)
+        {
+            return context => Activator.CreateInstance(
+                serviceType,
+                CreateLazyFactoryDelegate(activationDelegate, context));
+        }
+
+        private static Func<object> CreateLazyFactoryDelegate(ActivationDelegate activationDelegate, IInjectionContext context)
+        {
+            return () => activationDelegate(context);
         }
 
         private IInjectionContext CreateInjectionContext()

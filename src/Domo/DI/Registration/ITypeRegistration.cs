@@ -9,10 +9,11 @@ namespace Domo.DI.Registration
         ITypeRegistration RegisterDelegate<TService>(Func<IInjectionContext, TService> factoryDelegate, string serviceName = null, LifeStyle lifeStyle = LifeStyle.Default);
         ITypeRegistration RegisterDelegate(Func<IInjectionContext, object> factoryDelegate, ServiceIdentity identity, LifeStyle lifeStyle = LifeStyle.Default);
         ITypeRegistration RegisterSingleton<TService>(TService instance, string serviceName = null) where TService : class;
+        ITypeRegistration RegisterSingleton<TService, TInstance>(string serviceName = null) where TService : class where TInstance : TService;
         ITypeRegistration Register<TService>(string serviceName = null, LifeStyle lifeStyle = LifeStyle.Default);
         ITypeRegistration Register<TService, TInstance>(string serviceName = null, LifeStyle lifeStyle = LifeStyle.Default);
         ITypeRegistration Register(ServiceIdentity identity, LifeStyle lifeStyle = LifeStyle.Default);
-        ITypeRegistration Register(ServiceIdentity identity, Type instanceType, LifeStyle lifeStyle = LifeStyle.Default);
+        ITypeRegistration Register(ServiceIdentity identity, Type concreteType, LifeStyle lifeStyle = LifeStyle.Default);
         ITypeRegistration RegisterActivator(ServiceIdentity identity, Type activatorType);
     }
 }

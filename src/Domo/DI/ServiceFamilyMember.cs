@@ -1,16 +1,16 @@
-using System;
+using Domo.DI.Activation;
 
 namespace Domo.DI
 {
     public class ServiceFamilyMember
     {
-        public Type ActivatorType { get; private set; }
         public ServiceIdentity Identity { get; private set; }
+        public IActivator Activator { get; private set; }
 
-        public ServiceFamilyMember(Type activatorType, ServiceIdentity identity)
+        public ServiceFamilyMember(ServiceIdentity identity, IActivator activator)
         {
-            ActivatorType = activatorType;
             Identity = identity;
+            Activator = activator;
         }
     }
 }

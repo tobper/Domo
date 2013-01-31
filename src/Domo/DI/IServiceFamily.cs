@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Domo.DI.Activation;
 
 namespace Domo.DI
 {
@@ -6,8 +8,8 @@ namespace Domo.DI
     {
         Type ServiceType { get; }
 
-        void AddActivator(ServiceIdentity identity, Type activatorType);
-        Type GetActivator(ServiceIdentity identity);
-        ServiceFamilyMember[] GetMembers();
+        void AddActivator(ServiceIdentity identity, IActivator activator);
+        ActivationDelegate GetActivationDelegate(ServiceIdentity identity);
+        IEnumerable<ActivationDelegate> GetAllActivationDelegates();
     }
 }

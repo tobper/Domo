@@ -59,21 +59,21 @@ namespace Domo.DI.Creation
 
         private IFactory CreateConstructorFactory(ConstructorInfo constructor, ParameterInfo[] parameters)
         {
-            var factoryParameters = parameters.Convert(parameter =>
+            var constructorParameters = parameters.Convert(parameter =>
             {
-                var serviceType = parameter.ParameterType;
-                var identity = GetParameterIdentity(serviceType, parameter);
-                var activator = _container.GetActivator(identity);
+                var serviceIdentity = GetParameterServiceIdentity(parameter.ParameterType, parameter.Name);
+                var activationDelegate = _container.GetActivationDelegate(serviceIdentity);
 
-                return new ConstructorFactoryParameter(activator, identity);
+                return new ConstructorFactoryParameter(activationDelegate);
             });
 
-            return new ConstructorFactory(constructor, factoryParameters);
+            return new ConstructorFactory(constructor, constructorParameters);
         }
 
-        private static ServiceIdentity GetParameterIdentity(Type serviceType, ParameterInfo parameter)
+        private static ServiceIdentity GetParameterServiceIdentity(Type serviceType, string parameterName)
         {
-            var identity = serviceType.GetServiceIdentity(parameter.Name);
+            // First try to get a specific identity based on the parameter name.
+            var identity = serviceType.GetServiceIdentity(parameterName);
             if (identity != null)
                 return identity;
 

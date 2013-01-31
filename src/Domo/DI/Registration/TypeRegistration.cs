@@ -68,7 +68,8 @@ namespace Domo.DI.Registration
             return this;
         }
 
-        public ITypeRegistration RegisterSingleton<TService>(TService instance, string serviceName) where TService : class
+        public ITypeRegistration RegisterSingleton<TService>(TService instance, string serviceName)
+            where TService : class
         {
             if (instance == null)
                 throw new ArgumentNullException("instance");
@@ -83,6 +84,13 @@ namespace Domo.DI.Registration
             return this;
         }
 
+        public ITypeRegistration RegisterSingleton<TService, TConcrete>(string serviceName)
+            where TService : class
+            where TConcrete : TService
+        {
+            return Register<TService, TConcrete>(serviceName, LifeStyle.Singleton);
+        }
+
         public ITypeRegistration Register<TService>(string serviceName, LifeStyle lifeStyle)
         {
             var serviceType = typeof(TService);
@@ -94,10 +102,10 @@ namespace Domo.DI.Registration
             return this;
         }
 
-        public ITypeRegistration Register<TService, TInstance>(string serviceName, LifeStyle lifeStyle)
+        public ITypeRegistration Register<TService, TConcrete>(string serviceName, LifeStyle lifeStyle)
         {
             var serviceType = typeof(TService);
-            var instanceType = typeof(TInstance);
+            var instanceType = typeof(TConcrete);
             var identity = new ServiceIdentity(serviceType, serviceName);
 
             return Register(identity, instanceType, lifeStyle);
@@ -108,14 +116,14 @@ namespace Domo.DI.Registration
             return Register(identity, identity.ServiceType, lifeStyle);
         }
 
-        public ITypeRegistration Register(ServiceIdentity identity, Type instanceType, LifeStyle lifeStyle)
+        public ITypeRegistration Register(ServiceIdentity identity, Type concreteType, LifeStyle lifeStyle)
         {
             var activatorType = GetActivatorType(lifeStyle, identity.ServiceType);
 
             _container.Register(identity, activatorType);
 
-            if (instanceType != identity.ServiceType)
-                _typeSubstitution.AddSubstitution(identity, instanceType);
+            if (concreteType != identity.ServiceType)
+                _typeSubstitution.AddConcreteType(identity, concreteType);
 
             return this;
         }

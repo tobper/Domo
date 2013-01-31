@@ -19,12 +19,7 @@ namespace Domo.DI.Activation
                 a => a);
         }
 
-        public IActivator this[Type activatorType]
-        {
-            get { return GetActivator(activatorType); }
-        }
-
-        private IActivator GetActivator(Type activatorType)
+        public IActivator GetActivator(Type activatorType)
         {
             return _activators.TryGetValue(activatorType, CreateActivator);
         }

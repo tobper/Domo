@@ -6,16 +6,16 @@ namespace Domo.DI.Activation
 {
     public class TypeSubstitution : ITypeSubstitution
     {
-        private readonly IDictionary<ServiceIdentity, Type> _types = new Dictionary<ServiceIdentity, Type>();
+        private readonly IDictionary<ServiceIdentity, Type> _concreteTypes = new Dictionary<ServiceIdentity, Type>();
 
-        public void AddSubstitution(ServiceIdentity identity, Type realServiceType)
+        public void AddConcreteType(ServiceIdentity identity, Type concreteType)
         {
-            _types.Add(identity, realServiceType);
+            _concreteTypes.Add(identity, concreteType);
         }
 
-        public Type TryGetSubstitutedType(ServiceIdentity identity)
+        public Type TryGetConcreteType(ServiceIdentity identity)
         {
-            return _types.TryGetValue(identity);
+            return _concreteTypes.TryGetValue(identity);
         }
     }
 }

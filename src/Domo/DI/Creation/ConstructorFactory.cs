@@ -24,10 +24,7 @@ namespace Domo.DI.Creation
 
         private static object ActivateArgument(IInjectionContext context, ConstructorFactoryParameter parameter)
         {
-            var activator = parameter.Activator;
-            var identity = parameter.ServiceIdentity;
-
-            return activator.ActivateService(context, identity);
+            return parameter.ActivationDelegate(context);
         }
     }
 }
