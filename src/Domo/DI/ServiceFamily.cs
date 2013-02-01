@@ -38,15 +38,11 @@ namespace Domo.DI
 
         public ActivationDelegate GetActivationDelegate(ServiceIdentity identity)
         {
-            var member = _members.TryGetValue(identity);
-            if (member == null)
-            {
-                if (_members.Count != 1)
-                    return null;
-
-                // Use the only member there is as a default member.
-                member = _members.Values.Single();
-            }
+            // Asking for default instance and only one instance is registered ->
+            // The registered instance will be returned regardless of name it is registered with.
+            var member = (identity.ServiceName == null && _members.Count == 1)
+                ? _members.Values.First()
+                : _members.TryGetValue(identity);
 
             return GetActivationDelegate(member);
         }
