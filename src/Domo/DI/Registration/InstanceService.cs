@@ -13,9 +13,9 @@ namespace Domo.DI.Registration
         public ServiceIdentity Identity { get; private set; }
         public object Instance { get; private set; }
 
-        public ActivationDelegate GetActivationDelegate()
+        public object GetInstance(IInjectionContext context)
         {
-            return context => Instance;
+            return Instance;
         }
     }
 }

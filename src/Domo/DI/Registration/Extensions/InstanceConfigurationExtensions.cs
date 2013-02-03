@@ -2,14 +2,14 @@ namespace Domo.DI.Registration
 {
     public static class InstanceConfigurationExtensions
     {
-        public static IContainerConfiguration Register<TService>(this IContainerConfiguration container, TService instance, string serviceName = null)
+        public static IContainerConfiguration Register<TService>(this IContainerConfiguration configuration, TService instance, string serviceName = null)
             where TService : class
         {
             var serviceType = typeof(TService);
             var identity = new ServiceIdentity(serviceType, serviceName);
-            var configuration = new InstanceServiceConfiguration(identity, instance);
+            var service = new InstanceServiceConfiguration(identity, instance);
 
-            return container.Register(configuration);
+            return configuration.Register(service);
         }
     }
 }

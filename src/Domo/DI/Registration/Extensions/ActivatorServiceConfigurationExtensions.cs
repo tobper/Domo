@@ -46,18 +46,18 @@ namespace Domo.DI.Registration
             return configuration;
         }
 
-        public static TConfiguration ActivatedBy<TConfiguration>(this TConfiguration configuration, Type activatorType)
-            where TConfiguration : IActivatorServiceConfiguration
+        public static TService ActivatedBy<TService>(this TService service, Type activatorType)
+            where TService : IActivatorServiceConfiguration
         {
-            configuration.ActivatedBy(activatorType);
-            return configuration;
+            service.ActivatedBy(activatorType);
+            return service;
         }
 
-        public static TConfiguration OnComplete<TConfiguration>(this TConfiguration configuration, Action<IContainer> onComplete)
-            where TConfiguration : IActivatorServiceConfiguration
+        public static TService OnComplete<TService>(this TService service, Action<IContainer> onComplete)
+            where TService : IActivatorServiceConfiguration
         {
-            configuration.OnComplete(onComplete);
-            return configuration;
+            service.OnComplete(onComplete);
+            return service;
         }
     }
 }

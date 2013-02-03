@@ -6,28 +6,28 @@ namespace Domo.DI.Registration
     public class ContainerConfiguration : IContainerConfiguration
     {
         private readonly IContainer _container;
-        private readonly Queue<IServiceConfiguration> _configurations = new Queue<IServiceConfiguration>();
+        private readonly Queue<IServiceConfiguration> _serviceConfigurations = new Queue<IServiceConfiguration>();
 
         public ContainerConfiguration(IContainer container)
         {
             _container = container;
         }
 
-        public IContainerConfiguration Register(IServiceConfiguration configuration)
+        public IContainerConfiguration Register(IServiceConfiguration serviceConfiguration)
         {
-            if (configuration == null)
-                throw new ArgumentNullException("configuration");
+            if (serviceConfiguration == null)
+                throw new ArgumentNullException("serviceConfiguration");
 
-            _configurations.Enqueue(configuration);
+            _serviceConfigurations.Enqueue(serviceConfiguration);
 
             return this;
         }
 
         public void CompleteRegistration()
         {
-            while (_configurations.Count > 0)
+            while (_serviceConfigurations.Count > 0)
             {
-                var service = _configurations.
+                var service = _serviceConfigurations.
                     Dequeue().
                     GetService(_container);
 

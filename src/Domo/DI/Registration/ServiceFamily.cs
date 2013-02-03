@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Domo.DI.Activation;
 using Domo.Extensions;
 
 namespace Domo.DI.Registration
@@ -32,7 +31,7 @@ namespace Domo.DI.Registration
             _services.Add(service.Identity, service);
         }
 
-        public ActivationDelegate GetActivationDelegate(ServiceIdentity identity)
+        public IService GetService(ServiceIdentity identity)
         {
             // Asking for default instance and only one instance is registered ->
             // The registered instance will be returned regardless of name it is registered with.
@@ -40,20 +39,17 @@ namespace Domo.DI.Registration
                 ? _services.Values.First()
                 : _services.TryGetValue(identity);
 
-            return service.GetActivationDelegate();
+            return service;
+        }
+
+        public IEnumerable<IService> GetAllServices()
+        {
+            return _services.Values;
         }
 
         private static bool IsDefaultIdentity(ServiceIdentity identity)
         {
             return identity.ServiceName == null;
-        }
-
-        public IEnumerable<ActivationDelegate> GetAllActivationDelegates()
-        {
-            foreach (var service in _services.Values)
-            {
-                yield return service.GetActivationDelegate();
-            }
         }
 
         IEnumerator<IService> IEnumerable<IService>.GetEnumerator()

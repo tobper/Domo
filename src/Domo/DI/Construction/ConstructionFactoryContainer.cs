@@ -42,11 +42,11 @@ namespace Domo.DI.Construction
             var constructorParameters = parameters.Convert(parameter =>
             {
                 var serviceIdentity = GetParameterServiceIdentity(parameter.ParameterType, parameter.Name);
-                var activationDelegate = _container.GetActivationDelegate(serviceIdentity);
-                if (activationDelegate == null)
+                var service = _container.GetService(serviceIdentity);
+                if (service == null)
                     throw new ServiceNotRegisteredException(serviceIdentity);
 
-                return new ConstructionFactoryParameter(activationDelegate);
+                return new ConstructionFactoryParameter(service);
             });
 
             return new ConstructionFactory(constructor, constructorParameters);

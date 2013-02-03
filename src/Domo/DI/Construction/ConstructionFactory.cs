@@ -17,14 +17,14 @@ namespace Domo.DI.Construction
 
         public object CreateInstance(IInjectionContext context)
         {
-            var arguments = _parameters.Convert(parameter => ActivateArgument(context, parameter));
+            var arguments = _parameters.Convert(parameter => GetInstance(context, parameter));
 
             return _constructor.Invoke(arguments);
         }
 
-        private static object ActivateArgument(IInjectionContext context, ConstructionFactoryParameter parameter)
+        private static object GetInstance(IInjectionContext context, ConstructionFactoryParameter parameter)
         {
-            return parameter.ActivationDelegate(context);
+            return parameter.Service.GetInstance(context);
         }
     }
 }

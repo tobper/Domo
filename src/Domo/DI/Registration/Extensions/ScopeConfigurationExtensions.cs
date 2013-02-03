@@ -5,24 +5,24 @@ namespace Domo.DI.Registration
 {
     public static class ScopeConfigurationExtensions
     {
-        public static TConfiguration InScope<TConfiguration>(this TConfiguration configuration, Scope scope)
-            where TConfiguration : IActivatorServiceConfiguration
+        public static TService InScope<TService>(this TService service, Scope scope)
+            where TService : IActivatorServiceConfiguration
         {
-            var activatorType = GetActivatorType(scope, configuration.Identity.ServiceType);
+            var activatorType = GetActivatorType(scope, service.Identity.ServiceType);
 
-            return configuration.ActivatedBy<TConfiguration>(activatorType);
+            return service.ActivatedBy<TService>(activatorType);
         }
 
-        public static TConfiguration AsSingleton<TConfiguration>(this TConfiguration configuration)
-            where TConfiguration : IActivatorServiceConfiguration
+        public static TService AsSingleton<TService>(this TService service)
+            where TService : IActivatorServiceConfiguration
         {
-            return InScope(configuration, Scope.Singleton);
+            return InScope(service, Scope.Singleton);
         }
 
-        public static TConfiguration AsTransient<TConfiguration>(this TConfiguration configuration)
-            where TConfiguration : IActivatorServiceConfiguration
+        public static TService AsTransient<TService>(this TService service)
+            where TService : IActivatorServiceConfiguration
         {
-            return InScope(configuration, Scope.Transient);
+            return InScope(service, Scope.Transient);
         }
 
         private static Type GetActivatorType(Scope scope, Type serviceType)

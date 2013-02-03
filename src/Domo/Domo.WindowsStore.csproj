@@ -145,8 +145,8 @@
     <Compile Include="DI\Registration\Conventions\IScanConvention.cs" />
     <Compile Include="DI\Registration\Extensions\ActivatorServiceConfigurationExtensions.cs" />
     <Compile Include="DI\Registration\Extensions\ConcreteConfigurationExtensions.cs" />
-    <Compile Include="DI\Registration\Extensions\ConstructionConfigurationExtensions.cs" />
     <Compile Include="DI\Registration\Extensions\DelegateFactoryConfigurationExtensions.cs" />
+    <Compile Include="DI\Registration\Extensions\FactoryConfigurationExtensions.cs" />
     <Compile Include="DI\Registration\Extensions\InstanceConfigurationExtensions.cs" />
     <Compile Include="DI\Registration\Extensions\ScopeConfigurationExtensions.cs" />
     <Compile Include="DI\Registration\Extensions\ServiceConfigurationExtensions.cs" />
@@ -159,6 +159,7 @@
     <Compile Include="DI\Registration\IService.cs" />
     <Compile Include="DI\Registration\IServiceConfiguration.cs" />
     <Compile Include="DI\Registration\IServiceFamily.cs" />
+    <Compile Include="DI\Registration\LazyService.cs" />
     <Compile Include="DI\Registration\PreventAutomaticRegistrationAttribute.cs" />
     <Compile Include="DI\Registration\ServiceConfiguration.cs" />
     <Compile Include="DI\Registration\ServiceFamily.cs" />

@@ -6,38 +6,38 @@ namespace Domo.DI.Registration
 {
     public static class ConcreteConfigurationExtensions
     {
-        public static IContainerConfiguration Register<TService, TConcrete>(this IContainerConfiguration container)
+        public static IContainerConfiguration Register<TService, TConcrete>(this IContainerConfiguration configuration)
             where TConcrete : TService
         {
-            container.
+            configuration.
                 Register<TService>().
                 Using(typeof(TConcrete));
 
-            return container;
+            return configuration;
         }
 
-        public static TConfiguration Using<TConfiguration>(this TConfiguration configuration, Type concreteType)
-            where TConfiguration : IActivatorServiceConfiguration
+        public static TService Using<TService>(this TService service, Type concreteType)
+            where TService : IActivatorServiceConfiguration
         {
-            return Register(configuration, concreteType);
+            return Register(service, concreteType);
         }
 
-        public static TConfiguration Using<TConfiguration>(this TConfiguration configuration, TypeInfo concreteType)
-            where TConfiguration : IActivatorServiceConfiguration
+        public static TService Using<TService>(this TService service, TypeInfo concreteType)
+            where TService : IActivatorServiceConfiguration
         {
-            return Register(configuration, concreteType.AsType());
+            return Register(service, concreteType.AsType());
         }
 
-        private static TConfiguration Register<TConfiguration>(TConfiguration configuration, Type concreteType)
-            where TConfiguration : IActivatorServiceConfiguration
+        private static TService Register<TService>(TService service, Type concreteType)
+            where TService : IActivatorServiceConfiguration
         {
-            return configuration.
-                OnComplete<TConfiguration>(container =>
+            return service.
+                OnComplete<TService>(container =>
                 {
                     container.
                         ServiceLocator.
                         Resolve<ITypeSubstitution>().
-                        AddConcreteType(configuration.Identity, concreteType);
+                        AddConcreteType(service.Identity, concreteType);
                 });
         }
     }

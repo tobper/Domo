@@ -61,7 +61,7 @@
     <Compile Include="DI\Activation\TransientActivator.cs" />
     <Compile Include="DI\Caching\IInstanceCache.cs" />
     <Compile Include="DI\Caching\InstanceCache.cs" />
-    <Compile Include="DI\Registration\Extensions\ConstructionConfigurationExtensions.cs" />
+    <Compile Include="DI\Registration\Extensions\FactoryConfigurationExtensions.cs" />
     <Compile Include="DI\Registration\Extensions\DelegateFactoryConfigurationExtensions.cs" />
     <Compile Include="DI\Container.cs" />
     <Compile Include="DI\Construction\ConstructionFactory.cs" />
@@ -96,6 +96,7 @@
     <Compile Include="DI\Registration\IServiceConfiguration.cs" />
     <Compile Include="DI\Registration\IServiceFamily.cs" />
     <Compile Include="DI\Registration\IService.cs" />
+    <Compile Include="DI\Registration\LazyService.cs" />
     <Compile Include="DI\Registration\PreventAutomaticRegistrationAttribute.cs" />
     <Compile Include="DI\Registration\ActivatorService.cs" />
     <Compile Include="DI\Registration\ServiceConfiguration.cs" />

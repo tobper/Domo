@@ -5,6 +5,6 @@ namespace Domo.DI.Registration
     public interface IService
     {
         ServiceIdentity Identity { get; }
-        ActivationDelegate GetActivationDelegate();
+        object GetInstance(IInjectionContext context);
     }
 }

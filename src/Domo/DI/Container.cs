@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Domo.DI.Activation;
 using Domo.DI.Caching;
 using Domo.DI.Construction;
@@ -41,31 +42,31 @@ namespace Domo.DI
         public IServiceLocator ServiceLocator { get; private set; }
 
         public static IContainer Create(
-            Action<IContainerConfiguration> registration = null,
-            Action<IAssemblyScanner> scanner = null)
+            Action<IContainerConfiguration> configure = null,
+            Action<IAssemblyScanner> scan = null)
         {
             IContainer container = new Container();
-            container.Configure(registration, scanner);
+            container.Configure(configure, scan);
             return container;
         }
 
         public void Configure(
-            Action<IContainerConfiguration> registration = null,
-            Action<IAssemblyScanner> scanner = null)
+            Action<IContainerConfiguration> configure = null,
+            Action<IAssemblyScanner> scan = null)
         {
-            if (registration != null)
+            if (configure != null)
             {
-                var containerRegistration = ServiceLocator.Resolve<IContainerConfiguration>();
+                var configuration = ServiceLocator.Resolve<IContainerConfiguration>();
 
-                registration(containerRegistration);
-                containerRegistration.CompleteRegistration();
+                configure(configuration);
+                configuration.CompleteRegistration();
             }
 
-            if (scanner != null)
+            if (scan != null)
             {
-                var assemblyScanner = ServiceLocator.Resolve<IAssemblyScanner>();
+                var scanner = ServiceLocator.Resolve<IAssemblyScanner>();
 
-                scanner(assemblyScanner);
+                scan(scanner);
             }
         }
 
@@ -80,12 +81,12 @@ namespace Domo.DI
 
         public object Resolve(ServiceIdentity identity)
         {
-            var activationDelegate = GetActivationDelegate(identity);
-            if (activationDelegate == null)
+            var service = GetService(identity);
+            if (service == null)
                 return null;
 
             var context = CreateInjectionContext();
-            var instance = activationDelegate(context);
+            var instance = service.GetInstance(context);
 
             return instance;
         }
@@ -94,20 +95,16 @@ namespace Domo.DI
         {
             var serviceFamily = _serviceFamilies.TryGetValue(serviceType);
             if (serviceFamily == null)
-                yield break;
+                return Enumerable.Empty<object>();
 
             var context = CreateInjectionContext();
-            var activationDelegates = serviceFamily.GetAllActivationDelegates();
+            var services = serviceFamily.GetAllServices();
 
-            foreach (var activationDelegate in activationDelegates)
-            {
-                var instance = activationDelegate(context);
-
-                yield return instance;
-            }
+            return from service in services
+                   select service.GetInstance(context);
         }
 
-        public ActivationDelegate GetActivationDelegate(ServiceIdentity identity)
+        public IService GetService(ServiceIdentity identity)
         {
             var isLazy = IsLazyIdentity(identity);
             if (isLazy)
@@ -121,30 +118,18 @@ namespace Domo.DI
             if (serviceFamily == null)
                 return null;
 
-            var activationDelegate = serviceFamily.GetActivationDelegate(identity);
+            var service = serviceFamily.GetService(identity);
 
             if (isLazy)
-                activationDelegate = CreateLazyActivationDelegate(identity.ServiceType, activationDelegate);
+                service = new LazyService(service);
 
-            return activationDelegate;
+            return service;
         }
 
         private static bool IsLazyIdentity(ServiceIdentity identity)
         {
             return identity.ServiceType.IsConstructedGenericType &&
                    identity.ServiceType.GetGenericTypeDefinition() == typeof(Lazy<>);
-        }
-
-        private static ActivationDelegate CreateLazyActivationDelegate(Type serviceType, ActivationDelegate activationDelegate)
-        {
-            return context => Activator.CreateInstance(
-                serviceType,
-                CreateLazyFactoryDelegate(activationDelegate, context));
-        }
-
-        private static Func<object> CreateLazyFactoryDelegate(ActivationDelegate activationDelegate, IInjectionContext context)
-        {
-            return () => activationDelegate(context);
         }
 
         private IInjectionContext CreateInjectionContext()

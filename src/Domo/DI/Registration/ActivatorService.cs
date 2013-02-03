@@ -20,9 +20,9 @@ namespace Domo.DI.Registration
             Activator = activator;
         }
 
-        public ActivationDelegate GetActivationDelegate()
+        public object GetInstance(IInjectionContext context)
         {
-            return context => Activator.ActivateService(context, Identity);
+            return Activator.ActivateService(context, Identity);
         }
     }
 }

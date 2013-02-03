@@ -1,14 +1,14 @@
-using Domo.DI.Activation;
+using Domo.DI.Registration;
 
 namespace Domo.DI.Construction
 {
     public class ConstructionFactoryParameter
     {
-        public ActivationDelegate ActivationDelegate { get; private set; }
+        public IService Service { get; private set; }
 
-        public ConstructionFactoryParameter(ActivationDelegate activationDelegate)
+        public ConstructionFactoryParameter(IService service)
         {
-            ActivationDelegate = activationDelegate;
+            Service = service;
         }
     }
 }

@@ -2,11 +2,11 @@ namespace Domo.DI.Registration
 {
     public static class ServiceConfigurationExtensions
     {
-        public static TConfiguration WithName<TConfiguration>(this TConfiguration configuration, string serviceName)
-            where TConfiguration : IServiceConfiguration
+        public static TService WithName<TService>(this TService service, string serviceName)
+            where TService : IServiceConfiguration
         {
-            configuration.WithName(serviceName);
-            return configuration;
+            service.WithName(serviceName);
+            return service;
         }
     }
 }
