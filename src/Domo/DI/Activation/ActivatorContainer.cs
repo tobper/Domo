@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Domo.DI.Creation;
+using Domo.DI.Construction;
 using Domo.Extensions;
 
 namespace Domo.DI.Activation
@@ -9,11 +9,11 @@ namespace Domo.DI.Activation
     public class ActivatorContainer : IActivatorContainer
     {
         private readonly IDictionary<Type, IActivator> _activators;
-        private readonly IFactoryContainer _factoryContainer;
+        private readonly IFactoryContainer _factories;
 
-        public ActivatorContainer(IFactoryContainer factoryContainer, params IActivator[] defaultActivators)
+        public ActivatorContainer(IFactoryContainer factories, params IActivator[] defaultActivators)
         {
-            _factoryContainer = factoryContainer;
+            _factories = factories;
             _activators = defaultActivators.ToDictionary(
                 a => a.GetType(),
                 a => a);
@@ -26,7 +26,9 @@ namespace Domo.DI.Activation
 
         private IActivator CreateActivator(Type activatorType)
         {
-            return (IActivator)_factoryContainer.CreateInstance(activatorType);
+            var identity = new ServiceIdentity(activatorType);
+
+            return (IActivator)_factories.CreateInstance(identity);
         }
     }
 }

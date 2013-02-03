@@ -2,7 +2,7 @@ using System;
 using Domo.DI;
 using Domo.DI.Activation;
 using Domo.DI.Caching;
-using Domo.DI.Creation;
+using Domo.DI.Construction;
 using Moq;
 
 namespace Domo.Tests.DI.Activation

@@ -1,11 +1,11 @@
-using Domo.DI.Creation;
+using Domo.DI.Construction;
 
 namespace Domo.DI.Activation
 {
     public class TransientActivator : FactoryActivator
     {
-        public TransientActivator(IFactoryContainer factoryContainer, ITypeSubstitution typeSubstitution)
-            : base(factoryContainer, typeSubstitution, null)
+        public TransientActivator(IFactoryContainer factories, ITypeSubstitution typeSubstitution)
+            : base(factories, typeSubstitution, null)
         {
         }
     }

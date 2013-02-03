@@ -9,13 +9,11 @@ namespace Domo.DI
     {
         IServiceLocator ServiceLocator { get; }
 
-        void Register(Action<ITypeRegistration> registration);
-        void Register(ServiceIdentity identity, Type activatorType);
-
+        void Configure(Action<IContainerConfiguration> registration = null, Action<IAssemblyScanner> scanner = null);
+        void Register(IService service);
         object Resolve(ServiceIdentity identity);
         IEnumerable<object> ResolveAll(Type serviceType);
 
         ActivationDelegate GetActivationDelegate(ServiceIdentity identity);
-        void Scan(Action<IAssemblyScanner> scanner);
     }
 }

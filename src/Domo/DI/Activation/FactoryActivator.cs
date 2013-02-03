@@ -1,18 +1,18 @@
 using System;
 using Domo.DI.Caching;
-using Domo.DI.Creation;
+using Domo.DI.Construction;
 
 namespace Domo.DI.Activation
 {
     public abstract class FactoryActivator : IActivator
     {
-        private readonly IFactoryContainer _factoryContainer;
+        private readonly IFactoryContainer _factories;
         private readonly ITypeSubstitution _typeSubstitution;
         private readonly IInstanceCache _instanceCache;
 
-        protected FactoryActivator(IFactoryContainer factoryContainer, ITypeSubstitution typeSubstitution, IInstanceCache instanceCache)
+        protected FactoryActivator(IFactoryContainer factories, ITypeSubstitution typeSubstitution, IInstanceCache instanceCache)
         {
-            _factoryContainer = factoryContainer;
+            _factories = factories;
             _typeSubstitution = typeSubstitution;
             _instanceCache = instanceCache;
         }
@@ -20,12 +20,11 @@ namespace Domo.DI.Activation
         public object ActivateService(IInjectionContext context, ServiceIdentity identity)
         {
             var concreteIdentity = GetConcreteIdentity(identity);
-            var factoryDelegate = GetFactoryDelegate(context, concreteIdentity.ServiceType);
+            var factoryDelegate = GetFactoryDelegate(context, concreteIdentity);
 
-            if (_instanceCache != null)
-                return _instanceCache.Get(concreteIdentity, factoryDelegate);
-
-            return factoryDelegate();
+            return (_instanceCache != null)
+                ? _instanceCache.Get(concreteIdentity, factoryDelegate)
+                : factoryDelegate();
         }
 
         private ServiceIdentity GetConcreteIdentity(ServiceIdentity identity)
@@ -37,9 +36,9 @@ namespace Domo.DI.Activation
             return identity;
         }
 
-        private Func<object> GetFactoryDelegate(IInjectionContext context, Type type)
+        private Func<object> GetFactoryDelegate(IInjectionContext context, ServiceIdentity identity)
         {
-            return () => _factoryContainer.CreateInstance(type, context);
+            return () => _factories.CreateInstance(identity, context);
         }
     }
 }

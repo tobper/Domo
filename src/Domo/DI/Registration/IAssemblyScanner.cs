@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using Domo.DI.Registration.Conventions;
 
 namespace Domo.DI.Registration
 {
@@ -10,10 +11,12 @@ namespace Domo.DI.Registration
         IAssemblyScanner ScanAssembly(Assembly assembly);
         IAssemblyScanner ScanAssemblyContaining<T>();
         IAssemblyScanner ScanDirectory(string path);
+        IAssemblyScanner UseConvention(IScanConvention convention);
+        IAssemblyScanner UseConvention(Func<IScanConvention> conventionDelegate);
+        IAssemblyScanner UseConvention<T>() where T : IScanConvention, new();
+
+#if !NETFX_CORE
         IAssemblyScanner ScanLoadedAssemblies();
-        IAssemblyScanner UseConventionBasedProcessor();
-        IAssemblyScanner UseScanProcessor(IScanProcessor scanProcessor);
-        IAssemblyScanner UseScanProcessor(Func<IScanProcessor> scanProcessorDelegate);
-        IAssemblyScanner UseScanProcessor<T>() where T : IScanProcessor, new();
+#endif
     }
 }

@@ -40,12 +40,12 @@ namespace Domo.DI
 
         private int CalculateHashCode()
         {
-            var hashcode = ServiceType.GetHashCode();
+            var hashCode = ServiceType.GetHashCode();
 
             if (ServiceName != null)
-                hashcode ^= ServiceName.ToLowerInvariant().GetHashCode();
+                hashCode ^= ServiceName.ToLowerInvariant().GetHashCode();
 
-            return hashcode;
+            return hashCode;
         }
     }
 }

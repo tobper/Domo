@@ -4,22 +4,22 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Domo.DI.Registration.TypeScanners;
+using Domo.DI.Registration.Conventions;
 
 namespace Domo.DI.Registration
 {
-    public class AssemblyScanner : IAssemblyScanner
+    public partial class AssemblyScanner : IAssemblyScanner
     {
         private static readonly Type PreventAutomaticRegistrationAttributeType = typeof(PreventAutomaticRegistrationAttribute);
 
-        private readonly ITypeRegistration _typeRegistration;
+        private readonly IContainerConfiguration _configuration;
         private readonly IList<Func<Assembly, bool>> _assemblyFilters = new List<Func<Assembly, bool>>();
         private readonly IList<Func<TypeInfo, bool>> _typeFilters = new List<Func<TypeInfo, bool>>();
-        private readonly IList<IScanProcessor> _typeScanners = new List<IScanProcessor>();
+        private readonly IList<IScanConvention> _conventions = new List<IScanConvention>();
 
-        public AssemblyScanner(ITypeRegistration typeRegistration)
+        public AssemblyScanner(IContainerConfiguration configuration)
         {
-            _typeRegistration = typeRegistration;
+            _configuration = configuration;
 
             AddTypeFilter(type =>
                 !IsAnonymousType(type) &&
@@ -28,27 +28,22 @@ namespace Domo.DI.Registration
             );
         }
 
-        public IAssemblyScanner UseConventionBasedProcessor()
+        public IAssemblyScanner UseConvention(IScanConvention convention)
         {
-            return UseScanProcessor(new ConventionBasedScanProcessor());
-        }
-
-        public IAssemblyScanner UseScanProcessor(IScanProcessor scanProcessor)
-        {
-            _typeScanners.Add(scanProcessor);
+            _conventions.Add(convention);
             return this;
         }
 
-        public IAssemblyScanner UseScanProcessor(Func<IScanProcessor> scanProcessorDelegate)
+        public IAssemblyScanner UseConvention(Func<IScanConvention> conventionDelegate)
         {
-            var scanProcessor = scanProcessorDelegate();
-            return UseScanProcessor(scanProcessor);
+            var convention = conventionDelegate();
+            return UseConvention(convention);
         }
 
-        public IAssemblyScanner UseScanProcessor<T>() where T : IScanProcessor, new()
+        public IAssemblyScanner UseConvention<T>() where T : IScanConvention, new()
         {
-            var scanProcessor = new T();
-            return UseScanProcessor(scanProcessor);
+            var convention = new T();
+            return UseConvention(convention);
         }
 
         public IAssemblyScanner AddAssemblyFilter(Func<Assembly, bool> assemblyFilter)
@@ -76,11 +71,13 @@ namespace Domo.DI.Registration
 
             foreach (var type in types)
             {
-                foreach (var typeScanner in _typeScanners)
+                foreach (var convention in _conventions)
                 {
-                    typeScanner.ProcessType(_typeRegistration, type);
+                    convention.ProcessType(_configuration, type);
                 }
             }
+
+            _configuration.CompleteRegistration();
 
             return this;
         }
@@ -97,23 +94,6 @@ namespace Domo.DI.Registration
         public IAssemblyScanner ScanDirectory(string path)
         {
             var assemblies = GetAssembliesInPath(path);
-
-            foreach (var assemblyFilter in _assemblyFilters)
-            {
-                assemblies = assemblies.Where(assemblyFilter);
-            }
-
-            foreach (var assembly in assemblies)
-            {
-                ScanAssembly(assembly);
-            }
-
-            return this;
-        }
-
-        public IAssemblyScanner ScanLoadedAssemblies()
-        {
-            var assemblies = GetLoadedAssemblies();
 
             foreach (var assemblyFilter in _assemblyFilters)
             {
@@ -151,15 +131,6 @@ namespace Domo.DI.Registration
         private static IEnumerable<Assembly> GetAssembliesInPath(string path)
         {
             throw new NotImplementedException();
-        }
-
-        private static IEnumerable<Assembly> GetLoadedAssemblies()
-        {
-#if NETFX_CORE
-            throw new NotSupportedException("Scanning loaded assemblies is not supported in a Windows Store app.");
-#else
-            return AppDomain.CurrentDomain.GetAssemblies();
-#endif
         }
     }
 }

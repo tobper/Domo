@@ -19,11 +19,16 @@ namespace Domo.Extensions
 
         public static TValue TryGetValue<TKey, TValue>(this IDictionary<TKey, TValue> items, TKey key)
         {
+            return TryGetValue(items, key, default(TValue));
+        }
+
+        public static TValue TryGetValue<TKey, TValue>(this IDictionary<TKey, TValue> items, TKey key, TValue defaultValue)
+        {
             TValue value;
             if (items.TryGetValue(key, out value))
                 return value;
 
-            return default(TValue);
+            return defaultValue;
         }
 
         public static TValue TryGetValue<TKey, TValue>(this IDictionary<TKey, TValue> items, TKey key, Func<TKey, TValue> factoryDelegate)

@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Domo.DI.Activation;
 using Domo.DI.Caching;
-using Domo.DI.Creation;
+using Domo.DI.Construction;
 using Domo.DI.Registration;
 using Domo.Extensions;
 
@@ -11,73 +10,72 @@ namespace Domo.DI
 {
     public class Container : IContainer
     {
-        private readonly IDictionary<Type, IServiceFamily> _serviceFamilies;
-        private readonly IActivatorContainer _activators;
+        private readonly IDictionary<Type, IServiceFamily> _serviceFamilies = new Dictionary<Type, IServiceFamily>();
 
         private Container()
         {
-            IInstanceCache singletonInstanceCache = new InstanceCache();
-            ITypeSubstitution typeSubstitution = new TypeSubstitution();
-            IFactoryContainer factoryContainer = new FactoryContainer(this);
-
             ServiceLocator = new ServiceLocator(this);
 
-            _serviceFamilies = new Dictionary<Type, IServiceFamily>();
-            _activators = new ActivatorContainer(
-                factoryContainer,
-                new SingletonActivator(factoryContainer, typeSubstitution, singletonInstanceCache),
-                new TransientActivator(factoryContainer, typeSubstitution));
+            var singletonCache = new InstanceCache();
+            var typeSubstitution = new TypeSubstitution();
+            var constructionFactories = new ConstructionFactoryContainer(this);
+            var factories = new FactoryContainer(this, constructionFactories);
+            var activators = new ActivatorContainer(
+                factories,
+                new SingletonActivator(factories, typeSubstitution, singletonCache),
+                new TransientActivator(factories, typeSubstitution));
 
-            ITypeRegistration typeRegistration =
-                new TypeRegistration(this, factoryContainer, singletonInstanceCache, typeSubstitution);
-
-            typeRegistration.
-                RegisterSingleton<IContainer>(this).
-                RegisterSingleton(factoryContainer).
-                RegisterSingleton(ServiceLocator).
-                RegisterSingleton(singletonInstanceCache, "Singleton").
-                RegisterSingleton(typeSubstitution).
-                RegisterSingleton(typeRegistration).
-                Register<IAssemblyScanner, AssemblyScanner>();
+            new ContainerConfiguration(this).
+                Register(ServiceLocator).
+                Register<IActivatorContainer>(activators).
+                Register<IConstructionFactoryContainer>(constructionFactories).
+                Register<IContainer>(this).
+                Register<IFactoryContainer>(factories).
+                Register<IInstanceCache>(singletonCache, "Singleton").
+                Register<ITypeSubstitution>(typeSubstitution).
+                Register<IAssemblyScanner, AssemblyScanner>().
+                Register<IContainerConfiguration, ContainerConfiguration>().
+                CompleteRegistration();
         }
 
         public IServiceLocator ServiceLocator { get; private set; }
 
-        public static IContainer Create(ContainerConfigurationDelegate configuration)
+        public static IContainer Create(
+            Action<IContainerConfiguration> registration = null,
+            Action<IAssemblyScanner> scanner = null)
         {
             IContainer container = new Container();
-            var typeRegistration = container.ServiceLocator.Resolve<ITypeRegistration>();
-            var assemblyScanner = container.ServiceLocator.Resolve<IAssemblyScanner>();
-
-            configuration(container, typeRegistration, assemblyScanner);
-
+            container.Configure(registration, scanner);
             return container;
         }
 
-        public void Register(Action<ITypeRegistration> registration)
+        public void Configure(
+            Action<IContainerConfiguration> registration = null,
+            Action<IAssemblyScanner> scanner = null)
         {
-            var typeRegistration = ServiceLocator.Resolve<ITypeRegistration>();
+            if (registration != null)
+            {
+                var containerRegistration = ServiceLocator.Resolve<IContainerConfiguration>();
 
-            registration(typeRegistration);
+                registration(containerRegistration);
+                containerRegistration.CompleteRegistration();
+            }
+
+            if (scanner != null)
+            {
+                var assemblyScanner = ServiceLocator.Resolve<IAssemblyScanner>();
+
+                scanner(assemblyScanner);
+            }
         }
 
-        public void Scan(Action<IAssemblyScanner> scanner)
+        public void Register(IService service)
         {
-            var assemblyScanner = ServiceLocator.Resolve<IAssemblyScanner>();
-
-            scanner(assemblyScanner);
-        }
-
-        public void Register(ServiceIdentity identity, Type activatorType)
-        {
-            if (!activatorType.Implements<IActivator>())
-                throw new InvalidActivatorTypeException(activatorType);
-
-            var activator = _activators.GetActivator(activatorType);
+            var serviceType = service.Identity.ServiceType;
 
             _serviceFamilies.
-                TryGetValue(identity.ServiceType, () => new ServiceFamily(identity.ServiceType)).
-                AddActivator(identity, activator);
+                TryGetValue(serviceType, () => new ServiceFamily(serviceType)).
+                Add(service);
         }
 
         public object Resolve(ServiceIdentity identity)
@@ -109,24 +107,14 @@ namespace Domo.DI
             }
         }
 
-        // Todo: GetActivator will throw if service has not been registered but Resolve(...) will not
         public ActivationDelegate GetActivationDelegate(ServiceIdentity identity)
-        {
-            var activator = TryGetActivationDelegate(identity);
-            if (activator == null)
-                throw new ServiceNotRegisteredException(identity);
-
-            return activator;
-        }
-
-        private ActivationDelegate TryGetActivationDelegate(ServiceIdentity identity)
         {
             var isLazy = IsLazyIdentity(identity);
             if (isLazy)
             {
-                identity = new ServiceIdentity(
-                    identity.ServiceType.GenericTypeArguments[0],
-                    identity.ServiceName);
+                var realServiceType = identity.ServiceType.GenericTypeArguments[0];
+
+                identity = new ServiceIdentity(realServiceType, identity.ServiceName);
             }
 
             var serviceFamily = _serviceFamilies.TryGetValue(identity.ServiceType);
