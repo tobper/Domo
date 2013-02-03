@@ -1,1 +1,0 @@
-FactoryContainer can only handle one factory per ServiceType. It is not possible to add different factories for differet identities with the same ServiceType.
