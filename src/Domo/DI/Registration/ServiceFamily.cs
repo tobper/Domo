@@ -42,7 +42,7 @@ namespace Domo.DI.Registration
             return service;
         }
 
-        public IEnumerable<IService> GetAllServices()
+        public ICollection<IService> GetAllServices()
         {
             return _services.Values;
         }

@@ -9,6 +9,6 @@ namespace Domo.DI.Registration
 
         void Add(IService service);
         IService GetService(ServiceIdentity identity);
-        IEnumerable<IService> GetAllServices();
+        ICollection<IService> GetAllServices();
     }
 }

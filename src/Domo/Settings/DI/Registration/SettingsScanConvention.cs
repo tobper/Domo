@@ -14,12 +14,13 @@ namespace Domo.Settings.DI.Registration
             if (settingsAttribute != null)
             {
                 var activatorType = GetActivatorType(settingsAttribute.Scope);
-                var serviceType = type.AsType();
+                var settingsType = type.AsType();
 
                 // Todo: Settings are registered without name so it is not possible to load settings based on other argument names.
 
                 container.
-                    Register(serviceType).
+                    Register(settingsType).
+                    AsTransient().
                     ActivatedBy(activatorType);
             }
         }

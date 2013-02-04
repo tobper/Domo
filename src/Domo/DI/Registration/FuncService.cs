@@ -3,14 +3,14 @@ using Domo.DI.Activation;
 
 namespace Domo.DI.Registration
 {
-    public class LazyService : IService
+    public class FuncService : IService
     {
         private readonly Func<IInjectionContext, object> _delegate;
 
-        public LazyService(ServiceIdentity identity, IService realService)
+        public FuncService(ServiceIdentity identity, IService realService)
         {
             Identity = identity;
-            _delegate = realService.GetTypedLazyDelegate();
+            _delegate = realService.GetTypedFuncDelegate();
         }
 
         public ServiceIdentity Identity { get; private set; }

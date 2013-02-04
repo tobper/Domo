@@ -25,10 +25,10 @@ namespace Domo.DI.Construction
         private IFactory CreateFactory(Type serviceType)
         {
             var factories = from constructor in serviceType.GetTypeInfo().DeclaredConstructors
-                            let parameters = constructor.GetParameters()
-                            where !parameters.Any(p => p.ParameterType.GetTypeInfo().IsValueType)
+                            let parameters = GetFactoryParameters(constructor)
+                            where parameters.All(p => p != null)
                             orderby parameters.Length descending
-                            select CreateConstructionFactory(constructor, parameters);
+                            select new ConstructionFactory(constructor, parameters);
 
             var factory = factories.FirstOrDefault();
             if (factory == null)
@@ -37,27 +37,35 @@ namespace Domo.DI.Construction
             return factory;
         }
 
-        private IFactory CreateConstructionFactory(ConstructorInfo constructor, ParameterInfo[] parameters)
+        private ConstructionFactoryParameter[] GetFactoryParameters(ConstructorInfo constructor)
         {
-            var constructorParameters = parameters.Convert(parameter =>
+            var parameters = constructor.GetParameters();
+
+            return parameters.Convert(parameter =>
             {
-                var serviceIdentity = GetParameterServiceIdentity(parameter.ParameterType, parameter.Name);
+                var typeInfo = parameter.ParameterType.GetTypeInfo();
+                if (typeInfo.IsValueType)
+                    return null;
+
+                var serviceIdentity = GetServiceIdentity(parameter.ParameterType, parameter.Name);
                 var service = _container.GetService(serviceIdentity);
                 if (service == null)
-                    throw new ServiceNotRegisteredException(serviceIdentity);
+                    return null;
 
                 return new ConstructionFactoryParameter(service);
             });
-
-            return new ConstructionFactory(constructor, constructorParameters);
         }
 
-        private static ServiceIdentity GetParameterServiceIdentity(Type serviceType, string parameterName)
+        private static ServiceIdentity GetServiceIdentity(Type serviceType, string parameterName)
         {
             // First try to get a specific identity based on the parameter name.
-            var identity = serviceType.GetServiceIdentity(parameterName);
-            if (identity != null)
-                return identity;
+            if (false)
+            {
+                // Todo: Add setting to toggle this functionality
+                var identity = serviceType.GetServiceIdentity(parameterName);
+                if (identity != null)
+                    return identity;
+            }
 
             // Use default identity if no specific could be created based on parameter name.
             return new ServiceIdentity(serviceType);

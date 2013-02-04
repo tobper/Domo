@@ -10,6 +10,10 @@ namespace Domo.DI.Activation
 
         public void AddConcreteType(ServiceIdentity identity, Type concreteType)
         {
+            var existingType = TryGetConcreteType(identity);
+            if (existingType != null)
+                throw new SubstitutionHasAlreadyBeenRegisteredException(identity, existingType, concreteType);
+
             _concreteTypes.Add(identity, concreteType);
         }
 

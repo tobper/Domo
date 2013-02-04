@@ -18,8 +18,9 @@ namespace Domo.DI.Construction
         public object CreateInstance(IInjectionContext context)
         {
             var arguments = _parameters.Convert(parameter => GetInstance(context, parameter));
+            var instance = _constructor.Invoke(arguments);
 
-            return _constructor.Invoke(arguments);
+            return instance;
         }
 
         private static object GetInstance(IInjectionContext context, ConstructionFactoryParameter parameter)

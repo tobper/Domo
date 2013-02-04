@@ -48,7 +48,11 @@
     <Compile Include="DI\Activation\FactoryActivator.cs" />
     <Compile Include="DI\Activation\IActivator.cs" />
     <Compile Include="DI\Activation\Scope.cs" />
+    <Compile Include="DI\Exceptions\SubstitutionHasAlreadyBeenRegisteredException.cs" />
     <Compile Include="DI\Registration\AssemblyScanner_AppDomain.cs" />
+    <Compile Include="DI\Registration\Conventions\PrefixScanConvention.cs" />
+    <Compile Include="DI\Registration\Conventions\PrefixScanConventionsExtensions.cs" />
+    <Compile Include="DI\Registration\EnumerableService.cs" />
     <Compile Include="DI\Registration\Extensions\ActivatorServiceConfigurationExtensions.cs" />
     <Compile Include="DI\Registration\ContainerConfiguration.cs" />
     <Compile Include="DI\Registration\Conventions\BasicScanConvention.cs" />
@@ -85,10 +89,10 @@
     <Compile Include="DI\Exceptions\ActivatorHasAlreadyBeenSetException.cs" />
     <Compile Include="DI\Registration\Extensions\ConcreteConfigurationExtensions.cs" />
     <Compile Include="DI\Registration\Extensions\InstanceConfigurationExtensions.cs" />
+    <Compile Include="DI\Registration\FuncService.cs" />
     <Compile Include="DI\Registration\IContainerConfiguration.cs" />
     <Compile Include="DI\Registration\InstanceService.cs" />
     <Compile Include="DI\Registration\InstanceServiceConfiguration.cs" />
-    <Compile Include="DI\Registration\InstanceServiceExtensions.cs" />
     <Compile Include="DI\Registration\IActivatorServiceConfiguration.cs" />
     <Compile Include="DI\Registration\ActivatorServiceConfiguration.cs" />
     <Compile Include="DI\Registration\AssemblyScanner.cs" />
@@ -102,6 +106,7 @@
     <Compile Include="DI\Registration\ServiceConfiguration.cs" />
     <Compile Include="DI\Registration\Extensions\ServiceConfigurationExtensions.cs" />
     <Compile Include="DI\Registration\ServiceFamily.cs" />
+    <Compile Include="DI\Registration\TypedServiceExtensions.cs" />
     <Compile Include="DI\ServiceIdentity.cs" />
     <Compile Include="DI\ServiceLocator.cs" />
     <Compile Include="DI\ServiceExtensions.cs" />

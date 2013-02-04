@@ -93,12 +93,11 @@ namespace Domo.DI
 
         public IEnumerable<object> ResolveAll(Type serviceType)
         {
-            var serviceFamily = _serviceFamilies.TryGetValue(serviceType);
-            if (serviceFamily == null)
-                return Enumerable.Empty<object>();
+            var services = GetServices(serviceType);
+            if (services == null)
+                return null;
 
             var context = CreateInjectionContext();
-            var services = serviceFamily.GetAllServices();
 
             return from service in services
                    select service.GetInstance(context);
@@ -106,30 +105,60 @@ namespace Domo.DI
 
         public IService GetService(ServiceIdentity identity)
         {
-            var isLazy = IsLazyIdentity(identity);
-            if (isLazy)
-            {
-                var realServiceType = identity.ServiceType.GenericTypeArguments[0];
+            var serviceFamily = _serviceFamilies.TryGetValue(identity.ServiceType);
+            if (serviceFamily != null)
+                return serviceFamily.GetService(identity);
 
-                identity = new ServiceIdentity(realServiceType, identity.ServiceName);
+            if (identity.ServiceType.IsConstructedGenericType)
+            {
+                var service = GetGenericService(identity);
+                if (service != null)
+                    Register(service);
+
+                return service;
             }
 
-            var serviceFamily = _serviceFamilies.TryGetValue(identity.ServiceType);
-            if (serviceFamily == null)
-                return null;
-
-            var service = serviceFamily.GetService(identity);
-
-            if (isLazy)
-                service = new LazyService(service);
-
-            return service;
+            return null;
         }
 
-        private static bool IsLazyIdentity(ServiceIdentity identity)
+        private IService GetGenericService(ServiceIdentity identity)
         {
-            return identity.ServiceType.IsConstructedGenericType &&
-                   identity.ServiceType.GetGenericTypeDefinition() == typeof(Lazy<>);
+            var genericTypeDefinition = identity.ServiceType.GetGenericTypeDefinition();
+            var realServiceType = identity.ServiceType.GenericTypeArguments[0];
+
+            if (genericTypeDefinition == typeof(Func<>))
+            {
+                var realIdentity = new ServiceIdentity(realServiceType, identity.ServiceName);
+                var realService = GetService(realIdentity);
+
+                if (realService != null)
+                    return new FuncService(identity, realService);
+            }
+            else if (genericTypeDefinition == typeof(Lazy<>))
+            {
+                var realIdentity = new ServiceIdentity(realServiceType, identity.ServiceName);
+                var realService = GetService(realIdentity);
+
+                if (realService != null)
+                    return new LazyService(identity, realService);
+            }
+            else if (genericTypeDefinition == typeof(IEnumerable<>))
+            {
+                var realServices = GetServices(realServiceType);
+
+                return new EnumerableService(identity, realServices);
+            }
+
+            return null;
+        }
+
+        private ICollection<IService> GetServices(Type serviceType)
+        {
+            var serviceFamily = _serviceFamilies.TryGetValue(serviceType);
+
+            return (serviceFamily != null)
+                ? serviceFamily.GetAllServices()
+                : new IService[0];
         }
 
         private IInjectionContext CreateInjectionContext()
