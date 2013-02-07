@@ -105,54 +105,71 @@ namespace Domo.DI
 
         public IService GetService(ServiceIdentity identity)
         {
+            return
+                TryGetRegisteredService(identity) ??
+                TryCreateArrayService(identity) ??
+                TryCreateGenericService(identity);
+        }
+
+        private IService TryGetRegisteredService(ServiceIdentity identity)
+        {
             var serviceFamily = _serviceFamilies.TryGetValue(identity.ServiceType);
             if (serviceFamily != null)
                 return serviceFamily.GetService(identity);
 
+            return null;
+        }
+
+        private IService TryCreateArrayService(ServiceIdentity identity)
+        {
+            if (identity.ServiceType.IsArray)
+            {
+                var itemServiceType = identity.ServiceType.GetElementType();
+                var itemServices = GetServices(itemServiceType);
+
+                return new ArrayService(identity, itemServiceType, itemServices);
+            }
+
+            return null;
+        }
+
+        private IService TryCreateGenericService(ServiceIdentity identity)
+        {
             if (identity.ServiceType.IsConstructedGenericType)
             {
-                var service = GetGenericService(identity);
-                if (service != null)
-                    Register(service);
+                var genericTypeDefinition = identity.ServiceType.GetGenericTypeDefinition();
+                var realServiceType = identity.ServiceType.GenericTypeArguments[0];
 
-                return service;
+                if (genericTypeDefinition == typeof(Func<>))
+                {
+                    var realIdentity = new ServiceIdentity(realServiceType, identity.ServiceName);
+                    var realService = GetService(realIdentity);
+
+                    if (realService != null)
+                        return new FuncService(identity, realService);
+                }
+                else if (genericTypeDefinition == typeof(Lazy<>))
+                {
+                    var realIdentity = new ServiceIdentity(realServiceType, identity.ServiceName);
+                    var realService = GetService(realIdentity);
+
+                    if (realService != null)
+                        return new LazyService(identity, realService);
+                }
+                else if (genericTypeDefinition == typeof(IEnumerable<>) ||
+                         genericTypeDefinition == typeof(ICollection<>) ||
+                         genericTypeDefinition == typeof(IList<>))
+                {
+                    var itemServices = GetServices(realServiceType);
+
+                    return new ArrayService(identity, realServiceType, itemServices);
+                }
             }
 
             return null;
         }
 
-        private IService GetGenericService(ServiceIdentity identity)
-        {
-            var genericTypeDefinition = identity.ServiceType.GetGenericTypeDefinition();
-            var realServiceType = identity.ServiceType.GenericTypeArguments[0];
-
-            if (genericTypeDefinition == typeof(Func<>))
-            {
-                var realIdentity = new ServiceIdentity(realServiceType, identity.ServiceName);
-                var realService = GetService(realIdentity);
-
-                if (realService != null)
-                    return new FuncService(identity, realService);
-            }
-            else if (genericTypeDefinition == typeof(Lazy<>))
-            {
-                var realIdentity = new ServiceIdentity(realServiceType, identity.ServiceName);
-                var realService = GetService(realIdentity);
-
-                if (realService != null)
-                    return new LazyService(identity, realService);
-            }
-            else if (genericTypeDefinition == typeof(IEnumerable<>))
-            {
-                var realServices = GetServices(realServiceType);
-
-                return new EnumerableService(identity, realServices);
-            }
-
-            return null;
-        }
-
-        private ICollection<IService> GetServices(Type serviceType)
+        public IService[] GetServices(Type serviceType)
         {
             var serviceFamily = _serviceFamilies.TryGetValue(serviceType);
 

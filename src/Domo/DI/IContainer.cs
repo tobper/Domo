@@ -14,5 +14,6 @@ namespace Domo.DI
         IEnumerable<object> ResolveAll(Type serviceType);
 
         IService GetService(ServiceIdentity identity);
+        IService[] GetServices(Type serviceType);
     }
 }

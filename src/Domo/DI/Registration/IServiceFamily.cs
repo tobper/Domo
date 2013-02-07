@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace Domo.DI.Registration
 {
@@ -9,6 +8,6 @@ namespace Domo.DI.Registration
 
         void Add(IService service);
         IService GetService(ServiceIdentity identity);
-        ICollection<IService> GetAllServices();
+        IService[] GetAllServices();
     }
 }

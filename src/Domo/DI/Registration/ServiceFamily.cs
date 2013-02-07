@@ -42,9 +42,9 @@ namespace Domo.DI.Registration
             return service;
         }
 
-        public ICollection<IService> GetAllServices()
+        public IService[] GetAllServices()
         {
-            return _services.Values;
+            return _services.Values.ToArray();
         }
 
         private static bool IsDefaultIdentity(ServiceIdentity identity)

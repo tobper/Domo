@@ -123,6 +123,7 @@
     <Compile Include="DI\IServiceLocator.cs" />
     <Compile Include="DI\Registration\ActivatorService.cs" />
     <Compile Include="DI\Registration\ActivatorServiceConfiguration.cs" />
+    <Compile Include="DI\Registration\ArrayService.cs" />
     <Compile Include="DI\Registration\AssemblyScanner.cs" />
     <Compile Include="DI\Registration\AssemblyScanner_AppDomain.cs" />
     <Compile Include="DI\Registration\ContainerConfiguration.cs" />
@@ -131,7 +132,6 @@
     <Compile Include="DI\Registration\Conventions\IScanConvention.cs" />
     <Compile Include="DI\Registration\Conventions\PrefixScanConvention.cs" />
     <Compile Include="DI\Registration\Conventions\PrefixScanConventionsExtensions.cs" />
-    <Compile Include="DI\Registration\EnumerableService.cs" />
     <Compile Include="DI\Registration\Extensions\ActivatorServiceConfigurationExtensions.cs" />
     <Compile Include="DI\Registration\Extensions\ConcreteConfigurationExtensions.cs" />
     <Compile Include="DI\Registration\Extensions\DelegateFactoryConfigurationExtensions.cs" />
