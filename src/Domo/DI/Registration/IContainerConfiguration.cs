@@ -4,6 +4,6 @@ namespace Domo.DI.Registration
     {
         IContainerConfiguration Register(IServiceConfiguration serviceConfiguration);
 
-        void CompleteRegistration();
+        void ApplyRegistration(IContainer container);
     }
 }

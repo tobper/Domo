@@ -11,13 +11,17 @@ namespace Domo.DI.Registration
     {
         private static readonly Type PreventAutomaticRegistrationAttributeType = typeof(PreventAutomaticRegistrationAttribute);
 
+        private readonly IContainer _container;
         private readonly IContainerConfiguration _configuration;
         private readonly IList<Func<Assembly, bool>> _assemblyFilters = new List<Func<Assembly, bool>>();
         private readonly IList<Func<TypeInfo, bool>> _typeFilters = new List<Func<TypeInfo, bool>>();
         private readonly IList<IScanConvention> _conventions = new List<IScanConvention>();
 
-        public AssemblyScanner(IContainerConfiguration configuration)
+        public AssemblyScanner(
+            IContainer container,
+            IContainerConfiguration configuration)
         {
+            _container = container;
             _configuration = configuration;
 
             AddTypeFilter(type =>
@@ -76,7 +80,7 @@ namespace Domo.DI.Registration
                 }
             }
 
-            _configuration.CompleteRegistration();
+            _configuration.ApplyRegistration(_container);
 
             return this;
         }

@@ -5,13 +5,7 @@ namespace Domo.DI.Registration
 {
     public class ContainerConfiguration : IContainerConfiguration
     {
-        private readonly IContainer _container;
         private readonly Queue<IServiceConfiguration> _serviceConfigurations = new Queue<IServiceConfiguration>();
-
-        public ContainerConfiguration(IContainer container)
-        {
-            _container = container;
-        }
 
         public IContainerConfiguration Register(IServiceConfiguration serviceConfiguration)
         {
@@ -23,15 +17,15 @@ namespace Domo.DI.Registration
             return this;
         }
 
-        public void CompleteRegistration()
+        public void ApplyRegistration(IContainer container)
         {
             while (_serviceConfigurations.Count > 0)
             {
                 var service = _serviceConfigurations.
                     Dequeue().
-                    GetService(_container);
+                    GetService(container);
 
-                _container.Register(service);
+                container.Register(service);
             }
         }
     }
