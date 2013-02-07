@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Domo.DI.Registration.Conventions;
 
 namespace Domo.DI.Registration
 {

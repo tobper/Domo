@@ -1,6 +1,5 @@
 using System;
 using System.Reflection;
-using Domo.DI.Registration.Conventions;
 
 namespace Domo.DI.Registration
 {

@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Reflection;
 using Domo.DI.Registration;
-using Domo.DI.Registration.Conventions;
 
 namespace Domo.Communication.DI.Registration
 {

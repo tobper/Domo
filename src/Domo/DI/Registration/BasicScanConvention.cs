@@ -1,8 +1,9 @@
 using System.Reflection;
+using System.Linq;
 
-namespace Domo.DI.Registration.Conventions
+namespace Domo.DI.Registration
 {
-    public class PrefixScanConvention : IScanConvention
+    public class BasicScanConvention : IScanConvention
     {
         public void ProcessType(IContainerConfiguration container, TypeInfo type)
         {
@@ -18,13 +19,12 @@ namespace Domo.DI.Registration.Conventions
 
         private static void ProcessConcreteType(IContainerConfiguration container, TypeInfo concreteType)
         {
-            // Extract interfaces with prefixes
-            // I.e. SingletonServiceCache should register a IServiceCache service named Singleton
-            foreach (var serviceType in concreteType.ImplementedInterfaces)
+            var serviceTypeName = "I" + concreteType.Name;
+            var serviceType = concreteType.ImplementedInterfaces.FirstOrDefault(i => i.Name == serviceTypeName);
+
+            if (serviceType != null)
             {
-                var identity = serviceType.GetServiceIdentity(concreteType.Name);
-                if (identity == null)
-                    continue;
+                var identity = new ServiceIdentity(serviceType);
 
                 container.
                     Register(identity).

@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace Domo.DI.Registration.Conventions
+namespace Domo.DI.Registration
 {
     public interface IScanConvention
     {

@@ -1,4 +1,4 @@
-namespace Domo.DI.Registration.Conventions
+namespace Domo.DI.Registration
 {
     public static class PrefixScanConventionsExtensions
     {

@@ -49,15 +49,25 @@
     <Compile Include="DI\Activation\IActivator.cs" />
     <Compile Include="DI\Activation\Scope.cs" />
     <Compile Include="DI\Exceptions\SubstitutionHasAlreadyBeenRegisteredException.cs" />
-    <Compile Include="DI\Registration\ArrayService.cs" />
+    <Compile Include="DI\Registration\ArrayService.cs">
+      <DependentUpon>IService.cs</DependentUpon>
+    </Compile>
     <Compile Include="DI\Registration\AssemblyScanner_AppDomain.cs" />
-    <Compile Include="DI\Registration\Conventions\PrefixScanConvention.cs" />
-    <Compile Include="DI\Registration\Conventions\PrefixScanConventionsExtensions.cs" />
+    <Compile Include="DI\Registration\PrefixScanConvention.cs">
+      <DependentUpon>IScanConvention.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DI\Registration\PrefixScanConventionsExtensions.cs">
+      <DependentUpon>IScanConvention.cs</DependentUpon>
+    </Compile>
     <Compile Include="DI\Registration\Extensions\ActivatorServiceConfigurationExtensions.cs" />
     <Compile Include="DI\Registration\ContainerConfiguration.cs" />
-    <Compile Include="DI\Registration\Conventions\BasicScanConvention.cs" />
-    <Compile Include="DI\Registration\Conventions\BasicScanConventionsExtensions.cs" />
-    <Compile Include="DI\Registration\Conventions\IScanConvention.cs" />
+    <Compile Include="DI\Registration\BasicScanConvention.cs">
+      <DependentUpon>IScanConvention.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DI\Registration\BasicScanConventionsExtensions.cs">
+      <DependentUpon>IScanConvention.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DI\Registration\IScanConvention.cs" />
     <Compile Include="DI\Registration\Extensions\ScopeConfigurationExtensions.cs" />
     <Compile Include="DI\Activation\TypeSubstitution.cs" />
     <Compile Include="DI\Activation\ITypeSubstitution.cs" />
@@ -89,20 +99,34 @@
     <Compile Include="DI\Exceptions\ActivatorHasAlreadyBeenSetException.cs" />
     <Compile Include="DI\Registration\Extensions\ConcreteConfigurationExtensions.cs" />
     <Compile Include="DI\Registration\Extensions\InstanceConfigurationExtensions.cs" />
-    <Compile Include="DI\Registration\FuncService.cs" />
+    <Compile Include="DI\Registration\FuncService.cs">
+      <DependentUpon>IService.cs</DependentUpon>
+    </Compile>
     <Compile Include="DI\Registration\IContainerConfiguration.cs" />
-    <Compile Include="DI\Registration\InstanceService.cs" />
-    <Compile Include="DI\Registration\InstanceServiceConfiguration.cs" />
-    <Compile Include="DI\Registration\IActivatorServiceConfiguration.cs" />
-    <Compile Include="DI\Registration\ActivatorServiceConfiguration.cs" />
+    <Compile Include="DI\Registration\InstanceService.cs">
+      <DependentUpon>IService.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DI\Registration\InstanceServiceConfiguration.cs">
+      <DependentUpon>IServiceConfiguration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DI\Registration\IActivatorServiceConfiguration.cs">
+      <DependentUpon>IServiceConfiguration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DI\Registration\ActivatorServiceConfiguration.cs">
+      <DependentUpon>IServiceConfiguration.cs</DependentUpon>
+    </Compile>
     <Compile Include="DI\Registration\AssemblyScanner.cs" />
     <Compile Include="DI\Registration\IAssemblyScanner.cs" />
     <Compile Include="DI\Registration\IServiceConfiguration.cs" />
     <Compile Include="DI\Registration\IServiceFamily.cs" />
     <Compile Include="DI\Registration\IService.cs" />
-    <Compile Include="DI\Registration\LazyService.cs" />
+    <Compile Include="DI\Registration\LazyService.cs">
+      <DependentUpon>IService.cs</DependentUpon>
+    </Compile>
     <Compile Include="DI\Registration\PreventAutomaticRegistrationAttribute.cs" />
-    <Compile Include="DI\Registration\ActivatorService.cs" />
+    <Compile Include="DI\Registration\ActivatorService.cs">
+      <DependentUpon>IService.cs</DependentUpon>
+    </Compile>
     <Compile Include="DI\Registration\ServiceConfiguration.cs" />
     <Compile Include="DI\Registration\Extensions\ServiceConfigurationExtensions.cs" />
     <Compile Include="DI\Registration\ServiceFamily.cs" />

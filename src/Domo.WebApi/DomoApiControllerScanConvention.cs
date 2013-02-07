@@ -2,7 +2,6 @@
 using System.Reflection;
 using System.Web.Http;
 using Domo.DI.Registration;
-using Domo.DI.Registration.Conventions;
 
 namespace Domo.WebApi
 {

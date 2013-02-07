@@ -1,7 +1,6 @@
 using System;
 using System.Reflection;
 using Domo.DI.Registration;
-using Domo.DI.Registration.Conventions;
 using Domo.Settings.DI.Activation;
 
 namespace Domo.Settings.DI.Registration
