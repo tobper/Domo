@@ -19,11 +19,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domo.WindowsStore", "Domo\D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domo", "Domo\Domo.csproj", "{29A6D213-52D5-4AB0-99D7-526C87561237}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Documents", ".Documents", "{938ADE34-2CA8-4A93-86D5-5FEA76E27899}"
-	ProjectSection(SolutionItems) = preProject
-		..\Todo.txt = ..\Todo.txt
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domo.Web", "Domo.Web\Domo.Web.csproj", "{CADD28AF-6570-40F9-BC71-5C957771BDD4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domo.WebApi", "Domo.WebApi\Domo.WebApi.csproj", "{98ECEEB4-FB8F-442B-907F-F372DC23CCE7}"
