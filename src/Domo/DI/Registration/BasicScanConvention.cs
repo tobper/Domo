@@ -24,11 +24,10 @@ namespace Domo.DI.Registration
 
             if (serviceType != null)
             {
-                var identity = new ServiceIdentity(serviceType);
-
                 container.
-                    Register(identity).
-                    Using(concreteType);
+                    Register(serviceType).
+                    AsTransient().
+                    UsingConcreteType(concreteType);
             }
         }
     }

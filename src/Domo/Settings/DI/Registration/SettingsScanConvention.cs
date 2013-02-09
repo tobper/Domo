@@ -19,8 +19,7 @@ namespace Domo.Settings.DI.Registration
 
                 container.
                     Register(settingsType).
-                    AsTransient().
-                    ActivatedBy(activatorType);
+                    UsingActivator(activatorType);
             }
         }
 

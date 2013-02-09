@@ -27,16 +27,16 @@ namespace Domo.DI
                 new TransientActivator(factories, typeSubstitution));
 
             new ContainerConfiguration().
-                Register(ServiceLocator).
-                Register<IActivatorContainer>(activators).
-                Register<IConstructionFactoryContainer>(constructionFactories).
-                Register<IContainer>(this).
-                Register<IFactoryContainer>(factories).
-                Register<IInstanceCache>(singletonCache, "Singleton").
-                Register<ITypeSubstitution>(typeSubstitution).
-                Register<IAssemblyScanner, AssemblyScanner>().
-                Register<IContainerConfiguration, ContainerConfiguration>().
-                ApplyRegistration(this);
+                RegisterInstance(ServiceLocator).
+                RegisterInstance<IActivatorContainer>(activators).
+                RegisterInstance<IConstructionFactoryContainer>(constructionFactories).
+                RegisterInstance<IContainer>(this).
+                RegisterInstance<IFactoryContainer>(factories).
+                RegisterInstance<IInstanceCache>(singletonCache, "Singleton").
+                RegisterInstance<ITypeSubstitution>(typeSubstitution).
+                RegisterConcreteType<IAssemblyScanner, AssemblyScanner>().
+                RegisterConcreteType<IContainerConfiguration, ContainerConfiguration>().
+                ApplyRegistrations(this);
         }
 
         public IServiceLocator ServiceLocator { get; private set; }
@@ -59,7 +59,7 @@ namespace Domo.DI
                 var configuration = ServiceLocator.Resolve<IContainerConfiguration>();
 
                 configure(configuration);
-                configuration.ApplyRegistration(this);
+                configuration.ApplyRegistrations(this);
             }
 
             if (scan != null)

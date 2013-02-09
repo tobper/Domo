@@ -31,7 +31,7 @@ namespace Domo.WebApi
                 container.
                     Register(serviceType).
                     AsTransient().
-                    Using(concreteType);
+                    UsingConcreteType(concreteType);
             }
         }
     }

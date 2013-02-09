@@ -27,8 +27,10 @@ namespace Domo.DI.Registration
                     continue;
 
                 container.
-                    Register(identity).
-                    Using(concreteType);
+                    Register(identity.ServiceType).
+                    AsTransient().
+                    UsingConcreteType(concreteType).
+                    WithName(identity.ServiceName);
             }
         }
     }

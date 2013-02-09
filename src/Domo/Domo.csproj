@@ -49,17 +49,36 @@
     <Compile Include="DI\Activation\IActivator.cs" />
     <Compile Include="DI\Activation\Scope.cs" />
     <Compile Include="DI\Exceptions\SubstitutionHasAlreadyBeenRegisteredException.cs" />
+    <Compile Include="DI\Registration\ActivatorServiceRegistration.cs">
+      <DependentUpon>IServiceRegistration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DI\Registration\ActivatorServiceRegistrationExtensions.cs">
+      <DependentUpon>IServiceRegistration.cs</DependentUpon>
+    </Compile>
     <Compile Include="DI\Registration\ArrayService.cs">
       <DependentUpon>IService.cs</DependentUpon>
     </Compile>
     <Compile Include="DI\Registration\AssemblyScanner_AppDomain.cs" />
+    <Compile Include="DI\Registration\FluentRegistration.cs" />
+    <Compile Include="DI\Registration\IActivatorServiceRegistration.cs">
+      <DependentUpon>IServiceRegistration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DI\Registration\IFluentRegistration.cs" />
+    <Compile Include="DI\Registration\IInstanceServiceRegistration.cs">
+      <DependentUpon>IServiceRegistration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DI\Registration\InstanceServiceRegistrationExtensions.cs">
+      <DependentUpon>IServiceRegistration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DI\Registration\InstanceServiceRegistration.cs">
+      <DependentUpon>IServiceRegistration.cs</DependentUpon>
+    </Compile>
     <Compile Include="DI\Registration\PrefixScanConvention.cs">
       <DependentUpon>IScanConvention.cs</DependentUpon>
     </Compile>
     <Compile Include="DI\Registration\PrefixScanConventionsExtensions.cs">
       <DependentUpon>IScanConvention.cs</DependentUpon>
     </Compile>
-    <Compile Include="DI\Registration\Extensions\ActivatorServiceConfigurationExtensions.cs" />
     <Compile Include="DI\Registration\ContainerConfiguration.cs" />
     <Compile Include="DI\Registration\BasicScanConvention.cs">
       <DependentUpon>IScanConvention.cs</DependentUpon>
@@ -68,15 +87,18 @@
       <DependentUpon>IScanConvention.cs</DependentUpon>
     </Compile>
     <Compile Include="DI\Registration\IScanConvention.cs" />
-    <Compile Include="DI\Registration\Extensions\ScopeConfigurationExtensions.cs" />
+    <Compile Include="DI\Registration\ScopeServiceRegistrationExtensions.cs">
+      <DependentUpon>IServiceRegistration.cs</DependentUpon>
+    </Compile>
     <Compile Include="DI\Activation\TypeSubstitution.cs" />
     <Compile Include="DI\Activation\ITypeSubstitution.cs" />
     <Compile Include="DI\Activation\SingletonActivator.cs" />
     <Compile Include="DI\Activation\TransientActivator.cs" />
     <Compile Include="DI\Caching\IInstanceCache.cs" />
     <Compile Include="DI\Caching\InstanceCache.cs" />
-    <Compile Include="DI\Registration\Extensions\FactoryConfigurationExtensions.cs" />
-    <Compile Include="DI\Registration\Extensions\DelegateFactoryConfigurationExtensions.cs" />
+    <Compile Include="DI\Registration\FactoryConfigurationExtensions.cs">
+      <DependentUpon>IServiceRegistration.cs</DependentUpon>
+    </Compile>
     <Compile Include="DI\Container.cs" />
     <Compile Include="DI\Construction\ConstructionFactory.cs" />
     <Compile Include="DI\Construction\ConstructionFactoryContainer.cs" />
@@ -97,8 +119,9 @@
     <Compile Include="DI\InjectionContext.cs" />
     <Compile Include="DI\IServiceLocator.cs" />
     <Compile Include="DI\Exceptions\ActivatorHasAlreadyBeenSetException.cs" />
-    <Compile Include="DI\Registration\Extensions\ConcreteConfigurationExtensions.cs" />
-    <Compile Include="DI\Registration\Extensions\InstanceConfigurationExtensions.cs" />
+    <Compile Include="DI\Registration\ConcreteConfigurationExtensions.cs">
+      <DependentUpon>IServiceRegistration.cs</DependentUpon>
+    </Compile>
     <Compile Include="DI\Registration\FuncService.cs">
       <DependentUpon>IService.cs</DependentUpon>
     </Compile>
@@ -106,18 +129,9 @@
     <Compile Include="DI\Registration\InstanceService.cs">
       <DependentUpon>IService.cs</DependentUpon>
     </Compile>
-    <Compile Include="DI\Registration\InstanceServiceConfiguration.cs">
-      <DependentUpon>IServiceConfiguration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DI\Registration\IActivatorServiceConfiguration.cs">
-      <DependentUpon>IServiceConfiguration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DI\Registration\ActivatorServiceConfiguration.cs">
-      <DependentUpon>IServiceConfiguration.cs</DependentUpon>
-    </Compile>
     <Compile Include="DI\Registration\AssemblyScanner.cs" />
     <Compile Include="DI\Registration\IAssemblyScanner.cs" />
-    <Compile Include="DI\Registration\IServiceConfiguration.cs" />
+    <Compile Include="DI\Registration\IServiceRegistration.cs" />
     <Compile Include="DI\Registration\IServiceFamily.cs" />
     <Compile Include="DI\Registration\IService.cs" />
     <Compile Include="DI\Registration\LazyService.cs">
@@ -127,8 +141,7 @@
     <Compile Include="DI\Registration\ActivatorService.cs">
       <DependentUpon>IService.cs</DependentUpon>
     </Compile>
-    <Compile Include="DI\Registration\ServiceConfiguration.cs" />
-    <Compile Include="DI\Registration\Extensions\ServiceConfigurationExtensions.cs" />
+    <Compile Include="DI\Registration\ServiceRegistration.cs" />
     <Compile Include="DI\Registration\ServiceFamily.cs" />
     <Compile Include="DI\Registration\TypedServiceExtensions.cs" />
     <Compile Include="DI\ServiceIdentity.cs" />

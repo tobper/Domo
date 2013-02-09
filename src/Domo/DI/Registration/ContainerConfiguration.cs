@@ -5,20 +5,59 @@ namespace Domo.DI.Registration
 {
     public class ContainerConfiguration : IContainerConfiguration
     {
-        private readonly Queue<IServiceConfiguration> _serviceConfigurations = new Queue<IServiceConfiguration>();
+        private readonly Queue<IServiceRegistration> _serviceConfigurations = new Queue<IServiceRegistration>();
+        private readonly Queue<IFluentRegistration> _fluentRegistrations = new Queue<IFluentRegistration>();
 
-        public IContainerConfiguration Register(IServiceConfiguration serviceConfiguration)
+        public IContainerConfiguration Register(IServiceRegistration serviceRegistration)
         {
-            if (serviceConfiguration == null)
-                throw new ArgumentNullException("serviceConfiguration");
+            if (serviceRegistration == null)
+                throw new ArgumentNullException("serviceRegistration");
 
-            _serviceConfigurations.Enqueue(serviceConfiguration);
+            _serviceConfigurations.Enqueue(serviceRegistration);
 
             return this;
         }
 
-        public void ApplyRegistration(IContainer container)
+        public IContainerConfiguration Register<TService>(Action<IFluentRegistration<TService>> action)
+            where TService : class
         {
+            if (action == null)
+                throw new ArgumentNullException("action");
+
+            var fluentRegistration = Register<TService>();
+            action(fluentRegistration);
+
+            return this;
+        }
+
+        public IFluentRegistration Register(Type serviceType)
+        {
+            var registration = new FluentRegistration(serviceType);
+
+            _fluentRegistrations.Enqueue(registration);
+
+            return registration;
+        }
+
+        public IFluentRegistration<TService> Register<TService>()
+            where TService : class
+        {
+            var registration = new FluentRegistration<TService>();
+
+            _fluentRegistrations.Enqueue(registration);
+
+            return registration;
+        }
+
+        public void ApplyRegistrations(IContainer container)
+        {
+            while (_fluentRegistrations.Count > 0)
+            {
+                _fluentRegistrations.
+                    Dequeue().
+                    ApplyRegistration(this);
+            }
+
             while (_serviceConfigurations.Count > 0)
             {
                 var service = _serviceConfigurations.

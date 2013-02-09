@@ -80,7 +80,7 @@ namespace Domo.DI.Registration
                 }
             }
 
-            _configuration.ApplyRegistration(_container);
+            _configuration.ApplyRegistrations(_container);
 
             return this;
         }

@@ -20,9 +20,9 @@ namespace Domo.Settings.DI.Registration
             where TSettingsStorageProvider : ISettingsStorageProvider
         {
             return configuration.
-                Register<ISettingsSerializer, TSettingsSerializer>().
-                Register<ISettingsStorageProvider, TSettingsStorageProvider>().
-                Register<IApplicationSettings, ProviderBasedApplicationSettings>();
+                RegisterConcreteType<ISettingsSerializer, TSettingsSerializer>().
+                RegisterConcreteType<ISettingsStorageProvider, TSettingsStorageProvider>().
+                RegisterConcreteType<IApplicationSettings, ProviderBasedApplicationSettings>();
         }
 
         public static IContainerConfiguration RegisterProviderBasedSettings<TSettingsSerializer, TSettingsStorageProvider, TSettingsUsernameProvider>(this IContainerConfiguration configuration)
@@ -32,8 +32,8 @@ namespace Domo.Settings.DI.Registration
         {
             return configuration.
                 RegisterProviderBasedSettings<TSettingsSerializer, TSettingsStorageProvider>().
-                Register<ISettingsUsernameProvider, TSettingsUsernameProvider>().
-                Register<IUserSettings, ProviderBasedUserSettings>();
+                RegisterConcreteType<ISettingsUsernameProvider, TSettingsUsernameProvider>().
+                RegisterConcreteType<IUserSettings, ProviderBasedUserSettings>();
         }
     }
 }

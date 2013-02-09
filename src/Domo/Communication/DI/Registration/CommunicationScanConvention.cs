@@ -32,7 +32,7 @@ namespace Domo.Communication.DI.Registration
                     container.
                         Register(serviceType).
                         AsTransient().
-                        Using(concreteType);
+                        UsingConcreteType(concreteType);
                 }
             }
         }
