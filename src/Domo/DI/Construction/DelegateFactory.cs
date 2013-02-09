@@ -7,6 +7,11 @@ namespace Domo.DI.Construction
     {
         private readonly Func<IInjectionContext, object> _factoryDelegate;
 
+        public DelegateFactory(Func<object> factoryDelegate)
+        {
+            _factoryDelegate = context => factoryDelegate();
+        }
+
         public DelegateFactory(Func<IInjectionContext, object> factoryDelegate)
         {
             _factoryDelegate = factoryDelegate;
@@ -18,16 +23,23 @@ namespace Domo.DI.Construction
         }
     }
 
-    public class DelegateFactory<T> : DelegateFactory
+    public class DelegateFactory<TService> : IFactory
     {
-        public DelegateFactory(Func<T> factoryDelegate)
-            : base(context => factoryDelegate())
+        private readonly Func<IInjectionContext, TService> _factoryDelegate;
+
+        public DelegateFactory(Func<TService> factoryDelegate)
         {
+            _factoryDelegate = context => factoryDelegate();
         }
 
-        public DelegateFactory(Func<IInjectionContext, T> factoryDelegate)
-            : base(context => factoryDelegate(context))
+        public DelegateFactory(Func<IInjectionContext, TService> factoryDelegate)
         {
+            _factoryDelegate = factoryDelegate;
+        }
+
+        public object CreateInstance(IInjectionContext context)
+        {
+            return _factoryDelegate(context);
         }
     }
 }

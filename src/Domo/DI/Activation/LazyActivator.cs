@@ -1,16 +1,16 @@
 using System;
-using Domo.DI.Activation;
+using Domo.DI.Registration;
 
-namespace Domo.DI.Registration
+namespace Domo.DI.Activation
 {
-    public class ArrayService : IService
+    public class LazyActivator : IActivator
     {
         private readonly Func<IInjectionContext, object> _delegate;
 
-        public ArrayService(ServiceIdentity identity, Type itemServiceType, IService[] services)
+        public LazyActivator(ServiceIdentity identity, IActivator realActivator)
         {
             Identity = identity;
-            _delegate = services.GetTypedArrayDelegate(itemServiceType);
+            _delegate = realActivator.GetTypedLazyDelegate();
         }
 
         public ServiceIdentity Identity { get; private set; }

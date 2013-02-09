@@ -1,4 +1,5 @@
 using System;
+using Domo.DI.Activation;
 
 namespace Domo.DI.Registration
 {
@@ -6,8 +7,8 @@ namespace Domo.DI.Registration
     {
         Type ServiceType { get; }
 
-        void Add(IService service);
-        IService GetService(ServiceIdentity identity);
-        IService[] GetAllServices();
+        void Add(IActivator activator);
+        IActivator GetActivator(ServiceIdentity identity);
+        IActivator[] GetAllActivators();
     }
 }

@@ -1,24 +1,26 @@
 using Domo.DI;
 using Domo.DI.Activation;
-using Domo.DI.Registration;
 
 namespace Domo.Settings.DI.Activation
 {
-    [PreventAutomaticRegistration]
-    public class ApplicationSettingsActivator : SettingsActivator, IActivator
+    public class ApplicationSettingsActivator<TSettings> : IActivator
     {
         private readonly IApplicationSettings _applicationSettings;
+
+        public ServiceIdentity Identity { get; private set; }
 
         public ApplicationSettingsActivator(IApplicationSettings applicationSettings)
         {
             _applicationSettings = applicationSettings;
+
+            Identity = new ServiceIdentity(typeof(TSettings));
         }
 
-        public object ActivateService(IInjectionContext context, ServiceIdentity identity)
+        public object GetInstance(IInjectionContext context)
         {
-            return
-                GetGenericLoader(identity.ServiceType).
-                LoadInstance(_applicationSettings, identity.ServiceName);
+            var value = _applicationSettings.Load<TSettings>();
+
+            return value.Result;
         }
     }
 }

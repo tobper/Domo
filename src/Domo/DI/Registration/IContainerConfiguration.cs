@@ -4,10 +4,12 @@ namespace Domo.DI.Registration
 {
     public interface IContainerConfiguration
     {
-        IContainerConfiguration Register(IServiceRegistration serviceRegistration);
+        IContainerConfiguration Register(IActivatorConfiguration activatorConfiguration);
+        IContainerConfiguration Register(Type serviceType, Action<IFluentRegistration> action);
         IContainerConfiguration Register<TService>(Action<IFluentRegistration<TService>> action) where TService : class;
-        IFluentRegistration Register(Type serviceType);
-        IFluentRegistration<TService> Register<TService>() where TService : class;
+        IFluentRegistration Register(ServiceIdentity identity);
+        IFluentRegistration Register(Type serviceType, string serviceName = null);
+        IFluentRegistration<TService> Register<TService>(string serviceName = null) where TService : class;
 
         void ApplyRegistrations(IContainer container);
     }

@@ -104,47 +104,32 @@
     <Compile Include="Communication\DI\Registration\CommunicationScanConvention.cs" />
     <Compile Include="Communication\DI\Registration\CommunicationScanConventionExtensions.cs" />
     <Compile Include="Communication\IBus.cs" />
-    <Compile Include="DI\Activation\ActivationDelegate.cs" />
-    <Compile Include="DI\Activation\ActivatorContainer.cs" />
+    <Compile Include="DI\Activation\ActivationScope.cs" />
+    <Compile Include="DI\Activation\ArrayActivator.cs" />
     <Compile Include="DI\Activation\FactoryActivator.cs" />
+    <Compile Include="DI\Activation\FuncActivator.cs" />
     <Compile Include="DI\Activation\IActivator.cs" />
-    <Compile Include="DI\Activation\IActivatorContainer.cs" />
     <Compile Include="DI\Activation\IInjectionContext.cs" />
-    <Compile Include="DI\Activation\ITypeSubstitution.cs" />
-    <Compile Include="DI\Activation\Scope.cs" />
-    <Compile Include="DI\Activation\SingletonActivator.cs" />
-    <Compile Include="DI\Activation\TransientActivator.cs" />
-    <Compile Include="DI\Activation\TypeSubstitution.cs" />
+    <Compile Include="DI\Activation\InstanceActivator.cs" />
+    <Compile Include="DI\Activation\LazyActivator.cs" />
+    <Compile Include="DI\Activation\SingletonFactoryActivator.cs" />
+    <Compile Include="DI\Activation\TransientFactoryActivator.cs" />
+    <Compile Include="DI\Caching\DictionaryInstanceCache.cs" />
     <Compile Include="DI\Caching\IInstanceCache.cs" />
-    <Compile Include="DI\Caching\InstanceCache.cs" />
     <Compile Include="DI\Construction\ConstructionFactory.cs" />
-    <Compile Include="DI\Construction\ConstructionFactoryContainer.cs" />
     <Compile Include="DI\Construction\ConstructionFactoryParameter.cs" />
     <Compile Include="DI\Construction\DelegateFactory.cs" />
-    <Compile Include="DI\Construction\FactoryContainer.cs" />
-    <Compile Include="DI\Construction\IConstructionFactoryContainer.cs" />
     <Compile Include="DI\Construction\IFactory.cs" />
-    <Compile Include="DI\Construction\IFactoryContainer.cs" />
+    <Compile Include="DI\Construction\TypeExtensions.cs" />
     <Compile Include="DI\Container.cs" />
-    <Compile Include="DI\Exceptions\ActivatorHasAlreadyBeenSetException.cs" />
-    <Compile Include="DI\Exceptions\InvalidActivatorTypeException.cs" />
+    <Compile Include="DI\Exceptions\ActivatorAlreadyRegisteredException.cs" />
     <Compile Include="DI\Exceptions\InvalidScopeException.cs" />
     <Compile Include="DI\Exceptions\NoValidConstructorFoundException.cs" />
-    <Compile Include="DI\Exceptions\ServiceAlreadyRegisteredException.cs" />
     <Compile Include="DI\Exceptions\ServiceCouldNotBeCreatedException.cs" />
     <Compile Include="DI\Exceptions\ServiceNotRegisteredException.cs" />
-    <Compile Include="DI\Exceptions\SubstitutionHasAlreadyBeenRegisteredException.cs" />
     <Compile Include="DI\IContainer.cs" />
     <Compile Include="DI\InjectionContext.cs" />
     <Compile Include="DI\IServiceLocator.cs" />
-    <Compile Include="DI\Registration\ActivatorService.cs">
-      <DependentUpon>IService.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DI\Registration\ActivatorServiceRegistration.cs" />
-    <Compile Include="DI\Registration\ActivatorServiceRegistrationExtensions.cs" />
-    <Compile Include="DI\Registration\ArrayService.cs">
-      <DependentUpon>IService.cs</DependentUpon>
-    </Compile>
     <Compile Include="DI\Registration\AssemblyScanner.cs" />
     <Compile Include="DI\Registration\BasicScanConvention.cs">
       <DependentUpon>IScanConvention.cs</DependentUpon>
@@ -152,30 +137,22 @@
     <Compile Include="DI\Registration\BasicScanConventionsExtensions.cs">
       <DependentUpon>IScanConvention.cs</DependentUpon>
     </Compile>
-    <Compile Include="DI\Registration\ConcreteConfigurationExtensions.cs" />
     <Compile Include="DI\Registration\ContainerConfiguration.cs" />
-    <Compile Include="DI\Registration\FactoryConfigurationExtensions.cs" />
+    <Compile Include="DI\Registration\FactoryActivatorRegistration.cs" />
+    <Compile Include="DI\Registration\FactoryActivatorRegistrationExtensions.cs" />
     <Compile Include="DI\Registration\FluentRegistration.cs" />
-    <Compile Include="DI\Registration\FuncService.cs">
-      <DependentUpon>IService.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DI\Registration\IActivatorServiceRegistration.cs" />
+    <Compile Include="DI\Registration\IActivatorConfiguration.cs" />
+    <Compile Include="DI\Registration\IActivatorRegistration.cs" />
     <Compile Include="DI\Registration\IAssemblyScanner.cs" />
     <Compile Include="DI\Registration\IContainerConfiguration.cs" />
+    <Compile Include="DI\Registration\IFactoryActivatorRegistration.cs" />
+    <Compile Include="DI\Registration\IFluentConfiguration.cs" />
     <Compile Include="DI\Registration\IFluentRegistration.cs" />
-    <Compile Include="DI\Registration\IInstanceServiceRegistration.cs" />
-    <Compile Include="DI\Registration\InstanceService.cs">
-      <DependentUpon>IService.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DI\Registration\InstanceServiceRegistration.cs" />
-    <Compile Include="DI\Registration\InstanceServiceRegistrationExtensions.cs" />
+    <Compile Include="DI\Registration\IInstanceActivatorRegistration.cs" />
+    <Compile Include="DI\Registration\InstanceActivatorRegistration.cs" />
+    <Compile Include="DI\Registration\InstanceActivatorRegistrationExtensions.cs" />
     <Compile Include="DI\Registration\IScanConvention.cs" />
-    <Compile Include="DI\Registration\IService.cs" />
     <Compile Include="DI\Registration\IServiceFamily.cs" />
-    <Compile Include="DI\Registration\IServiceRegistration.cs" />
-    <Compile Include="DI\Registration\LazyService.cs">
-      <DependentUpon>IService.cs</DependentUpon>
-    </Compile>
     <Compile Include="DI\Registration\PrefixScanConvention.cs">
       <DependentUpon>IScanConvention.cs</DependentUpon>
     </Compile>
@@ -183,9 +160,7 @@
       <DependentUpon>IScanConvention.cs</DependentUpon>
     </Compile>
     <Compile Include="DI\Registration\PreventAutomaticRegistrationAttribute.cs" />
-    <Compile Include="DI\Registration\ScopeServiceRegistrationExtensions.cs" />
     <Compile Include="DI\Registration\ServiceFamily.cs" />
-    <Compile Include="DI\Registration\ServiceRegistration.cs" />
     <Compile Include="DI\Registration\TypedServiceExtensions.cs" />
     <Compile Include="DI\ServiceExtensions.cs" />
     <Compile Include="DI\ServiceIdentity.cs" />
@@ -203,9 +178,9 @@
     <Compile Include="Communication\IMessageHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\DI\Activation\ApplicationSettingsActivator.cs" />
-    <Compile Include="Settings\DI\Activation\SettingsActivator.cs" />
     <Compile Include="Settings\DI\Activation\UserSettingsActivator.cs" />
     <Compile Include="Settings\DI\ApplicationSettingsAttribute.cs" />
+    <Compile Include="Settings\DI\Registration\SettingsActivatorConfiguration.cs" />
     <Compile Include="Settings\DI\Registration\SettingsScanConvention.cs" />
     <Compile Include="Settings\DI\Registration\SettingsScanConventionExtensions.cs" />
     <Compile Include="Settings\RoamingApplicationSettings.cs" />

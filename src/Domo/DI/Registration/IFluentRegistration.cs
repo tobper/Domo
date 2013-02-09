@@ -1,15 +1,16 @@
-using System;
-
 namespace Domo.DI.Registration
 {
     public interface IFluentRegistration
     {
-        Type ServiceType { get; }
+        ServiceIdentity Identity { get; }
 
-        void ApplyRegistration(IContainerConfiguration configuration);
-        void Using(IServiceRegistration serviceRegistration);
+        void Using(IActivatorConfiguration activatorConfiguration);
     }
 
-    public interface IFluentRegistration<TService> : IFluentRegistration
-    { }
+    public interface IFluentRegistration<TService>
+    {
+        ServiceIdentity Identity { get; }
+
+        void Using(IActivatorConfiguration activatorConfiguration);
+    }
 }

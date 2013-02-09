@@ -5,15 +5,27 @@ namespace Domo.DI.Registration
 {
     public class ContainerConfiguration : IContainerConfiguration
     {
-        private readonly Queue<IServiceRegistration> _serviceConfigurations = new Queue<IServiceRegistration>();
-        private readonly Queue<IFluentRegistration> _fluentRegistrations = new Queue<IFluentRegistration>();
+        private readonly Queue<IActivatorConfiguration> _activatorConfigurations = new Queue<IActivatorConfiguration>();
+        private readonly Queue<IFluentConfiguration> _fluentConfigurations = new Queue<IFluentConfiguration>();
 
-        public IContainerConfiguration Register(IServiceRegistration serviceRegistration)
+        public IContainerConfiguration Register(IActivatorConfiguration activatorConfiguration)
         {
-            if (serviceRegistration == null)
-                throw new ArgumentNullException("serviceRegistration");
+            if (activatorConfiguration == null)
+                throw new ArgumentNullException("activatorConfiguration");
 
-            _serviceConfigurations.Enqueue(serviceRegistration);
+            _activatorConfigurations.Enqueue(activatorConfiguration);
+
+            return this;
+        }
+
+        public IContainerConfiguration Register(Type serviceType, Action<IFluentRegistration> action)
+        {
+            if (action == null)
+                throw new ArgumentNullException("action");
+
+            var fluentRegistration = Register(serviceType);
+
+            action(fluentRegistration);
 
             return this;
         }
@@ -25,42 +37,54 @@ namespace Domo.DI.Registration
                 throw new ArgumentNullException("action");
 
             var fluentRegistration = Register<TService>();
+
             action(fluentRegistration);
 
             return this;
         }
 
-        public IFluentRegistration Register(Type serviceType)
+        public IFluentRegistration Register(ServiceIdentity identity)
         {
-            var registration = new FluentRegistration(serviceType);
+            var registration = new FluentRegistration(identity);
 
-            _fluentRegistrations.Enqueue(registration);
+            _fluentConfigurations.Enqueue(registration);
 
             return registration;
         }
 
-        public IFluentRegistration<TService> Register<TService>()
+        public IFluentRegistration Register(Type serviceType, string serviceName = null)
+        {
+            var registration = new FluentRegistration(serviceType, serviceName);
+
+            _fluentConfigurations.Enqueue(registration);
+
+            return registration;
+        }
+
+        public IFluentRegistration<TService> Register<TService>(string serviceName = null)
             where TService : class
         {
-            var registration = new FluentRegistration<TService>();
+            var registration = new FluentRegistration<TService>(serviceName);
 
-            _fluentRegistrations.Enqueue(registration);
+            _fluentConfigurations.Enqueue(registration);
 
             return registration;
         }
 
         public void ApplyRegistrations(IContainer container)
         {
-            while (_fluentRegistrations.Count > 0)
+            while (_fluentConfigurations.Count > 0)
             {
-                _fluentRegistrations.
+                var configuration = _fluentConfigurations.
                     Dequeue().
-                    ApplyRegistration(this);
+                    GetActivatorConfiguration();
+
+                Register(configuration);
             }
 
-            while (_serviceConfigurations.Count > 0)
+            while (_activatorConfigurations.Count > 0)
             {
-                var service = _serviceConfigurations.
+                var service = _activatorConfigurations.
                     Dequeue().
                     GetService(container);
 

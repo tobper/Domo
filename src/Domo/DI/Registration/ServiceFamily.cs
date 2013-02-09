@@ -2,13 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Domo.DI.Activation;
 using Domo.Extensions;
 
 namespace Domo.DI.Registration
 {
-    public class ServiceFamily : IServiceFamily, IEnumerable<IService>
+    public class ServiceFamily : IServiceFamily, IEnumerable<IActivator>
     {
-        private readonly IDictionary<ServiceIdentity, IService> _services = new Dictionary<ServiceIdentity, IService>();
+        private readonly IDictionary<ServiceIdentity, IActivator> _activators = new Dictionary<ServiceIdentity, IActivator>();
 
         public Type ServiceType { get; private set; }
 
@@ -17,34 +18,34 @@ namespace Domo.DI.Registration
             ServiceType = serviceType;
         }
 
-        public void Add(IService service)
+        public void Add(IActivator activator)
         {
-            if (service == null)
-                throw new ArgumentNullException("service");
+            if (activator == null)
+                throw new ArgumentNullException("activator");
 
-            if (service.Identity.ServiceType != ServiceType)
-                throw new ArgumentException("A service can not be added with an identity that does not have the same ServiceType as the family.", "service");
+            if (activator.Identity.ServiceType != ServiceType)
+                throw new ArgumentException("A activator can't be added with an identity that does not have the same ServiceType as the family.", "activator");
 
-            if (_services.ContainsKey(service.Identity))
-                throw new ServiceAlreadyRegisteredException(service.Identity);
+            if (_activators.ContainsKey(activator.Identity))
+                throw new ActivatorAlreadyRegisteredException(activator.Identity);
 
-            _services.Add(service.Identity, service);
+            _activators.Add(activator.Identity, activator);
         }
 
-        public IService GetService(ServiceIdentity identity)
+        public IActivator GetActivator(ServiceIdentity identity)
         {
             // Asking for default instance and only one instance is registered ->
             // The registered instance will be returned regardless of name it is registered with.
-            var service = (IsDefaultIdentity(identity) && _services.Count == 1)
-                ? _services.Values.First()
-                : _services.TryGetValue(identity);
+            var activator = (IsDefaultIdentity(identity) && _activators.Count == 1)
+                ? _activators.Values.First()
+                : _activators.TryGetValue(identity);
 
-            return service;
+            return activator;
         }
 
-        public IService[] GetAllServices()
+        public IActivator[] GetAllActivators()
         {
-            return _services.Values.ToArray();
+            return _activators.Values.ToArray();
         }
 
         private static bool IsDefaultIdentity(ServiceIdentity identity)
@@ -52,14 +53,14 @@ namespace Domo.DI.Registration
             return identity.ServiceName == null;
         }
 
-        IEnumerator<IService> IEnumerable<IService>.GetEnumerator()
+        IEnumerator<IActivator> IEnumerable<IActivator>.GetEnumerator()
         {
-            return _services.Values.GetEnumerator();
+            return _activators.Values.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _services.Values.GetEnumerator();
+            return _activators.Values.GetEnumerator();
         }
     }
 }

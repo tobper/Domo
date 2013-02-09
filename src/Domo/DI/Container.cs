@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Domo.DI.Activation;
 using Domo.DI.Caching;
-using Domo.DI.Construction;
 using Domo.DI.Registration;
 using Domo.Extensions;
 
@@ -17,25 +16,14 @@ namespace Domo.DI
         {
             ServiceLocator = new ServiceLocator(this);
 
-            var singletonCache = new InstanceCache();
-            var typeSubstitution = new TypeSubstitution();
-            var constructionFactories = new ConstructionFactoryContainer(this);
-            var factories = new FactoryContainer(this, constructionFactories);
-            var activators = new ActivatorContainer(
-                factories,
-                new SingletonActivator(factories, typeSubstitution, singletonCache),
-                new TransientActivator(factories, typeSubstitution));
+            var singletonCache = new DictionaryInstanceCache();
 
             new ContainerConfiguration().
                 RegisterInstance(ServiceLocator).
-                RegisterInstance<IActivatorContainer>(activators).
-                RegisterInstance<IConstructionFactoryContainer>(constructionFactories).
                 RegisterInstance<IContainer>(this).
-                RegisterInstance<IFactoryContainer>(factories).
-                RegisterInstance<IInstanceCache>(singletonCache, "Singleton").
-                RegisterInstance<ITypeSubstitution>(typeSubstitution).
-                RegisterConcreteType<IAssemblyScanner, AssemblyScanner>().
-                RegisterConcreteType<IContainerConfiguration, ContainerConfiguration>().
+                RegisterInstance<IInstanceCache>(singletonCache).
+                RegisterTransient<IAssemblyScanner, AssemblyScanner>().
+                RegisterTransient<IContainerConfiguration, ContainerConfiguration>().
                 ApplyRegistrations(this);
         }
 
@@ -70,13 +58,13 @@ namespace Domo.DI
             }
         }
 
-        public void Register(IService service)
+        public void Register(IActivator activator)
         {
-            var serviceType = service.Identity.ServiceType;
+            var serviceType = activator.Identity.ServiceType;
 
             _serviceFamilies.
                 TryGetValue(serviceType, () => new ServiceFamily(serviceType)).
-                Add(service);
+                Add(activator);
         }
 
         public object Resolve(ServiceIdentity identity)
@@ -103,7 +91,7 @@ namespace Domo.DI
                    select service.GetInstance(context);
         }
 
-        public IService GetService(ServiceIdentity identity)
+        public IActivator GetService(ServiceIdentity identity)
         {
             return
                 TryGetRegisteredService(identity) ??
@@ -111,29 +99,29 @@ namespace Domo.DI
                 TryCreateGenericService(identity);
         }
 
-        private IService TryGetRegisteredService(ServiceIdentity identity)
+        private IActivator TryGetRegisteredService(ServiceIdentity identity)
         {
             var serviceFamily = _serviceFamilies.TryGetValue(identity.ServiceType);
             if (serviceFamily != null)
-                return serviceFamily.GetService(identity);
+                return serviceFamily.GetActivator(identity);
 
             return null;
         }
 
-        private IService TryCreateArrayService(ServiceIdentity identity)
+        private IActivator TryCreateArrayService(ServiceIdentity identity)
         {
             if (identity.ServiceType.IsArray)
             {
                 var itemServiceType = identity.ServiceType.GetElementType();
                 var itemServices = GetServices(itemServiceType);
 
-                return new ArrayService(identity, itemServiceType, itemServices);
+                return new ArrayActivator(identity, itemServiceType, itemServices);
             }
 
             return null;
         }
 
-        private IService TryCreateGenericService(ServiceIdentity identity)
+        private IActivator TryCreateGenericService(ServiceIdentity identity)
         {
             if (identity.ServiceType.IsConstructedGenericType)
             {
@@ -146,7 +134,7 @@ namespace Domo.DI
                     var realService = GetService(realIdentity);
 
                     if (realService != null)
-                        return new FuncService(identity, realService);
+                        return new FuncActivator(identity, realService);
                 }
                 else if (genericTypeDefinition == typeof(Lazy<>))
                 {
@@ -154,7 +142,7 @@ namespace Domo.DI
                     var realService = GetService(realIdentity);
 
                     if (realService != null)
-                        return new LazyService(identity, realService);
+                        return new LazyActivator(identity, realService);
                 }
                 else if (genericTypeDefinition == typeof(IEnumerable<>) ||
                          genericTypeDefinition == typeof(ICollection<>) ||
@@ -162,20 +150,20 @@ namespace Domo.DI
                 {
                     var itemServices = GetServices(realServiceType);
 
-                    return new ArrayService(identity, realServiceType, itemServices);
+                    return new ArrayActivator(identity, realServiceType, itemServices);
                 }
             }
 
             return null;
         }
 
-        public IService[] GetServices(Type serviceType)
+        public IActivator[] GetServices(Type serviceType)
         {
             var serviceFamily = _serviceFamilies.TryGetValue(serviceType);
 
             return (serviceFamily != null)
-                ? serviceFamily.GetAllServices()
-                : new IService[0];
+                ? serviceFamily.GetAllActivators()
+                : new IActivator[0];
         }
 
         private IInjectionContext CreateInjectionContext()

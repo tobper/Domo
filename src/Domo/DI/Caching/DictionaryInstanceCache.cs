@@ -1,21 +1,18 @@
 using System;
 using System.Collections.Generic;
+using Domo.DI.Activation;
+using Domo.DI.Construction;
 using Domo.Extensions;
 
 namespace Domo.DI.Caching
 {
-    public class InstanceCache : IInstanceCache
+    public class DictionaryInstanceCache : IInstanceCache
     {
         private readonly IDictionary<ServiceIdentity, object> _instances = new Dictionary<ServiceIdentity, object>();
 
-        public void Add(ServiceIdentity identity, object instance)
+        public object Get(ServiceIdentity identity, IFactory factory, IInjectionContext context)
         {
-            _instances[identity] = instance;
-        }
-
-        public object Get(ServiceIdentity identity, Func<object> factoryDelegate)
-        {
-            return _instances.TryGetValue(identity, factoryDelegate);
+            return _instances.TryGetValue(identity, () => factory.CreateInstance(context));
         }
 
         public void Dispose()

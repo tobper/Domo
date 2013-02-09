@@ -1,10 +1,8 @@
-using Domo.DI.Activation;
-
-namespace Domo.DI.Registration
+namespace Domo.DI.Activation
 {
-    public class InstanceService : IService
+    public class InstanceActivator : IActivator
     {
-        public InstanceService(ServiceIdentity identity, object instance)
+        public InstanceActivator(ServiceIdentity identity, object instance)
         {
             Identity = identity;
             Instance = instance;

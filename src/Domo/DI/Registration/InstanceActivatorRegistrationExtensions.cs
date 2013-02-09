@@ -2,12 +2,12 @@ using System;
 
 namespace Domo.DI.Registration
 {
-    public static class InstanceServiceRegistrationExtensions
+    public static class InstanceActivatorRegistrationExtensions
     {
         public static IContainerConfiguration RegisterInstance(this IContainerConfiguration configuration, Type serviceType, object instance, string serviceName = null)
         {
             var identity = new ServiceIdentity(serviceType, serviceName);
-            var service = new InstanceServiceRegistration(identity, instance);
+            var service = new InstanceActivatorRegistration<object>(identity, instance);
 
             return configuration.Register(service);
         }
@@ -17,20 +17,20 @@ namespace Domo.DI.Registration
         {
             var serviceType = typeof(TService);
             var identity = new ServiceIdentity(serviceType, serviceName);
-            var service = new InstanceServiceRegistration(identity, instance);
+            var service = new InstanceActivatorRegistration<TService>(identity, instance);
 
             return configuration.Register(service);
         }
 
-        public static IInstanceServiceRegistration Using(this IFluentRegistration fluentRegistration, object instance)
+        public static IInstanceActivatorRegistration UsingInstance(this IFluentRegistration fluentRegistration, object instance)
         {
-            return new InstanceServiceRegistration(fluentRegistration, instance);
+            return new InstanceActivatorRegistration<object>(fluentRegistration, instance);
         }
 
-        public static IInstanceServiceRegistration Using<TService>(this IFluentRegistration<TService> fluentRegistration, TService instance)
+        public static IInstanceActivatorRegistration<TService> UsingInstance<TService>(this IFluentRegistration<TService> fluentRegistration, TService instance)
             where TService : class
         {
-            return new InstanceServiceRegistration(fluentRegistration, instance);
+            return new InstanceActivatorRegistration<TService>(fluentRegistration, instance);
         }
     }
 }

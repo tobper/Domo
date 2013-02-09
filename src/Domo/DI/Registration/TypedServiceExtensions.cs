@@ -8,17 +8,17 @@ namespace Domo.DI.Registration
 {
     public static class TypedServiceExtensions
     {
-        public static Func<IInjectionContext, object> GetTypedFuncDelegate(this IService service)
+        public static Func<IInjectionContext, object> GetTypedFuncDelegate(this IActivator activator)
         {
-            return CallGenericMethod("GetTypedFuncDelegate", service.Identity.ServiceType, service);
+            return CallGenericMethod("GetTypedFuncDelegate", activator.Identity.ServiceType, activator);
         }
 
-        public static Func<IInjectionContext, object> GetTypedLazyDelegate(this IService service)
+        public static Func<IInjectionContext, object> GetTypedLazyDelegate(this IActivator activator)
         {
-            return CallGenericMethod("GetTypedLazyDelegate", service.Identity.ServiceType, service);
+            return CallGenericMethod("GetTypedLazyDelegate", activator.Identity.ServiceType, activator);
         }
 
-        public static Func<IInjectionContext, object> GetTypedArrayDelegate(this IEnumerable<IService> services, Type serviceType)
+        public static Func<IInjectionContext, object> GetTypedArrayDelegate(this IEnumerable<IActivator> services, Type serviceType)
         {
             return CallGenericMethod("GetTypedArrayDelegate", serviceType, services);
         }
@@ -34,17 +34,17 @@ namespace Domo.DI.Registration
         }
 
         // ReSharper disable UnusedMember.Local
-        private static Func<IInjectionContext, object> GetTypedFuncDelegate<T>(IService service)
+        private static Func<IInjectionContext, object> GetTypedFuncDelegate<T>(IActivator activator)
         {
-            return context => new Func<T>(() => (T)service.GetInstance(context));
+            return context => new Func<T>(() => (T)activator.GetInstance(context));
         }
 
-        private static Func<IInjectionContext, object> GetTypedLazyDelegate<T>(IService service)
+        private static Func<IInjectionContext, object> GetTypedLazyDelegate<T>(IActivator activator)
         {
-            return context => new Lazy<T>(() => (T)service.GetInstance((context)));
+            return context => new Lazy<T>(() => (T)activator.GetInstance((context)));
         }
 
-        private static Func<IInjectionContext, object> GetTypedArrayDelegate<T>(this IEnumerable<IService> services)
+        private static Func<IInjectionContext, object> GetTypedArrayDelegate<T>(this IEnumerable<IActivator> services)
         {
             return context => services.
                 Select(s => s.GetInstance(context)).

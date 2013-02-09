@@ -45,6 +45,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -59,19 +60,15 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="DI\Activation\SingletonActivatorTests.cs" />
-    <Compile Include="DI\Activation\When_activating_an_existing_service.cs">
-      <DependentUpon>SingletonActivatorTests.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DI\Activation\When_activating_a_service.cs">
-      <DependentUpon>SingletonActivatorTests.cs</DependentUpon>
-    </Compile>
+    <Compile Include="DI\Activation\FactoryActivatorTests.cs" />
+    <Compile Include="DI\Activation\InstanceActivatorTests.cs" />
     <Compile Include="DI\ContainerTests.cs" />
     <Compile Include="DI\When_creating_a_container_using_an_assembly_scanner.cs">
       <DependentUpon>ContainerTests.cs</DependentUpon>
     </Compile>
     <Compile Include="Communication\BusTests.cs" />
     <Compile Include="Communication\When_sending_a_command_with_no_registered_command_handler.cs" />
+    <Compile Include="TestBase.cs" />
     <Compile Include="UnitTests.cs" />
     <Compile Include="DI\When_creating_a_container.cs">
       <DependentUpon>ContainerTests.cs</DependentUpon>

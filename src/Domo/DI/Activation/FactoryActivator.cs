@@ -6,39 +6,30 @@ namespace Domo.DI.Activation
 {
     public abstract class FactoryActivator : IActivator
     {
-        private readonly IFactoryContainer _factories;
-        private readonly ITypeSubstitution _typeSubstitution;
-        private readonly IInstanceCache _instanceCache;
+        public IFactory Factory { get; private set; }
+        public ServiceIdentity Identity { get; private set; }
 
-        protected FactoryActivator(IFactoryContainer factories, ITypeSubstitution typeSubstitution, IInstanceCache instanceCache)
+        protected FactoryActivator(ServiceIdentity identity, IFactory factory)
         {
-            _factories = factories;
-            _typeSubstitution = typeSubstitution;
-            _instanceCache = instanceCache;
+            if (identity == null)
+                throw new ArgumentNullException("identity");
+
+            if (factory == null)
+                throw new ArgumentNullException("factory");
+
+            Factory = factory;
+            Identity = identity;
         }
 
-        public object ActivateService(IInjectionContext context, ServiceIdentity identity)
+        public object GetInstance(IInjectionContext context)
         {
-            var concreteIdentity = GetConcreteIdentity(identity);
-            var factoryDelegate = GetFactoryDelegate(context, concreteIdentity);
+            var instanceCache = GetInstanceCache(context);
 
-            return (_instanceCache != null)
-                ? _instanceCache.Get(concreteIdentity, factoryDelegate)
-                : factoryDelegate();
+            return (instanceCache != null)
+                ? instanceCache.Get(Identity, Factory, context)
+                : Factory.CreateInstance(context);
         }
 
-        private ServiceIdentity GetConcreteIdentity(ServiceIdentity identity)
-        {
-            var concreteType = _typeSubstitution.TryGetConcreteType(identity);
-            if (concreteType != null)
-                return new ServiceIdentity(concreteType, identity.ServiceName);
-
-            return identity;
-        }
-
-        private Func<object> GetFactoryDelegate(IInjectionContext context, ServiceIdentity identity)
-        {
-            return () => _factories.CreateInstance(identity, context);
-        }
+        protected abstract IInstanceCache GetInstanceCache(IInjectionContext context);
     }
 }

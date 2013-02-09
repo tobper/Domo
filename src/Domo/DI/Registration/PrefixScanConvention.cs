@@ -22,15 +22,14 @@ namespace Domo.DI.Registration
             // I.e. SingletonServiceCache should register a IServiceCache service named Singleton
             foreach (var serviceType in concreteType.ImplementedInterfaces)
             {
-                var identity = serviceType.GetServiceIdentity(concreteType.Name);
+                var identity = serviceType.TryGetServiceIdentity(concreteType.Name);
                 if (identity == null)
                     continue;
 
                 container.
-                    Register(identity.ServiceType).
+                    Register(identity).
                     AsTransient().
-                    UsingConcreteType(concreteType).
-                    WithName(identity.ServiceName);
+                    UsingConcreteType(concreteType.AsType());
             }
         }
     }

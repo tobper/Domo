@@ -2,17 +2,17 @@ using System;
 
 namespace Domo.DI
 {
-    public class ServiceAlreadyRegisteredException : Exception
+    public class ActivatorAlreadyRegisteredException : Exception
     {
         public string ServiceName { get; private set; }
         public Type ServiceType { get; private set; }
 
-        public ServiceAlreadyRegisteredException(ServiceIdentity identity)
+        public ActivatorAlreadyRegisteredException(ServiceIdentity identity)
             : this(identity.ServiceName, identity.ServiceType)
         {
         }
 
-        public ServiceAlreadyRegisteredException(string serviceName, Type serviceType)
+        public ActivatorAlreadyRegisteredException(string serviceName, Type serviceType)
             : base(CreateMessage(serviceName, serviceType))
         {
             ServiceName = serviceName;

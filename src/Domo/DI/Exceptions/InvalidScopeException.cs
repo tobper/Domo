@@ -5,24 +5,24 @@ namespace Domo.DI
 {
     public class InvalidScopeException : Exception
     {
-        public InvalidScopeException(Scope scope)
-            : base(CreateMessage(scope))
+        public InvalidScopeException(ActivationScope activationScope)
+            : base(CreateMessage(activationScope))
         {
         }
 
-        public InvalidScopeException(Scope scope, Type serviceType)
-            : base(CreateMessage(scope, serviceType))
+        public InvalidScopeException(ActivationScope activationScope, Type serviceType)
+            : base(CreateMessage(activationScope, serviceType))
         {
         }
 
-        private static string CreateMessage(Scope scope)
+        private static string CreateMessage(ActivationScope activationScope)
         {
-            return string.Format("Invalid scope ({0}).", scope);
+            return string.Format("Invalid scope ({0}).", activationScope);
         }
 
-        private static string CreateMessage(Scope scope, Type serviceType)
+        private static string CreateMessage(ActivationScope activationScope, Type serviceType)
         {
-            return string.Format("Invalid scope ({0}) specified for service {1}.", scope, serviceType.Name);
+            return string.Format("Invalid scope ({0}) specified for service {1}.", activationScope, serviceType.Name);
         }
     }
 }

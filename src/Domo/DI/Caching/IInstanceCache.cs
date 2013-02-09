@@ -1,10 +1,11 @@
 using System;
+using Domo.DI.Activation;
+using Domo.DI.Construction;
 
 namespace Domo.DI.Caching
 {
     public interface IInstanceCache : IDisposable
     {
-        void Add(ServiceIdentity identity, object instance);
-        object Get(ServiceIdentity identity, Func<object> factoryDelegate);
+        object Get(ServiceIdentity identity, IFactory factory, IInjectionContext context);
     }
 }

@@ -27,7 +27,7 @@ namespace Domo.DI.Registration
                 container.
                     Register(serviceType).
                     AsTransient().
-                    UsingConcreteType(concreteType);
+                    UsingConcreteType(concreteType.AsType());
             }
         }
     }

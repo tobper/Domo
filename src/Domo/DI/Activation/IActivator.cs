@@ -2,6 +2,7 @@ namespace Domo.DI.Activation
 {
     public interface IActivator
     {
-        object ActivateService(IInjectionContext context, ServiceIdentity identity);
+        ServiceIdentity Identity { get; }
+        object GetInstance(IInjectionContext context);
     }
 }

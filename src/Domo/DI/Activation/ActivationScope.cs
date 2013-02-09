@@ -1,6 +1,6 @@
 namespace Domo.DI.Activation
 {
-    public enum Scope
+    public enum ActivationScope
     {
         Default,
         Transient,

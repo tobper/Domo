@@ -1,7 +1,5 @@
-using System;
 using System.Reflection;
 using Domo.DI.Registration;
-using Domo.Settings.DI.Activation;
 
 namespace Domo.Settings.DI.Registration
 {
@@ -12,29 +10,13 @@ namespace Domo.Settings.DI.Registration
             var settingsAttribute = type.GetCustomAttribute<SettingsAttribute>();
             if (settingsAttribute != null)
             {
-                var activatorType = GetActivatorType(settingsAttribute.Scope);
                 var settingsType = type.AsType();
+                var settingsScope = settingsAttribute.Scope;
+                var serviceConfiguration = new SettingsActivatorConfiguration(settingsScope, settingsType);
 
                 // Todo: Settings are registered without name so it is not possible to load settings based on other argument names.
 
-                container.
-                    Register(settingsType).
-                    UsingActivator(activatorType);
-            }
-        }
-
-        private static Type GetActivatorType(SettingsScope scope)
-        {
-            switch (scope)
-            {
-                case SettingsScope.Application:
-                    return typeof(ApplicationSettingsActivator);
-
-                case SettingsScope.User:
-                    return typeof(UserSettingsActivator);
-
-                default:
-                    throw new InvalidOperationException("Invalid settings scope");
+                container.Register(serviceConfiguration);
             }
         }
     }
