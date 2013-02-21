@@ -10,7 +10,7 @@ namespace Domo.DI
 {
     public class Container : IContainer
     {
-        private readonly IDictionary<Type, IServiceFamily> _serviceFamilies = new Dictionary<Type, IServiceFamily>();
+        private readonly IDictionary<Type, IActivatorGroup> _activatorGroups = new Dictionary<Type, IActivatorGroup>();
 
         private Container()
         {
@@ -62,8 +62,8 @@ namespace Domo.DI
         {
             var serviceType = activator.Identity.ServiceType;
 
-            _serviceFamilies.
-                TryGetValue(serviceType, () => new ServiceFamily(serviceType)).
+            _activatorGroups.
+                TryGetValue(serviceType, () => new ActivatorGroup(serviceType)).
                 Add(activator);
         }
 
@@ -101,9 +101,9 @@ namespace Domo.DI
 
         private IActivator TryGetRegisteredActivator(ServiceIdentity identity)
         {
-            var serviceFamily = _serviceFamilies.TryGetValue(identity.ServiceType);
-            if (serviceFamily != null)
-                return serviceFamily.GetActivator(identity);
+            var activatorGroup = _activatorGroups.TryGetValue(identity.ServiceType);
+            if (activatorGroup != null)
+                return activatorGroup.GetActivator(identity);
 
             return null;
         }
@@ -159,10 +159,10 @@ namespace Domo.DI
 
         public IActivator[] GetActivators(Type serviceType)
         {
-            var serviceFamily = _serviceFamilies.TryGetValue(serviceType);
+            var activatorGroup = _activatorGroups.TryGetValue(serviceType);
 
-            return (serviceFamily != null)
-                ? serviceFamily.GetAllActivators()
+            return (activatorGroup != null)
+                ? activatorGroup.GetAllActivators()
                 : new IActivator[0];
         }
 

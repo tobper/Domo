@@ -1,9 +1,8 @@
 using System;
-using Domo.DI.Activation;
 
-namespace Domo.DI.Registration
+namespace Domo.DI.Activation
 {
-    public interface IServiceFamily
+    public interface IActivatorGroup
     {
         Type ServiceType { get; }
 

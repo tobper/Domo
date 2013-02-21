@@ -105,10 +105,12 @@
     <Compile Include="Communication\DI\Registration\CommunicationScanConventionExtensions.cs" />
     <Compile Include="Communication\IBus.cs" />
     <Compile Include="DI\Activation\ActivationScope.cs" />
+    <Compile Include="DI\Activation\ActivatorGroup.cs" />
     <Compile Include="DI\Activation\ArrayActivator.cs" />
     <Compile Include="DI\Activation\FactoryActivator.cs" />
     <Compile Include="DI\Activation\FuncActivator.cs" />
     <Compile Include="DI\Activation\IActivator.cs" />
+    <Compile Include="DI\Activation\IActivatorGroup.cs" />
     <Compile Include="DI\Activation\IInjectionContext.cs" />
     <Compile Include="DI\Activation\InstanceActivator.cs" />
     <Compile Include="DI\Activation\LazyActivator.cs" />
@@ -154,7 +156,6 @@
     <Compile Include="DI\Registration\InstanceActivatorRegistration.cs" />
     <Compile Include="DI\Registration\InstanceActivatorRegistrationExtensions.cs" />
     <Compile Include="DI\Registration\IScanConvention.cs" />
-    <Compile Include="DI\Registration\IServiceFamily.cs" />
     <Compile Include="DI\Registration\PrefixScanConvention.cs">
       <DependentUpon>IScanConvention.cs</DependentUpon>
     </Compile>
@@ -162,7 +163,6 @@
       <DependentUpon>IScanConvention.cs</DependentUpon>
     </Compile>
     <Compile Include="DI\Registration\PreventAutomaticRegistrationAttribute.cs" />
-    <Compile Include="DI\Registration\ServiceFamily.cs" />
     <Compile Include="DI\Registration\TypedServiceExtensions.cs" />
     <Compile Include="DI\ServiceExtensions.cs" />
     <Compile Include="DI\ServiceIdentity.cs" />

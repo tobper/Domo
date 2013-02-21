@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DI\Activation\IActivatorGroup.cs" />
     <Compile Include="DI\Activation\IInjectionContext.cs" />
     <Compile Include="DI\Activation\ActivationScope.cs" />
     <Compile Include="DI\Construction\ConstructionFactoryProperty.cs" />
@@ -102,7 +103,6 @@
     <Compile Include="DI\Registration\AssemblyScanner.cs" />
     <Compile Include="DI\Registration\IAssemblyScanner.cs" />
     <Compile Include="DI\Registration\IActivatorRegistration.cs" />
-    <Compile Include="DI\Registration\IServiceFamily.cs" />
     <Compile Include="DI\Activation\IActivator.cs" />
     <Compile Include="DI\Activation\LazyActivator.cs">
       <DependentUpon>IActivator.cs</DependentUpon>
@@ -110,7 +110,9 @@
     <Compile Include="DI\Registration\PreventAutomaticRegistrationAttribute.cs" />
     <Compile Include="DI\Registration\FactoryActivatorRegistration.cs" />
     <Compile Include="DI\Registration\FactoryActivatorRegistrationExtensions.cs" />
-    <Compile Include="DI\Registration\ServiceFamily.cs" />
+    <Compile Include="DI\Activation\ActivatorGroup.cs">
+      <DependentUpon>IActivatorGroup.cs</DependentUpon>
+    </Compile>
     <Compile Include="DI\Activation\SingletonFactoryActivator.cs">
       <DependentUpon>IActivator.cs</DependentUpon>
     </Compile>

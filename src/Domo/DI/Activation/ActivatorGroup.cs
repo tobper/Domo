@@ -1,19 +1,17 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Domo.DI.Activation;
 using Domo.Extensions;
 
-namespace Domo.DI.Registration
+namespace Domo.DI.Activation
 {
-    public class ServiceFamily : IServiceFamily, IEnumerable<IActivator>
+    public class ActivatorGroup : IActivatorGroup
     {
         private readonly IDictionary<ServiceIdentity, IActivator> _activators = new Dictionary<ServiceIdentity, IActivator>();
 
         public Type ServiceType { get; private set; }
 
-        public ServiceFamily(Type serviceType)
+        public ActivatorGroup(Type serviceType)
         {
             ServiceType = serviceType;
         }
@@ -24,7 +22,7 @@ namespace Domo.DI.Registration
                 throw new ArgumentNullException("activator");
 
             if (activator.Identity.ServiceType != ServiceType)
-                throw new ArgumentException("A activator can't be added with an identity that does not have the same ServiceType as the family.", "activator");
+                throw new ArgumentException("An activator can't be added with an identity that does not have the same ServiceType as the group.", "activator");
 
             if (_activators.ContainsKey(activator.Identity))
                 throw new ActivatorAlreadyRegisteredException(activator.Identity);
@@ -51,16 +49,6 @@ namespace Domo.DI.Registration
         private static bool IsDefaultIdentity(ServiceIdentity identity)
         {
             return identity.ServiceName == null;
-        }
-
-        IEnumerator<IActivator> IEnumerable<IActivator>.GetEnumerator()
-        {
-            return _activators.Values.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return _activators.Values.GetEnumerator();
         }
     }
 }
