@@ -102,6 +102,8 @@
     <Compile Include="DI\Caching\IInstanceCache.cs" />
     <Compile Include="DI\Construction\ConstructionFactory.cs" />
     <Compile Include="DI\Construction\ConstructionFactoryParameter.cs" />
+    <Compile Include="DI\Construction\ConstructionFactoryProperty.cs" />
+    <Compile Include="DI\Construction\ConstructionFactorySettings.cs" />
     <Compile Include="DI\Construction\DelegateFactory.cs" />
     <Compile Include="DI\Construction\IFactory.cs" />
     <Compile Include="DI\Construction\TypeExtensions.cs" />

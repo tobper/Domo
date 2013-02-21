@@ -1,5 +1,4 @@
 using Domo.DI.Activation;
-using Domo.DI.Registration;
 
 namespace Domo.DI.Construction
 {

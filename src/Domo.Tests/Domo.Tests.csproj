@@ -59,6 +59,7 @@
     <Compile Include="DI\Activation\FactoryActivatorTests.cs" />
     <Compile Include="DI\Activation\InstanceActivatorTests.cs" />
     <Compile Include="DI\ContainerTests.cs" />
+    <Compile Include="DI\PropertyInjectionTests.cs" />
     <Compile Include="DI\When_creating_a_container_using_an_assembly_scanner.cs">
       <DependentUpon>ContainerTests.cs</DependentUpon>
     </Compile>

@@ -14,7 +14,7 @@ namespace Domo.DI
         object Resolve(ServiceIdentity identity);
         IEnumerable<object> ResolveAll(Type serviceType);
 
-        IActivator GetService(ServiceIdentity identity);
-        IActivator[] GetServices(Type serviceType);
+        IActivator GetActivator(ServiceIdentity identity);
+        IActivator[] GetActivators(Type serviceType);
     }
 }

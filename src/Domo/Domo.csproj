@@ -45,6 +45,8 @@
   <ItemGroup>
     <Compile Include="DI\Activation\IInjectionContext.cs" />
     <Compile Include="DI\Activation\ActivationScope.cs" />
+    <Compile Include="DI\Construction\ConstructionFactoryProperty.cs" />
+    <Compile Include="DI\Construction\ConstructionFactorySettings.cs" />
     <Compile Include="DI\Construction\TypeExtensions.cs" />
     <Compile Include="DI\Activation\FactoryActivator.cs">
       <DependentUpon>IActivator.cs</DependentUpon>
