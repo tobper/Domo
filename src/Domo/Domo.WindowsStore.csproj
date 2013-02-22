@@ -161,12 +161,6 @@
     <Compile Include="DI\Registration\InstanceActivatorRegistration.cs" />
     <Compile Include="DI\Registration\InstanceActivatorRegistrationExtensions.cs" />
     <Compile Include="DI\Registration\IScanConvention.cs" />
-    <Compile Include="DI\Registration\PrefixScanConvention.cs">
-      <DependentUpon>IScanConvention.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DI\Registration\PrefixScanConventionsExtensions.cs">
-      <DependentUpon>IScanConvention.cs</DependentUpon>
-    </Compile>
     <Compile Include="DI\Registration\PreventAutomaticRegistrationAttribute.cs" />
     <Compile Include="DI\Registration\TypedServiceExtensions.cs" />
     <Compile Include="DI\ServiceExtensions.cs" />

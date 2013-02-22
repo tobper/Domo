@@ -71,12 +71,6 @@
     <Compile Include="DI\Registration\InstanceActivatorRegistration.cs" />
     <Compile Include="DI\Registration\InstanceActivatorRegistrationExtensions.cs" />
     <Compile Include="DI\Registration\IActivatorConfiguration.cs" />
-    <Compile Include="DI\Registration\PrefixScanConvention.cs">
-      <DependentUpon>IScanConvention.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DI\Registration\PrefixScanConventionsExtensions.cs">
-      <DependentUpon>IScanConvention.cs</DependentUpon>
-    </Compile>
     <Compile Include="DI\Registration\ContainerConfiguration.cs" />
     <Compile Include="DI\Registration\BasicScanConvention.cs">
       <DependentUpon>IScanConvention.cs</DependentUpon>

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 using Domo.DI.Caching;
@@ -7,6 +8,13 @@ namespace Domo.DI.Registration
     public class BasicScanConvention : IScanConvention
     {
         private static readonly IServiceScope DefaultServiceScope = new TransientScope();
+
+        public bool UsePrefixResolution { get; private set; }
+
+        public BasicScanConvention(bool usePrefixResolution)
+        {
+            UsePrefixResolution = usePrefixResolution;
+        }
 
         public void ProcessType(IContainerConfiguration container, TypeInfo type)
         {
@@ -20,20 +28,42 @@ namespace Domo.DI.Registration
             ProcessConcreteType(container, type);
         }
 
-        private static void ProcessConcreteType(IContainerConfiguration container, TypeInfo concreteTypeInfo)
+        private void ProcessConcreteType(IContainerConfiguration container, TypeInfo concreteTypeInfo)
         {
-            var serviceTypeName = "I" + concreteTypeInfo.Name;
-            var serviceType = concreteTypeInfo.ImplementedInterfaces.FirstOrDefault(i => i.Name == serviceTypeName);
+            var identities = GetIdentities(concreteTypeInfo);
 
-            if (serviceType != null)
+            foreach (var identity in identities)
             {
-                var serviceTypeInfo = serviceType.GetTypeInfo();
+                var serviceTypeInfo = identity.ServiceType.GetTypeInfo();
                 var scope = GetScope(concreteTypeInfo, serviceTypeInfo);
 
                 container.
-                    Register(serviceType).
+                    Register(identity).
                     InScope(scope).
                     UsingConcreteType(concreteTypeInfo.AsType());
+            }
+        }
+
+        private IEnumerable<ServiceIdentity> GetIdentities(TypeInfo concreteType)
+        {
+            if (UsePrefixResolution)
+            {
+                foreach (var serviceType in concreteType.ImplementedInterfaces)
+                {
+                    var identity = serviceType.TryGetServiceIdentity(concreteType.Name);
+                    if (identity != null)
+                        yield return identity;
+                }
+            }
+            else
+            {
+                var serviceTypeName = "I" + concreteType.Name;
+                var serviceType = concreteType.ImplementedInterfaces.FirstOrDefault(i => i.Name == serviceTypeName);
+
+                if (serviceType != null)
+                {
+                    yield return new ServiceIdentity(serviceType);
+                }
             }
         }
 

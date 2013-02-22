@@ -2,9 +2,11 @@ namespace Domo.DI.Registration
 {
     public static class BasicScanConventionsExtensions
     {
-        public static IAssemblyScanner UseBasicConventions(this IAssemblyScanner scanner)
+        public static IAssemblyScanner UseBasicConventions(this IAssemblyScanner scanner, bool usePrefixResolution = true)
         {
-            return scanner.UseConvention<BasicScanConvention>();
+            var convention = new BasicScanConvention(usePrefixResolution);
+
+            return scanner.UseConvention(convention);
         }
     }
 }
