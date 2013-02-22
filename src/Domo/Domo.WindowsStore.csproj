@@ -114,10 +114,15 @@
     <Compile Include="DI\Activation\IInjectionContext.cs" />
     <Compile Include="DI\Activation\InstanceActivator.cs" />
     <Compile Include="DI\Activation\LazyActivator.cs" />
-    <Compile Include="DI\Activation\SingletonFactoryActivator.cs" />
-    <Compile Include="DI\Activation\TransientFactoryActivator.cs" />
     <Compile Include="DI\Caching\DictionaryServiceCache.cs" />
     <Compile Include="DI\Caching\IServiceCache.cs" />
+    <Compile Include="DI\Caching\IServiceScope.cs" />
+    <Compile Include="DI\Caching\ServiceScope.cs" />
+    <Compile Include="DI\Caching\ServiceScopeAttribute.cs" />
+    <Compile Include="DI\Caching\SingletonScope.cs" />
+    <Compile Include="DI\Caching\SingletonScopeAttribute.cs" />
+    <Compile Include="DI\Caching\TransientScope.cs" />
+    <Compile Include="DI\Caching\TransientScopeAttribute.cs" />
     <Compile Include="DI\Construction\ConstructionFactory.cs" />
     <Compile Include="DI\Construction\ConstructionFactoryParameter.cs" />
     <Compile Include="DI\Construction\ConstructionFactoryProperty.cs" />

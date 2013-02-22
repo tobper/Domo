@@ -1,5 +1,6 @@
 using System;
 using Domo.DI.Activation;
+using Domo.DI.Caching;
 using Domo.DI.Construction;
 
 namespace Domo.DI.Registration
@@ -10,34 +11,34 @@ namespace Domo.DI.Registration
         IActivatorConfiguration
     {
         public ServiceIdentity Identity { get; private set; }
-        public ActivationScope ActivationScope { get; set; }
         public Type ConcreteType { get; set; }
         public IFactory Factory { get; set; }
+        public IServiceScope ServiceScope { get; set; }
 
-        public FactoryActivatorRegistration(Type serviceType, ActivationScope scope)
+        public FactoryActivatorRegistration(Type serviceType, IServiceScope serviceScope)
         {
             Identity = new ServiceIdentity(serviceType);
-            ActivationScope = scope;
+            ServiceScope = serviceScope;
         }
 
-        public FactoryActivatorRegistration(ServiceIdentity identity, ActivationScope scope)
+        public FactoryActivatorRegistration(ServiceIdentity identity, IServiceScope serviceScope)
         {
             Identity = identity;
-            ActivationScope = scope;
+            ServiceScope = serviceScope;
         }
 
-        public FactoryActivatorRegistration(IFluentRegistration fluentRegistration, ActivationScope scope)
+        public FactoryActivatorRegistration(IFluentRegistration fluentRegistration, IServiceScope serviceScope)
         {
             Identity = fluentRegistration.Identity;
-            ActivationScope = scope;
+            ServiceScope = serviceScope;
 
             fluentRegistration.Using(this);
         }
 
-        public FactoryActivatorRegistration(IFluentRegistration<TService> fluentRegistration, ActivationScope scope)
+        public FactoryActivatorRegistration(IFluentRegistration<TService> fluentRegistration, IServiceScope serviceScope)
         {
             Identity = fluentRegistration.Identity;
-            ActivationScope = scope;
+            ServiceScope = serviceScope;
 
             fluentRegistration.Using(this);
         }
@@ -128,24 +129,9 @@ namespace Domo.DI.Registration
         public IActivator GetService(IContainer container)
         {
             var factory = Factory ?? new ConstructionFactory(ConcreteType ?? Identity.ServiceType);
-            var service = CreateService(factory);
+            var service = new FactoryActivator(Identity, factory, ServiceScope);
 
             return service;
-        }
-
-        private IActivator CreateService(IFactory factory)
-        {
-            switch (ActivationScope)
-            {
-                case ActivationScope.Singleton:
-                    return new SingletonFactoryActivator(Identity, factory);
-
-                case ActivationScope.Transient:
-                    return new TransientFactoryActivator(Identity, factory);
-
-                default:
-                    throw new InvalidScopeException(ActivationScope, Identity.ServiceType);
-            }
         }
     }
 }

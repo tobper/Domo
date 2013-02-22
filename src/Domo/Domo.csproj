@@ -46,6 +46,13 @@
     <Compile Include="DI\Activation\IActivatorGroup.cs" />
     <Compile Include="DI\Activation\IInjectionContext.cs" />
     <Compile Include="DI\Activation\ActivationScope.cs" />
+    <Compile Include="DI\Caching\IServiceScope.cs" />
+    <Compile Include="DI\Caching\ServiceScope.cs" />
+    <Compile Include="DI\Caching\ServiceScopeAttribute.cs" />
+    <Compile Include="DI\Caching\SingletonScope.cs" />
+    <Compile Include="DI\Caching\SingletonScopeAttribute.cs" />
+    <Compile Include="DI\Caching\TransientScope.cs" />
+    <Compile Include="DI\Caching\TransientScopeAttribute.cs" />
     <Compile Include="DI\Construction\ConstructionFactoryProperty.cs" />
     <Compile Include="DI\Construction\ConstructionFactorySettings.cs" />
     <Compile Include="DI\Construction\TypeExtensions.cs" />
@@ -112,12 +119,6 @@
     <Compile Include="DI\Registration\FactoryActivatorRegistrationExtensions.cs" />
     <Compile Include="DI\Activation\ActivatorGroup.cs">
       <DependentUpon>IActivatorGroup.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DI\Activation\SingletonFactoryActivator.cs">
-      <DependentUpon>IActivator.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DI\Activation\TransientFactoryActivator.cs">
-      <DependentUpon>IActivator.cs</DependentUpon>
     </Compile>
     <Compile Include="DI\Registration\TypedServiceExtensions.cs" />
     <Compile Include="DI\ServiceIdentity.cs" />

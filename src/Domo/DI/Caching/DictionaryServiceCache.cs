@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Domo.DI.Activation;
-using Domo.DI.Construction;
 using Domo.Extensions;
 
 namespace Domo.DI.Caching
@@ -10,9 +8,9 @@ namespace Domo.DI.Caching
     {
         private readonly IDictionary<ServiceIdentity, object> _services = new Dictionary<ServiceIdentity, object>();
 
-        public object Get(ServiceIdentity identity, IFactory factory, IInjectionContext context)
+        public object Get(ServiceIdentity identity, Func<object> factoryDelegate)
         {
-            return _services.TryGetValue(identity, () => factory.CreateService(context));
+            return _services.TryGetValue(identity, factoryDelegate);
         }
 
         public void Dispose()

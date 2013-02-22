@@ -4,12 +4,16 @@ using Domo.DI.Construction;
 
 namespace Domo.DI.Activation
 {
-    public abstract class FactoryActivator : IActivator
+    public class FactoryActivator : IActivator
     {
         public IFactory Factory { get; private set; }
         public ServiceIdentity Identity { get; private set; }
+        public IServiceScope Scope { get; set; }
 
-        protected FactoryActivator(ServiceIdentity identity, IFactory factory)
+        public FactoryActivator(
+            ServiceIdentity identity,
+            IFactory factory,
+            IServiceScope scope)
         {
             if (identity == null)
                 throw new ArgumentNullException("identity");
@@ -17,19 +21,20 @@ namespace Domo.DI.Activation
             if (factory == null)
                 throw new ArgumentNullException("factory");
 
+            if (scope == null)
+                throw new ArgumentNullException("scope");
+
             Factory = factory;
             Identity = identity;
+            Scope = scope;
         }
 
         public object GetService(IInjectionContext context)
         {
-            var serviceCache = GetServiceCache(context);
+            var cache = Scope.GetCache(context);
+            var service = cache.Get(Identity, () => Factory.CreateService(context));
 
-            return (serviceCache != null)
-                ? serviceCache.Get(Identity, Factory, context)
-                : Factory.CreateService(context);
+            return service;
         }
-
-        protected abstract IServiceCache GetServiceCache(IInjectionContext context);
     }
 }
