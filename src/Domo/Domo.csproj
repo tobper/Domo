@@ -51,6 +51,12 @@
     <Compile Include="DI\Caching\HttpRequestScopeAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DI\Caching\HttpSessionScope.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DI\Caching\HttpSessionScopeAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DI\Caching\IServiceScope.cs" />
     <Compile Include="DI\Caching\ServiceScope.cs" />
     <Compile Include="DI\Caching\ServiceScopeAttribute.cs" />
