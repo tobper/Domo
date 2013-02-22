@@ -104,7 +104,6 @@
     <Compile Include="Communication\DI\Registration\CommunicationScanConvention.cs" />
     <Compile Include="Communication\DI\Registration\CommunicationScanConventionExtensions.cs" />
     <Compile Include="Communication\IBus.cs" />
-    <Compile Include="DI\Activation\ActivationScope.cs" />
     <Compile Include="DI\Activation\ActivatorGroup.cs" />
     <Compile Include="DI\Activation\ArrayActivator.cs" />
     <Compile Include="DI\Activation\FactoryActivator.cs" />
@@ -132,7 +131,6 @@
     <Compile Include="DI\Construction\TypeExtensions.cs" />
     <Compile Include="DI\Container.cs" />
     <Compile Include="DI\Exceptions\ActivatorAlreadyRegisteredException.cs" />
-    <Compile Include="DI\Exceptions\InvalidScopeException.cs" />
     <Compile Include="DI\Exceptions\NoValidConstructorFoundException.cs" />
     <Compile Include="DI\Exceptions\ServiceCouldNotBeCreatedException.cs" />
     <Compile Include="DI\Exceptions\ServiceNotRegisteredException.cs" />

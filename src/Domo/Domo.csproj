@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="DI\Activation\IActivatorGroup.cs" />
     <Compile Include="DI\Activation\IInjectionContext.cs" />
-    <Compile Include="DI\Activation\ActivationScope.cs" />
     <Compile Include="DI\Caching\IServiceScope.cs" />
     <Compile Include="DI\Caching\ServiceScope.cs" />
     <Compile Include="DI\Caching\ServiceScopeAttribute.cs" />
@@ -86,7 +85,6 @@
     <Compile Include="DI\Construction\ConstructionFactoryParameter.cs" />
     <Compile Include="DI\Construction\DelegateFactory.cs" />
     <Compile Include="DI\Construction\IFactory.cs" />
-    <Compile Include="DI\Exceptions\InvalidScopeException.cs" />
     <Compile Include="DI\Exceptions\NoValidConstructorFoundException.cs" />
     <Compile Include="DI\Exceptions\ActivatorAlreadyRegisteredException.cs" />
     <Compile Include="DI\Exceptions\ServiceCouldNotBeCreatedException.cs" />
