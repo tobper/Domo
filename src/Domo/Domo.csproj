@@ -45,6 +45,12 @@
   <ItemGroup>
     <Compile Include="DI\Activation\IActivatorGroup.cs" />
     <Compile Include="DI\Activation\IInjectionContext.cs" />
+    <Compile Include="DI\Caching\HttpRequestScope.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DI\Caching\HttpRequestScopeAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DI\Caching\IServiceScope.cs" />
     <Compile Include="DI\Caching\ServiceScope.cs" />
     <Compile Include="DI\Caching\ServiceScopeAttribute.cs" />
@@ -62,6 +68,7 @@
       <DependentUpon>IActivator.cs</DependentUpon>
     </Compile>
     <Compile Include="DI\Registration\AssemblyScanner_AppDomain.cs" />
+    <Compile Include="DI\Registration\FactoryActivatorRegistrationExtensions_http.cs" />
     <Compile Include="DI\Registration\FluentRegistration.cs" />
     <Compile Include="DI\Registration\IFactoryActivatorRegistration.cs" />
     <Compile Include="DI\Registration\IFluentConfiguration.cs" />

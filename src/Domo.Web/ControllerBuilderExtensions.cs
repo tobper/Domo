@@ -7,7 +7,7 @@ namespace Domo.Web
     {
         public static void SetDomoControllerFactory(this ControllerBuilder controllerBuilder, IContainer container)
         {
-            var controllerFactory = container.ServiceLocator.Resolve<IControllerFactory>("Domo");
+            var controllerFactory = new DomoControllerFactory(container);
 
             controllerBuilder.SetControllerFactory(controllerFactory);
         }

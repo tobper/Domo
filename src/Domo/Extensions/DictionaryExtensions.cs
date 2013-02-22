@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -65,6 +66,18 @@ namespace Domo.Extensions
                     }
                 }
             }
+
+            return value;
+        }
+
+        public static object TryGetValue(this IDictionary dictionary, object key, Func<object> factoryDelegate)
+        {
+            if (dictionary.Contains(key))
+                return dictionary[key];
+
+            var value = factoryDelegate();
+
+            dictionary.Add(key, value);
 
             return value;
         }

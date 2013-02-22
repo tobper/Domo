@@ -2,7 +2,7 @@ using Domo.DI.Caching;
 
 namespace Domo.DI.Registration
 {
-    public static class FactoryActivatorRegistrationExtensions
+    public static partial class FactoryActivatorRegistrationExtensions
     {
         private static readonly IServiceScope TransientScope = new TransientScope();
         private static readonly IServiceScope SingletonScope = new SingletonScope();
