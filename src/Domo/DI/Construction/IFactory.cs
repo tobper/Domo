@@ -4,6 +4,6 @@ namespace Domo.DI.Construction
 {
     public interface IFactory
     {
-        object CreateInstance(IInjectionContext context);
+        object CreateService(IInjectionContext context);
     }
 }

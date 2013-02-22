@@ -28,19 +28,19 @@ namespace Domo.DI.Construction
             Properties = properties;
         }
 
-        public object CreateInstance(IInjectionContext context)
+        public object CreateService(IInjectionContext context)
         {
             EnsureInitialized(context);
 
-            var arguments = Parameters.Convert(p => p.Activator.GetInstance(context));
-            var instance = Constructor.Invoke(arguments);
+            var arguments = Parameters.Convert(p => p.Activator.GetService(context));
+            var service = Constructor.Invoke(arguments);
 
             foreach (var property in Properties)
             {
-                property.Set(instance, context);
+                property.Set(service, context);
             }
 
-            return instance;
+            return service;
         }
 
         public static ConstructionFactory Create(Type type, IContainer container)

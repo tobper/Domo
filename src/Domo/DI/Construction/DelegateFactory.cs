@@ -17,7 +17,7 @@ namespace Domo.DI.Construction
             _factoryDelegate = factoryDelegate;
         }
 
-        public object CreateInstance(IInjectionContext context)
+        public object CreateService(IInjectionContext context)
         {
             return _factoryDelegate(context);
         }
@@ -37,7 +37,7 @@ namespace Domo.DI.Construction
             _factoryDelegate = factoryDelegate;
         }
 
-        public object CreateInstance(IInjectionContext context)
+        public object CreateService(IInjectionContext context)
         {
             return _factoryDelegate(context);
         }

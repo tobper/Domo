@@ -14,13 +14,13 @@ namespace Domo.DI.Construction
             PropertyInfo = propertyInfo;
         }
 
-        public void Set(object instance, IInjectionContext context)
+        public void Set(object service, IInjectionContext context)
         {
-            if (PropertyInfo.GetMethod.Invoke(instance, null) == null)
+            if (PropertyInfo.GetMethod.Invoke(service, null) == null)
             {
-                var propertyInstance = Activator.GetInstance(context);
+                var propertyService = Activator.GetService(context);
 
-                PropertyInfo.SetMethod.Invoke(instance, new[] { propertyInstance });
+                PropertyInfo.SetMethod.Invoke(service, new[] { propertyService });
             }
         }
     }

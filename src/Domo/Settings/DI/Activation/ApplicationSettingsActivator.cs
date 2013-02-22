@@ -16,7 +16,7 @@ namespace Domo.Settings.DI.Activation
             Identity = new ServiceIdentity(typeof(TSettings));
         }
 
-        public object GetInstance(IInjectionContext context)
+        public object GetService(IInjectionContext context)
         {
             var value = _applicationSettings.Load<TSettings>();
 

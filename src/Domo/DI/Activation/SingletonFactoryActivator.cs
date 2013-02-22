@@ -10,9 +10,9 @@ namespace Domo.DI.Activation
         {
         }
 
-        protected override IInstanceCache GetInstanceCache(IInjectionContext context)
+        protected override IServiceCache GetServiceCache(IInjectionContext context)
         {
-            return context.Container.ServiceLocator.Resolve<IInstanceCache>();
+            return context.Container.ServiceLocator.Resolve<IServiceCache>();
         }
     }
 }

@@ -78,8 +78,8 @@
       <DependentUpon>IScanConvention.cs</DependentUpon>
     </Compile>
     <Compile Include="DI\Registration\IScanConvention.cs" />
-    <Compile Include="DI\Caching\IInstanceCache.cs" />
-    <Compile Include="DI\Caching\DictionaryInstanceCache.cs" />
+    <Compile Include="DI\Caching\IServiceCache.cs" />
+    <Compile Include="DI\Caching\DictionaryServiceCache.cs" />
     <Compile Include="DI\Container.cs" />
     <Compile Include="DI\Construction\ConstructionFactory.cs" />
     <Compile Include="DI\Construction\ConstructionFactoryParameter.cs" />

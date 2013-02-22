@@ -6,25 +6,25 @@ using Domo.Extensions;
 
 namespace Domo.DI.Caching
 {
-    public class DictionaryInstanceCache : IInstanceCache
+    public class DictionaryServiceCache : IServiceCache
     {
-        private readonly IDictionary<ServiceIdentity, object> _instances = new Dictionary<ServiceIdentity, object>();
+        private readonly IDictionary<ServiceIdentity, object> _services = new Dictionary<ServiceIdentity, object>();
 
         public object Get(ServiceIdentity identity, IFactory factory, IInjectionContext context)
         {
-            return _instances.TryGetValue(identity, () => factory.CreateInstance(context));
+            return _services.TryGetValue(identity, () => factory.CreateService(context));
         }
 
         public void Dispose()
         {
-            foreach (var instance in _instances.Values)
+            foreach (var service in _services.Values)
             {
-                var disposable = instance as IDisposable;
+                var disposable = service as IDisposable;
                 if (disposable != null)
                     disposable.Dispose();
             }
 
-            _instances.Clear();
+            _services.Clear();
         }
     }
 }

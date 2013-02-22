@@ -4,7 +4,7 @@ using Domo.DI.Construction;
 
 namespace Domo.DI.Caching
 {
-    public interface IInstanceCache : IDisposable
+    public interface IServiceCache : IDisposable
     {
         object Get(ServiceIdentity identity, IFactory factory, IInjectionContext context);
     }

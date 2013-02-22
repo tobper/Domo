@@ -65,7 +65,7 @@ namespace Domo.Tests.DI.Activation
             // Arrange
             var originalObject = new Foo();
             var factoryMock = CreateMock<IFactory>(m => m.
-                Setup(f => f.CreateInstance(It.IsAny<IInjectionContext>())).
+                Setup(f => f.CreateService(It.IsAny<IInjectionContext>())).
                 Returns(originalObject));
 
             var container = Container.Create(c => c.

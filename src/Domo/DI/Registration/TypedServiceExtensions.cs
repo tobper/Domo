@@ -36,18 +36,18 @@ namespace Domo.DI.Registration
         // ReSharper disable UnusedMember.Local
         private static Func<IInjectionContext, object> GetTypedFuncDelegate<T>(IActivator activator)
         {
-            return context => new Func<T>(() => (T)activator.GetInstance(context));
+            return context => new Func<T>(() => (T)activator.GetService(context));
         }
 
         private static Func<IInjectionContext, object> GetTypedLazyDelegate<T>(IActivator activator)
         {
-            return context => new Lazy<T>(() => (T)activator.GetInstance((context)));
+            return context => new Lazy<T>(() => (T)activator.GetService((context)));
         }
 
         private static Func<IInjectionContext, object> GetTypedArrayDelegate<T>(this IEnumerable<IActivator> services)
         {
             return context => services.
-                Select(s => s.GetInstance(context)).
+                Select(s => s.GetService(context)).
                 Cast<T>().
                 ToArray();
         }

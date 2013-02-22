@@ -21,15 +21,15 @@ namespace Domo.DI.Activation
             Identity = identity;
         }
 
-        public object GetInstance(IInjectionContext context)
+        public object GetService(IInjectionContext context)
         {
-            var instanceCache = GetInstanceCache(context);
+            var serviceCache = GetServiceCache(context);
 
-            return (instanceCache != null)
-                ? instanceCache.Get(Identity, Factory, context)
-                : Factory.CreateInstance(context);
+            return (serviceCache != null)
+                ? serviceCache.Get(Identity, Factory, context)
+                : Factory.CreateService(context);
         }
 
-        protected abstract IInstanceCache GetInstanceCache(IInjectionContext context);
+        protected abstract IServiceCache GetServiceCache(IInjectionContext context);
     }
 }

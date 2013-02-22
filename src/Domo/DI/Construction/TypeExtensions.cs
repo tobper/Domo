@@ -8,7 +8,7 @@ namespace Domo.DI.Construction
         {
             var factory = ConstructionFactory.Create(type, container);
             var context = new InjectionContext(container);
-            var instance = factory.CreateInstance(context);
+            var instance = factory.CreateService(context);
 
             return instance;
         }

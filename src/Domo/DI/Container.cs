@@ -16,12 +16,12 @@ namespace Domo.DI
         {
             ServiceLocator = new ServiceLocator(this);
 
-            var singletonCache = new DictionaryInstanceCache();
+            var singletonCache = new DictionaryServiceCache();
 
             new ContainerConfiguration().
                 RegisterInstance(ServiceLocator).
                 RegisterInstance<IContainer>(this).
-                RegisterInstance<IInstanceCache>(singletonCache).
+                RegisterInstance<IServiceCache>(singletonCache).
                 RegisterTransient<IAssemblyScanner, AssemblyScanner>().
                 RegisterTransient<IContainerConfiguration, ContainerConfiguration>().
                 ApplyRegistrations(this);
@@ -74,7 +74,7 @@ namespace Domo.DI
                 return null;
 
             var context = CreateInjectionContext();
-            var instance = service.GetInstance(context);
+            var instance = service.GetService(context);
 
             return instance;
         }
@@ -88,7 +88,7 @@ namespace Domo.DI
             var context = CreateInjectionContext();
 
             return from service in services
-                   select service.GetInstance(context);
+                   select service.GetService(context);
         }
 
         public IActivator GetActivator(ServiceIdentity identity)
