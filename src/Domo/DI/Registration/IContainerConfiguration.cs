@@ -11,6 +11,8 @@ namespace Domo.DI.Registration
         IFluentRegistration Register(Type serviceType, string serviceName = null);
         IFluentRegistration<TService> Register<TService>(string serviceName = null) where TService : class;
 
+        IContainerConfiguration Scan(Action<IAssemblyScanner> scanner);
+
         void ApplyRegistrations(IContainer container);
     }
 }

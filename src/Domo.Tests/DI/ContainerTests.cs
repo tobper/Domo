@@ -1,32 +1,49 @@
-using System;
-using System.Web;
 using Domo.DI;
-using Domo.DI.Registration;
+using Domo.DI.Caching;
+using NUnit.Framework;
 
 namespace Domo.Tests.DI
 {
-    public class ContainerTests : UnitTests<IContainer>
+    [TestFixture]
+    public class ContainerTests
     {
-        private Action<IContainerConfiguration> _registrationDelegate;
-        private Action<IAssemblyScanner> _scannerDelegate;
-
-        protected override IContainer CreateTestInstance()
+        [Test]
+        public void ServiceLocatorShouldAutomaticallyBeRegistered()
         {
-            return Container.Create(_registrationDelegate, _scannerDelegate);
+            // Arrange
+            var container = Container.Create();
+
+            // Act
+            var resolvedServiceLocator = container.ServiceLocator.Resolve<IServiceLocator>();
+
+            // Assert
+            Assert.NotNull(resolvedServiceLocator);
         }
 
-        protected override void RunTest()
+        [Test]
+        public void ContainerShouldAutomaticallyBeRegistered()
         {
+            // Arrange
+            var container = Container.Create();
+
+            // Act
+            var resolvedContainer = container.ServiceLocator.Resolve<IContainer>();
+
+            // Assert
+            Assert.NotNull(resolvedContainer);
         }
 
-        protected void GivenNoRegistrationIsBeingUsed()
+        [Test]
+        public void SingletonCacheShouldAutomaticallyBeRegistered()
         {
-            _scannerDelegate = null;
-        }
+            // Arrange
+            var container = Container.Create();
 
-        protected void GivenThatAnAssemblyScannerIsBeingUsed(Action<IAssemblyScanner> scanner)
-        {
-            _scannerDelegate = scanner;
+            // Act
+            var resolvedCache = container.ServiceLocator.Resolve<IServiceCache>();
+
+            // Assert
+            Assert.NotNull(resolvedCache);
         }
     }
 }

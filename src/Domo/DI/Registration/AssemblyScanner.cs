@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -11,17 +10,13 @@ namespace Domo.DI.Registration
     {
         private static readonly Type PreventAutomaticRegistrationAttributeType = typeof(PreventAutomaticRegistrationAttribute);
 
-        private readonly IContainer _container;
         private readonly IContainerConfiguration _configuration;
         private readonly IList<Func<Assembly, bool>> _assemblyFilters = new List<Func<Assembly, bool>>();
         private readonly IList<Func<TypeInfo, bool>> _typeFilters = new List<Func<TypeInfo, bool>>();
         private readonly IList<IScanConvention> _conventions = new List<IScanConvention>();
 
-        public AssemblyScanner(
-            IContainer container,
-            IContainerConfiguration configuration)
+        public AssemblyScanner(IContainerConfiguration configuration)
         {
-            _container = container;
             _configuration = configuration;
 
             AddTypeFilter(type =>
@@ -63,8 +58,6 @@ namespace Domo.DI.Registration
 
         public IAssemblyScanner ScanAssembly(Assembly assembly)
         {
-            Debug.WriteLine("Domo: Scanning assembly {0}.", assembly.FullName);
-
             var types = assembly.DefinedTypes;
 
             foreach (var typeFilter in _typeFilters)
@@ -80,8 +73,6 @@ namespace Domo.DI.Registration
                 }
             }
 
-            _configuration.ApplyRegistrations(_container);
-
             return this;
         }
 
@@ -92,23 +83,6 @@ namespace Domo.DI.Registration
             var assembly = typeInfo.Assembly;
 
             return ScanAssembly(assembly);
-        }
-
-        public IAssemblyScanner ScanDirectory(string path)
-        {
-            var assemblies = GetAssembliesInPath(path);
-
-            foreach (var assemblyFilter in _assemblyFilters)
-            {
-                assemblies = assemblies.Where(assemblyFilter);
-            }
-
-            foreach (var assembly in assemblies)
-            {
-                ScanAssembly(assembly);
-            }
-
-            return this;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -129,11 +103,6 @@ namespace Domo.DI.Registration
         private static bool HasPreventionAttribute(TypeInfo type)
         {
             return type.IsDefined(PreventAutomaticRegistrationAttributeType);
-        }
-
-        private static IEnumerable<Assembly> GetAssembliesInPath(string path)
-        {
-            throw new NotImplementedException();
         }
     }
 }

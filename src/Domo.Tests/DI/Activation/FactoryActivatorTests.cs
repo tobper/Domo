@@ -2,6 +2,7 @@
 using Domo.DI.Activation;
 using Domo.DI.Construction;
 using Domo.DI.Registration;
+using Domo.Tests.DI.TestData;
 using Moq;
 using NUnit.Framework;
 
@@ -79,7 +80,5 @@ namespace Domo.Tests.DI.Activation
             // Assert
             Assert.AreSame(originalObject, resolvedObject);
         }
-
-        private class Foo { }
     }
 }

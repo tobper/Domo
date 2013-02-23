@@ -58,8 +58,11 @@
   <ItemGroup>
     <Compile Include="DI\Activation\FactoryActivatorTests.cs" />
     <Compile Include="DI\Activation\InstanceActivatorTests.cs" />
+    <Compile Include="DI\AssemblyScanningTests.cs" />
     <Compile Include="DI\ContainerTests.cs" />
     <Compile Include="DI\PropertyInjectionTests.cs" />
+    <Compile Include="DI\TestData\Foo.cs" />
+    <Compile Include="DI\TestData\IFoo.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

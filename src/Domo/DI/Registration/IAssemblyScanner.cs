@@ -9,7 +9,6 @@ namespace Domo.DI.Registration
         IAssemblyScanner AddTypeFilter(Func<TypeInfo, bool> typeFilter);
         IAssemblyScanner ScanAssembly(Assembly assembly);
         IAssemblyScanner ScanAssemblyContaining<T>();
-        IAssemblyScanner ScanDirectory(string path);
         IAssemblyScanner UseConvention(IScanConvention convention);
         IAssemblyScanner UseConvention(Func<IScanConvention> conventionDelegate);
         IAssemblyScanner UseConvention<T>() where T : IScanConvention, new();

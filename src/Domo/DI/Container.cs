@@ -12,50 +12,40 @@ namespace Domo.DI
     {
         private readonly IDictionary<Type, IActivatorGroup> _activatorGroups = new Dictionary<Type, IActivatorGroup>();
 
+        public IServiceLocator ServiceLocator { get; private set; }
+
         private Container()
         {
             ServiceLocator = new ServiceLocator(this);
 
             var singletonCache = new DictionaryServiceCache();
 
-            new ContainerConfiguration().
+            Configure(config => config.
                 RegisterInstance(ServiceLocator).
                 RegisterInstance<IContainer>(this).
-                RegisterInstance<IServiceCache>(singletonCache).
-                RegisterTransient<IAssemblyScanner, AssemblyScanner>().
-                RegisterTransient<IContainerConfiguration, ContainerConfiguration>().
-                ApplyRegistrations(this);
+                RegisterInstance<IServiceCache>(singletonCache));
         }
 
-        public IServiceLocator ServiceLocator { get; private set; }
-
-        public static IContainer Create(
-            Action<IContainerConfiguration> configure = null,
-            Action<IAssemblyScanner> scan = null)
+        public static IContainer Create(Action<IContainerConfiguration> config = null)
         {
-            IContainer container = new Container();
-            container.Configure(configure, scan);
+            var container = new Container();
+
+            if (config != null)
+                container.Configure(config);
+
             return container;
         }
 
-        public void Configure(
-            Action<IContainerConfiguration> configure = null,
-            Action<IAssemblyScanner> scan = null)
+        public void Configure(Action<IContainerConfiguration> config)
         {
-            if (configure != null)
-            {
-                var configuration = ServiceLocator.Resolve<IContainerConfiguration>();
+            if (config == null)
+                throw new ArgumentNullException("config");
 
-                configure(configuration);
-                configuration.ApplyRegistrations(this);
-            }
+            var configuration = new ContainerConfiguration();
 
-            if (scan != null)
-            {
-                var scanner = ServiceLocator.Resolve<IAssemblyScanner>();
+            config(configuration);
 
-                scan(scanner);
-            }
+            configuration.ApplyRegistrations(this);
         }
 
         public void Register(IActivator activator)

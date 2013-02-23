@@ -71,6 +71,18 @@ namespace Domo.DI.Registration
             return registration;
         }
 
+        public IContainerConfiguration Scan(Action<IAssemblyScanner> scanner)
+        {
+            if (scanner == null)
+                throw new ArgumentNullException("scanner");
+
+            var scan = new AssemblyScanner(this);
+
+            scanner(scan);
+
+            return this;
+        }
+
         public void ApplyRegistrations(IContainer container)
         {
             while (_fluentConfigurations.Count > 0)
