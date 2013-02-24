@@ -61,7 +61,11 @@
     <Compile Include="DI\AssemblyScanningTests.cs" />
     <Compile Include="DI\ContainerTests.cs" />
     <Compile Include="DI\PropertyInjectionTests.cs" />
+    <Compile Include="DI\TestData\Bar.cs" />
+    <Compile Include="DI\TestData\Baz.cs" />
     <Compile Include="DI\TestData\Foo.cs" />
+    <Compile Include="DI\TestData\IBar.cs" />
+    <Compile Include="DI\TestData\IBaz.cs" />
     <Compile Include="DI\TestData\IFoo.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

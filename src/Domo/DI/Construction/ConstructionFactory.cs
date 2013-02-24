@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using Domo.DI.Activation;
 using Domo.Extensions;
@@ -8,39 +10,36 @@ namespace Domo.DI.Construction
 {
     public class ConstructionFactory : IFactory
     {
+        private readonly static MethodInfo ActivationMethod;
         private readonly object _initializationLock = new object();
 
-        public Type ConstructedType { get; private set; }
-        public ConstructorInfo Constructor { get; private set; }
-        public ConstructionFactoryParameter[] Parameters { get; private set; }
-        public ConstructionFactoryProperty[] Properties { get; private set; }
+        private Func<IInjectionContext, object> _factoryDelegate;
 
-        public ConstructionFactory(Type constructedType)
+        public Type ConstructionType { get; private set; }
+
+        static ConstructionFactory()
         {
-            ConstructedType = constructedType;
+            ActivationMethod = typeof(IActivator).
+                GetTypeInfo().
+                DeclaredMethods.Single(m => m.Name == "ActivateService");
         }
 
-        private ConstructionFactory(ConstructorInfo constructor, ConstructionFactoryParameter[] parameters, ConstructionFactoryProperty[] properties)
+        public ConstructionFactory(Type constructionType)
         {
-            ConstructedType = constructor.DeclaringType;
-            Constructor = constructor;
-            Parameters = parameters;
-            Properties = properties;
+            ConstructionType = constructionType;
+        }
+
+        private ConstructionFactory(Type constructionType, Func<IInjectionContext, object> factoryDelegate)
+        {
+            ConstructionType = constructionType;
+            _factoryDelegate = factoryDelegate;
         }
 
         public object CreateService(IInjectionContext context)
         {
             EnsureInitialized(context);
 
-            var arguments = Parameters.Convert(p => p.Activator.ActivateService(context));
-            var service = Constructor.Invoke(arguments);
-
-            foreach (var property in Properties)
-            {
-                property.Set(service, context);
-            }
-
-            return service;
+            return _factoryDelegate(context);
         }
 
         public static ConstructionFactory Create(Type type, IContainer container)
@@ -54,92 +53,157 @@ namespace Domo.DI.Construction
 
         public static ConstructionFactory TryCreate(Type type, IContainer container)
         {
+            var factoryDelegate = TryCreateFactoryDelegate(type, container);
+            if (factoryDelegate == null)
+                return null;
+
+            return new ConstructionFactory(type, factoryDelegate);
+        }
+
+        private void EnsureInitialized(IInjectionContext context)
+        {
+            if (_factoryDelegate != null)
+                return;
+
+            lock (_initializationLock)
+            {
+                if (_factoryDelegate != null)
+                    return;
+
+                _factoryDelegate = TryCreateFactoryDelegate(ConstructionType, context.Container);
+
+                if (_factoryDelegate == null)
+                    throw new NoValidConstructorFoundException(ConstructionType);
+            }
+        }
+
+        private static Func<IInjectionContext, object> TryCreateFactoryDelegate(Type type, IContainer container)
+        {
             var settings =
                 container.ServiceLocator.TryResolve<ConstructionFactorySettings>() ??
                 new ConstructionFactorySettings();
 
             var typeInfo = type.GetTypeInfo();
+            var constructor = TryGetConstructorDetails(typeInfo, container, settings);
+            if (constructor == null)
+                return null;
+
+            var contextExpression = Expression.Parameter(typeof(IInjectionContext));
+            var constructionExpression = CreateConstructionExpression(constructor.ConstructorInfo, constructor.Activators, contextExpression);
+
+            if (settings.UsePropertyInjection)
+            {
+                var serviceExpression = Expression.Variable(typeInfo.AsType());
+                var expressions = new List<Expression>
+                {
+                    Expression.Assign(serviceExpression, constructionExpression)
+                };
+
+                foreach (var property in typeInfo.DeclaredProperties)
+                {
+                    var activator = TryGetPropertyActivator(property, container, settings);
+                    if (activator == null)
+                        continue;
+
+                    var propertyValueExpression = CreateActivationExpression(activator, contextExpression);
+                    var setterExpression = Expression.Call(serviceExpression, property.SetMethod, new[] { propertyValueExpression });
+
+                    if (settings.PropertyInjectionAttribute != null)
+                    {
+                        // Always set property when attribute is used
+                        expressions.Add(setterExpression);
+                    }
+                    else
+                    {
+                        // Only set property if it is null when attribute isn't used
+                        expressions.Add(
+                            Expression.Condition(
+                                Expression.Equal(
+                                    Expression.Constant(null),
+                                    Expression.Call(serviceExpression, property.GetMethod)),
+                                setterExpression,
+                                Expression.Default(property.SetMethod.ReturnType)));
+                    }
+                }
+
+                expressions.Add(serviceExpression);
+                constructionExpression = Expression.Block(new[] { serviceExpression }, expressions);
+            }
+
+            return Expression.
+                Lambda<Func<IInjectionContext, object>>(constructionExpression, contextExpression).
+                Compile();
+        }
+
+        private static ConstructorDetails TryGetConstructorDetails(TypeInfo typeInfo, IContainer container, ConstructionFactorySettings settings)
+        {
             var candidates =
                 from constructor in typeInfo.DeclaredConstructors
                 let parameters = constructor.GetParameters()
                 orderby parameters.Length descending
-                select new
+                let activators = TryGetParameterActivators(parameters, container, settings)
+                where activators != null
+                select new ConstructorDetails
                 {
-                    Constructor = constructor,
-                    Parameters = parameters
+                    ConstructorInfo = constructor,
+                    Parameters = parameters,
+                    Activators = activators
                 };
 
-            foreach (var candidate in candidates)
-            {
-                var parameters = GetConstructorParameters(candidate.Parameters, container, settings);
-                if (parameters.Any(p => p == null))
-                    continue;
-
-                var properties = GetProperties(typeInfo, container, settings);
-                var factory = new ConstructionFactory(candidate.Constructor, parameters, properties);
-
-                return factory;
-            }
-
-            return null;
+            return candidates.FirstOrDefault();
         }
 
-        private static ConstructionFactoryParameter[] GetConstructorParameters(ParameterInfo[] parameters, IContainer container, ConstructionFactorySettings settings)
+        private static Expression CreateConstructionExpression(ConstructorInfo constructor, IActivator[] activators, ParameterExpression contextExpression)
         {
-            return parameters.Convert(parameter =>
+            var arguments = activators.Convert(
+                activator =>
+                CreateActivationExpression(activator, contextExpression));
+
+            return Expression.New(constructor, arguments);
+        }
+
+        private static Expression CreateActivationExpression(IActivator activator, ParameterExpression contextExpression)
+        {
+            var methodCall = Expression.Call(
+                Expression.Constant(activator),
+                ActivationMethod,
+                new Expression[] { contextExpression });
+
+            return Expression.Convert(methodCall, activator.Identity.ServiceType);
+        }
+
+        private static IActivator[] TryGetParameterActivators(ParameterInfo[] parameters, IContainer container, ConstructionFactorySettings settings)
+        {
+            var activators = new IActivator[parameters.Length];
+
+            for (var i = 0; i < parameters.Length; i++)
             {
+                var parameter = parameters[i];
                 var activator = TryGetActivator(parameter.ParameterType, parameter.Name, container, settings);
                 if (activator == null)
                     return null;
 
-                return new ConstructionFactoryParameter(activator);
-            });
-        }
-
-        private static ConstructionFactoryProperty[] GetProperties(TypeInfo typeInfo, IContainer container, ConstructionFactorySettings settings)
-        {
-            if (!settings.UsePropertyInjection)
-                return new ConstructionFactoryProperty[0];
-
-            var properties = typeInfo.DeclaredProperties.
-                Select(property =>
-                {
-                    if (settings.PropertyInjectionAttribute != null)
-                    {
-                        if (property.IsDefined(settings.PropertyInjectionAttribute) == false)
-                            return null;
-                    }
-                    else
-                    {
-                        if (!property.GetMethod.IsPublic ||
-                            !property.SetMethod.IsPublic)
-                            return null;
-                    }
-
-                    var activator = TryGetActivator(property.PropertyType, property.Name, container, settings);
-                    if (activator == null)
-                        return null;
-
-                    return new ConstructionFactoryProperty(activator, property);
-                }).
-                Where(p => p != null).
-                ToArray();
-
-            return properties;
-        }
-
-        private static ServiceIdentity GetServiceIdentity(Type serviceType, string referenceName, ConstructionFactorySettings settings)
-        {
-            // First try to get a specific identity based on the parameter name.
-            if (settings.UsePrefixResolution)
-            {
-                var identity = serviceType.TryGetServiceIdentity(referenceName);
-                if (identity != null)
-                    return identity;
+                activators[i] = activator;
             }
 
-            // Use default identity if no specific could be created based on parameter name.
-            return new ServiceIdentity(serviceType);
+            return activators;
+        }
+
+        private static IActivator TryGetPropertyActivator(PropertyInfo property, IContainer container, ConstructionFactorySettings settings)
+        {
+            if (settings.PropertyInjectionAttribute != null)
+            {
+                if (property.IsDefined(settings.PropertyInjectionAttribute) == false)
+                    return null;
+            }
+            else
+            {
+                if (!property.GetMethod.IsPublic ||
+                    !property.SetMethod.IsPublic)
+                    return null;
+            }
+
+            return TryGetActivator(property.PropertyType, property.Name, container, settings);
         }
 
         private static IActivator TryGetActivator(Type serviceType, string referenceName, IContainer container, ConstructionFactorySettings settings)
@@ -156,22 +220,25 @@ namespace Domo.DI.Construction
             return activator;
         }
 
-        private void EnsureInitialized(IInjectionContext context)
+        private static ServiceIdentity GetServiceIdentity(Type serviceType, string referenceName, ConstructionFactorySettings settings)
         {
-            if (Constructor == null)
+            // First try to get a specific identity based on the parameter name.
+            if (settings.UsePrefixResolution)
             {
-                lock (_initializationLock)
-                {
-                    if (Constructor == null)
-                    {
-                        var factory = Create(ConstructedType, context.Container);
-
-                        Constructor = factory.Constructor;
-                        Parameters = factory.Parameters;
-                        Properties = factory.Properties;
-                    }
-                }
+                var identity = serviceType.TryGetServiceIdentity(referenceName);
+                if (identity != null)
+                    return identity;
             }
+
+            // Use default identity if no specific could be created based on parameter name.
+            return new ServiceIdentity(serviceType);
+        }
+
+        class ConstructorDetails
+        {
+            public ConstructorInfo ConstructorInfo { get; set; }
+            public ParameterInfo[] Parameters { get; set; }
+            public IActivator[] Activators { get; set; }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Domo.DI;
+﻿using System;
+using Domo.DI;
 using Domo.DI.Activation;
 using Domo.DI.Construction;
 using Domo.DI.Registration;

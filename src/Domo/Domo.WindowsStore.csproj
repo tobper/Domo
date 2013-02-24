@@ -123,8 +123,6 @@
     <Compile Include="DI\Caching\TransientScope.cs" />
     <Compile Include="DI\Caching\TransientScopeAttribute.cs" />
     <Compile Include="DI\Construction\ConstructionFactory.cs" />
-    <Compile Include="DI\Construction\ConstructionFactoryParameter.cs" />
-    <Compile Include="DI\Construction\ConstructionFactoryProperty.cs" />
     <Compile Include="DI\Construction\ConstructionFactorySettings.cs" />
     <Compile Include="DI\Construction\DelegateFactory.cs" />
     <Compile Include="DI\Construction\IFactory.cs" />
