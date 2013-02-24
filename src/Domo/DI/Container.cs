@@ -59,26 +59,26 @@ namespace Domo.DI
 
         public object Resolve(ServiceIdentity identity)
         {
-            var service = GetActivator(identity);
-            if (service == null)
+            var activator = GetActivator(identity);
+            if (activator == null)
                 return null;
 
             var context = CreateInjectionContext();
-            var instance = service.GetService(context);
+            var instance = activator.ActivateService(context);
 
             return instance;
         }
 
         public IEnumerable<object> ResolveAll(Type serviceType)
         {
-            var services = GetActivators(serviceType);
-            if (services == null)
+            var activators = GetActivators(serviceType);
+            if (activators == null)
                 return null;
 
             var context = CreateInjectionContext();
 
-            return from service in services
-                   select service.GetService(context);
+            return from activator in activators
+                   select activator.ActivateService(context);
         }
 
         public IActivator GetActivator(ServiceIdentity identity)

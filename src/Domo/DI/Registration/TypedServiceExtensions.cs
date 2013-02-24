@@ -18,9 +18,9 @@ namespace Domo.DI.Registration
             return CallGenericMethod("GetTypedLazyDelegate", activator.Identity.ServiceType, activator);
         }
 
-        public static Func<IInjectionContext, object> GetTypedArrayDelegate(this IEnumerable<IActivator> services, Type serviceType)
+        public static Func<IInjectionContext, object> GetTypedArrayDelegate(this IEnumerable<IActivator> activators, Type serviceType)
         {
-            return CallGenericMethod("GetTypedArrayDelegate", serviceType, services);
+            return CallGenericMethod("GetTypedArrayDelegate", serviceType, activators);
         }
 
         private static Func<IInjectionContext, object> CallGenericMethod(string methodName, Type genericType, params object[] arguments)
@@ -36,18 +36,18 @@ namespace Domo.DI.Registration
         // ReSharper disable UnusedMember.Local
         private static Func<IInjectionContext, object> GetTypedFuncDelegate<T>(IActivator activator)
         {
-            return context => new Func<T>(() => (T)activator.GetService(context));
+            return context => new Func<T>(() => (T)activator.ActivateService(context));
         }
 
         private static Func<IInjectionContext, object> GetTypedLazyDelegate<T>(IActivator activator)
         {
-            return context => new Lazy<T>(() => (T)activator.GetService((context)));
+            return context => new Lazy<T>(() => (T)activator.ActivateService((context)));
         }
 
-        private static Func<IInjectionContext, object> GetTypedArrayDelegate<T>(this IEnumerable<IActivator> services)
+        private static Func<IInjectionContext, object> GetTypedArrayDelegate<T>(this IEnumerable<IActivator> activators)
         {
-            return context => services.
-                Select(s => s.GetService(context)).
+            return context => activators.
+                Select(s => s.ActivateService(context)).
                 Cast<T>().
                 ToArray();
         }

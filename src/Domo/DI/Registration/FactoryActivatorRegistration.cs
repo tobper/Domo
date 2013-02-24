@@ -126,12 +126,12 @@ namespace Domo.DI.Registration
             return this;
         }
 
-        public IActivator GetService(IContainer container)
+        public IActivator GetActivator(IContainer container)
         {
             var factory = Factory ?? new ConstructionFactory(ConcreteType ?? Identity.ServiceType);
-            var service = new FactoryActivator(Identity, factory, ServiceScope);
+            var activator = new FactoryActivator(Identity, factory, ServiceScope);
 
-            return service;
+            return activator;
         }
     }
 }

@@ -7,9 +7,9 @@ namespace Domo.DI.Registration
         public static IContainerConfiguration RegisterInstance(this IContainerConfiguration configuration, Type serviceType, object instance, string serviceName = null)
         {
             var identity = new ServiceIdentity(serviceType, serviceName);
-            var service = new InstanceActivatorRegistration<object>(identity, instance);
+            var registration = new InstanceActivatorRegistration<object>(identity, instance);
 
-            return configuration.Register(service);
+            return configuration.Register(registration);
         }
 
         public static IContainerConfiguration RegisterInstance<TService>(this IContainerConfiguration configuration, TService instance, string serviceName = null)
@@ -17,9 +17,9 @@ namespace Domo.DI.Registration
         {
             var serviceType = typeof(TService);
             var identity = new ServiceIdentity(serviceType, serviceName);
-            var service = new InstanceActivatorRegistration<TService>(identity, instance);
+            var registration = new InstanceActivatorRegistration<TService>(identity, instance);
 
-            return configuration.Register(service);
+            return configuration.Register(registration);
         }
 
         public static IInstanceActivatorRegistration UsingInstance(this IFluentRegistration fluentRegistration, object instance)

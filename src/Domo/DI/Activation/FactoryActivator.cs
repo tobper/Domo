@@ -29,7 +29,7 @@ namespace Domo.DI.Activation
             Scope = scope;
         }
 
-        public object GetService(IInjectionContext context)
+        public object ActivateService(IInjectionContext context)
         {
             var cache = Scope.GetCache(context);
             var service = cache.Get(Identity, () => Factory.CreateService(context));

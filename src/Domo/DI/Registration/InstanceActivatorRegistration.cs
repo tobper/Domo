@@ -72,7 +72,7 @@ namespace Domo.DI.Registration
             fluentRegistration.Using(this);
         }
 
-        public IActivator GetService(IContainer container)
+        public IActivator GetActivator(IContainer container)
         {
             return new InstanceActivator(Identity, Instance);
         }

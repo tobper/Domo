@@ -18,15 +18,15 @@ namespace Domo.Settings.DI.Registration
             SettingsType = settingsType;
         }
 
-        public IActivator GetService(IContainer container)
+        public IActivator GetActivator(IContainer container)
         {
-            var serviceType = GetServiceType(SettingsType, SettingsScope);
-            var service = (IActivator)serviceType.ConstructInstance(container);
+            var activatorType = GetActivatorType(SettingsType, SettingsScope);
+            var activator = (IActivator)activatorType.ConstructInstance(container);
 
-            return service;
+            return activator;
         }
 
-        private static Type GetServiceType(Type settingsType, SettingsScope scope)
+        private static Type GetActivatorType(Type settingsType, SettingsScope scope)
         {
             switch (scope)
             {

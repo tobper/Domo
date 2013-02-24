@@ -11,7 +11,7 @@ namespace Domo.DI.Activation
         public ServiceIdentity Identity { get; private set; }
         public object Instance { get; private set; }
 
-        public object GetService(IInjectionContext context)
+        public object ActivateService(IInjectionContext context)
         {
             return Instance;
         }

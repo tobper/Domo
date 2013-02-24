@@ -32,7 +32,7 @@ namespace Domo.DI.Construction
         {
             EnsureInitialized(context);
 
-            var arguments = Parameters.Convert(p => p.Activator.GetService(context));
+            var arguments = Parameters.Convert(p => p.Activator.ActivateService(context));
             var service = Constructor.Invoke(arguments);
 
             foreach (var property in Properties)

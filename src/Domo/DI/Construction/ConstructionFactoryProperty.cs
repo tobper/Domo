@@ -18,7 +18,7 @@ namespace Domo.DI.Construction
         {
             if (PropertyInfo.GetMethod.Invoke(service, null) == null)
             {
-                var propertyService = Activator.GetService(context);
+                var propertyService = Activator.ActivateService(context);
 
                 PropertyInfo.SetMethod.Invoke(service, new[] { propertyService });
             }

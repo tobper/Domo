@@ -4,6 +4,6 @@ namespace Domo.DI.Registration
 {
     public interface IActivatorConfiguration
     {
-        IActivator GetService(IContainer container);
+        IActivator GetActivator(IContainer container);
     }
 }

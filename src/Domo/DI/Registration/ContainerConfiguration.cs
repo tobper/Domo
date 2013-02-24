@@ -96,11 +96,11 @@ namespace Domo.DI.Registration
 
             while (_activatorConfigurations.Count > 0)
             {
-                var service = _activatorConfigurations.
+                var activator = _activatorConfigurations.
                     Dequeue().
-                    GetService(container);
+                    GetActivator(container);
 
-                container.Register(service);
+                container.Register(activator);
             }
         }
     }
