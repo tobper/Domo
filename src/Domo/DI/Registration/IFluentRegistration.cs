@@ -3,14 +3,12 @@ namespace Domo.DI.Registration
     public interface IFluentRegistration
     {
         ServiceIdentity Identity { get; }
-
-        void Using(IActivatorConfiguration activatorConfiguration);
+        IActivatorConfiguration Configuration { get; set; }
     }
 
     public interface IFluentRegistration<TService>
     {
         ServiceIdentity Identity { get; }
-
-        void Using(IActivatorConfiguration activatorConfiguration);
+        IActivatorConfiguration Configuration { get; set; }
     }
 }

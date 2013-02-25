@@ -27,22 +27,6 @@ namespace Domo.DI.Registration
             ServiceScope = serviceScope;
         }
 
-        public FactoryActivatorRegistration(IFluentRegistration fluentRegistration, IServiceScope serviceScope)
-        {
-            Identity = fluentRegistration.Identity;
-            ServiceScope = serviceScope;
-
-            fluentRegistration.Using(this);
-        }
-
-        public FactoryActivatorRegistration(IFluentRegistration<TService> fluentRegistration, IServiceScope serviceScope)
-        {
-            Identity = fluentRegistration.Identity;
-            ServiceScope = serviceScope;
-
-            fluentRegistration.Using(this);
-        }
-
         IFactoryActivatorRegistration IFactoryActivatorRegistration.UsingConcreteType(Type concreteType)
         {
             UsingConcreteType(concreteType);

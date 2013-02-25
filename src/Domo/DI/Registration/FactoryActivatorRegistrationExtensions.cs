@@ -79,12 +79,20 @@ namespace Domo.DI.Registration
 
         public static IFactoryActivatorRegistration InScope(this IFluentRegistration fluentRegistration, IServiceScope serviceScope)
         {
-            return new FactoryActivatorRegistration<object>(fluentRegistration, serviceScope);
+            var registration = new FactoryActivatorRegistration<object>(fluentRegistration.Identity, serviceScope);
+
+            fluentRegistration.Configuration = registration;
+
+            return registration;
         }
 
         public static IFactoryActivatorRegistration<TService> InScope<TService>(this IFluentRegistration<TService> fluentRegistration, IServiceScope serviceScope)
         {
-            return new FactoryActivatorRegistration<TService>(fluentRegistration, serviceScope);
+            var registration = new FactoryActivatorRegistration<TService>(fluentRegistration.Identity, serviceScope);
+
+            fluentRegistration.Configuration = registration;
+
+            return registration;
         }
     }
 }

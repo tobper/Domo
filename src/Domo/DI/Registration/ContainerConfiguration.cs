@@ -6,7 +6,6 @@ namespace Domo.DI.Registration
     public class ContainerConfiguration : IContainerConfiguration
     {
         private readonly Queue<IActivatorConfiguration> _activatorConfigurations = new Queue<IActivatorConfiguration>();
-        private readonly Queue<IFluentConfiguration> _fluentConfigurations = new Queue<IFluentConfiguration>();
 
         public IContainerConfiguration Register(IActivatorConfiguration activatorConfiguration)
         {
@@ -45,30 +44,20 @@ namespace Domo.DI.Registration
 
         public IFluentRegistration Register(ServiceIdentity identity)
         {
-            var registration = new FluentRegistration(identity);
-
-            _fluentConfigurations.Enqueue(registration);
-
-            return registration;
+            return new FluentRegistration(identity, _activatorConfigurations);
         }
 
         public IFluentRegistration Register(Type serviceType, string serviceName = null)
         {
-            var registration = new FluentRegistration(serviceType, serviceName);
+            var identity = new ServiceIdentity(serviceType, serviceName);
 
-            _fluentConfigurations.Enqueue(registration);
-
-            return registration;
+            return new FluentRegistration(identity, _activatorConfigurations);
         }
 
         public IFluentRegistration<TService> Register<TService>(string serviceName = null)
             where TService : class
         {
-            var registration = new FluentRegistration<TService>(serviceName);
-
-            _fluentConfigurations.Enqueue(registration);
-
-            return registration;
+            return new FluentRegistration<TService>(serviceName, _activatorConfigurations);
         }
 
         public IContainerConfiguration Scan(Action<IAssemblyScanner> scanner)
@@ -85,15 +74,6 @@ namespace Domo.DI.Registration
 
         public void ApplyRegistrations(IContainer container)
         {
-            while (_fluentConfigurations.Count > 0)
-            {
-                var configuration = _fluentConfigurations.
-                    Dequeue().
-                    GetActivatorConfiguration();
-
-                Register(configuration);
-            }
-
             while (_activatorConfigurations.Count > 0)
             {
                 var activator = _activatorConfigurations.

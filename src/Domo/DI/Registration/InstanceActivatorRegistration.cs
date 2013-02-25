@@ -38,40 +38,6 @@ namespace Domo.DI.Registration
             Instance = instance;
         }
 
-        public InstanceActivatorRegistration(IFluentRegistration fluentRegistration, TService instance)
-        {
-            if (fluentRegistration == null)
-                throw new ArgumentNullException("fluentRegistration");
-
-            if (instance == null)
-                throw new ArgumentNullException("instance");
-
-            if (!IsValidInstance(fluentRegistration.Identity, instance))
-                throw new ArgumentException("instance", "TODO");
-
-            Identity = fluentRegistration.Identity;
-            Instance = instance;
-
-            fluentRegistration.Using(this);
-        }
-
-        public InstanceActivatorRegistration(IFluentRegistration<TService> fluentRegistration, TService instance)
-        {
-            if (fluentRegistration == null)
-                throw new ArgumentNullException("fluentRegistration");
-
-            if (instance == null)
-                throw new ArgumentNullException("instance");
-
-            if (!IsValidInstance(fluentRegistration.Identity, instance))
-                throw new ArgumentException("instance", "TODO");
-
-            Identity = fluentRegistration.Identity;
-            Instance = instance;
-
-            fluentRegistration.Using(this);
-        }
-
         public IActivator GetActivator(IContainer container)
         {
             return new InstanceActivator(Identity, Instance);
