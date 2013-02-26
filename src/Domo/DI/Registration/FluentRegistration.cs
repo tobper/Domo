@@ -39,7 +39,7 @@ namespace Domo.DI.Registration
             set
             {
                 if (_activatorConfiguration != null)
-                    throw new InvalidOperationException("Todo");
+                    throw new ActivatorConfigurationAlreadyRegisteredException(Identity);
 
                 _activatorConfiguration = value;
                 _activatorConfigurations.Enqueue(value);

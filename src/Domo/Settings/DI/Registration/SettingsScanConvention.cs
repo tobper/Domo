@@ -14,8 +14,6 @@ namespace Domo.Settings.DI.Registration
                 var settingsScope = settingsAttribute.Scope;
                 var activatorConfiguration = new SettingsActivatorConfiguration(settingsScope, settingsType);
 
-                // Todo: Settings are registered without name so it is not possible to load settings based on other argument names.
-
                 container.Register(activatorConfiguration);
             }
         }

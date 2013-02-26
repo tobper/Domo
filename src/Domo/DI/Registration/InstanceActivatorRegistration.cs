@@ -13,11 +13,6 @@ namespace Domo.DI.Registration
         public ServiceIdentity Identity { get; private set; }
         public TService Instance { get; private set; }
 
-        ServiceIdentity IActivatorRegistration.Identity
-        {
-            get { return Identity; }
-        }
-
         object IInstanceActivatorRegistration.Instance
         {
             get { return Instance; }
@@ -32,7 +27,7 @@ namespace Domo.DI.Registration
                 throw new ArgumentNullException("instance");
 
             if (!IsValidInstance(identity, instance))
-                throw new ArgumentException("instance", "TODO");
+                throw new ArgumentException("The specified instance is not assignable to " + identity.ServiceType.Name + ".", "instance");
 
             Identity = identity;
             Instance = instance;

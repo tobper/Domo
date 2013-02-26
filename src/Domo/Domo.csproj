@@ -72,6 +72,9 @@
     <Compile Include="DI\Activation\ArrayActivator.cs">
       <DependentUpon>IActivator.cs</DependentUpon>
     </Compile>
+    <Compile Include="DI\Exceptions\ActivatorConfigurationAlreadyRegisteredException.cs" />
+    <Compile Include="DI\Exceptions\HttpContextNotSetException.cs" />
+    <Compile Include="DI\Exceptions\HttpSessionNotSetException.cs" />
     <Compile Include="DI\Registration\AssemblyScanner_AppDomain.cs" />
     <Compile Include="DI\Registration\FactoryActivatorRegistrationExtensions_http.cs" />
     <Compile Include="DI\Registration\FluentRegistration.cs" />

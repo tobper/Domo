@@ -1,4 +1,3 @@
-using System;
 using System.Web;
 using Domo.DI.Activation;
 
@@ -12,11 +11,11 @@ namespace Domo.DI.Caching
         {
             var httpContext = HttpContext.Current;
             if (httpContext == null)
-                throw new InvalidOperationException("Todo");
+                throw new HttpContextNotSetException();
 
             var session = httpContext.Session;
             if (session == null)
-                throw new InvalidOperationException("Todo");
+                throw new HttpSessionNotSetException();
 
             var cache = (IServiceCache)session[SessionKey];
             if (cache == null)
