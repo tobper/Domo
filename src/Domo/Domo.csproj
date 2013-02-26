@@ -141,7 +141,7 @@
     <Compile Include="Communication\IMessage.cs" />
     <Compile Include="Communication\IBus.cs" />
     <Compile Include="Communication\IMessageHandler.cs" />
-    <Compile Include="Communication\Bus.cs" />
+    <Compile Include="Communication\TransientBus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\DI\Activation\ApplicationSettingsActivator.cs" />
     <Compile Include="Settings\DI\Activation\UserSettingsActivator.cs" />

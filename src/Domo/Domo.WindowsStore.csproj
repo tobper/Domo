@@ -100,10 +100,10 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Communication\Bus.cs" />
     <Compile Include="Communication\DI\Registration\CommunicationScanConvention.cs" />
     <Compile Include="Communication\DI\Registration\CommunicationScanConventionExtensions.cs" />
     <Compile Include="Communication\IBus.cs" />
+    <Compile Include="Communication\TransientBus.cs" />
     <Compile Include="DI\Activation\ActivatorGroup.cs" />
     <Compile Include="DI\Activation\ArrayActivator.cs" />
     <Compile Include="DI\Activation\FactoryActivator.cs" />

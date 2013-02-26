@@ -24,6 +24,18 @@ namespace Domo.DI
                 ToArray();
         }
 
+        public T[] TryResolveAll<T>() where T : class
+        {
+            var serviceType = typeof(T);
+            var instances = Container.ResolveAll(serviceType);
+            if (instances == null)
+                return new T[0];
+
+            return instances.
+                Cast<T>().
+                ToArray();
+        }
+
         public T Resolve<T>(string serviceName) where T : class
         {
             var serviceType = typeof(T);
@@ -46,6 +58,15 @@ namespace Domo.DI
             if (instances == null)
                 throw new ServiceNotRegisteredException(serviceType);
             
+            return instances.ToArray();
+        }
+
+        public object[] TryResolveAll(Type serviceType)
+        {
+            var instances = Container.ResolveAll(serviceType);
+            if (instances == null)
+                return new object[0];
+
             return instances.ToArray();
         }
 
