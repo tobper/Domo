@@ -47,7 +47,7 @@ namespace Domo.Settings
 
             Settings[settingsKey] = value;
 
-            return null;
+            return Task.FromResult(0);
         }
 
         [SecuritySafeCritical]

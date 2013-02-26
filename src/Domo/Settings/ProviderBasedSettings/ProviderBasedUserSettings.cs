@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Domo.DI.Registration;
+using Domo.Extensions;
 using Domo.Settings.ProviderBasedSettings.Serialization;
 using Domo.Settings.ProviderBasedSettings.Storage;
 
@@ -36,15 +37,23 @@ namespace Domo.Settings.ProviderBasedSettings
         {
             var user = await _usernameProvider.GetUserName();
             var data = await _storageProvider.Load(typeof(T), user, name, _serializer.SerializationType);
-            var value = DeserializeValue<T>(data);
+            var value = TryDeserializeValue<T>(data);
 
             return value;
+        }
+
+        public async Task<T[]> LoadAll<T>()
+        {
+            var settings = await _storageProvider.LoadAll(typeof(T), _serializer.SerializationType);
+            var values = settings.Convert(s => _serializer.Deserialize<T>(s.Value));
+
+            return values;
         }
 
         public async Task Save<T>(T value, string name = null)
         {
             var user = await _usernameProvider.GetUserName();
-            var data = SerializeValue(value);
+            var data = TrySerializeValue(value);
 
             await _storageProvider.Save(typeof(T), user, name, data);
         }
@@ -57,7 +66,7 @@ namespace Domo.Settings.ProviderBasedSettings
             return result;
         }
 
-        private object SerializeValue<T>(T value)
+        private object TrySerializeValue<T>(T value)
         {
             if (Equals(value, default(T)))
                 return null;
@@ -65,7 +74,7 @@ namespace Domo.Settings.ProviderBasedSettings
             return _serializer.Serialize(value);
         }
 
-        private T DeserializeValue<T>(object data)
+        private T TryDeserializeValue<T>(object data)
         {
             if (data == null)
                 return default(T);
