@@ -158,6 +158,9 @@
     <Compile Include="Settings\DI\UserSettingsAttribute.cs" />
     <Compile Include="Settings\Exceptions\InvalidSerializationTypeException.cs" />
     <Compile Include="Settings\IApplicationSettings.cs" />
+    <Compile Include="Settings\ISettingsHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Settings\IUserSettings.cs" />
     <Compile Include="Settings\ProviderBasedSettings\ProviderBasedApplicationSettings.cs" />
     <Compile Include="Settings\ProviderBasedSettings\ProviderBasedUserSettings.cs" />

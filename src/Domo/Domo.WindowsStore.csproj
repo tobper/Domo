@@ -182,6 +182,7 @@
     <Compile Include="Settings\DI\Registration\SettingsActivatorConfiguration.cs" />
     <Compile Include="Settings\DI\Registration\SettingsScanConvention.cs" />
     <Compile Include="Settings\DI\Registration\SettingsScanConventionExtensions.cs" />
+    <Compile Include="Settings\ISettingsHandler.cs" />
     <Compile Include="Settings\RoamingApplicationSettings.cs" />
     <Compile Include="Settings\DI\SettingsAttribute.cs" />
     <Compile Include="Settings\DI\SettingsScope.cs" />
