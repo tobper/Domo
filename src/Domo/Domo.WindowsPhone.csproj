@@ -145,6 +145,7 @@
     <Compile Include="DI\Registration\IScanConvention.cs" />
     <Compile Include="DI\Registration\PreventAutomaticRegistrationAttribute.cs" />
     <Compile Include="DI\Registration\TypedServiceExtensions.cs" />
+    <Compile Include="DI\Registration\TypeExtensions.cs" />
     <Compile Include="DI\ServiceExtensions.cs" />
     <Compile Include="DI\ServiceIdentity.cs" />
     <Compile Include="DI\ServiceLocator.cs" />

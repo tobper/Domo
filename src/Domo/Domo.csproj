@@ -127,6 +127,7 @@
       <DependentUpon>IActivatorGroup.cs</DependentUpon>
     </Compile>
     <Compile Include="DI\Registration\TypedServiceExtensions.cs" />
+    <Compile Include="DI\Registration\TypeExtensions.cs" />
     <Compile Include="DI\ServiceIdentity.cs" />
     <Compile Include="DI\ServiceLocator.cs" />
     <Compile Include="DI\ServiceExtensions.cs" />

@@ -7,8 +7,6 @@ namespace Domo.DI.Registration
 {
     public class BasicScanConvention : IScanConvention
     {
-        private static readonly IServiceScope DefaultServiceScope = new TransientScope();
-
         public bool UsePrefixResolution { get; private set; }
 
         public BasicScanConvention(bool usePrefixResolution)
@@ -28,19 +26,22 @@ namespace Domo.DI.Registration
             ProcessConcreteType(container, type);
         }
 
-        private void ProcessConcreteType(IContainerConfiguration container, TypeInfo concreteTypeInfo)
+        private void ProcessConcreteType(IContainerConfiguration container, TypeInfo concreteType)
         {
-            var identities = GetIdentities(concreteTypeInfo);
+            var identities = GetIdentities(concreteType);
 
             foreach (var identity in identities)
             {
-                var serviceTypeInfo = identity.ServiceType.GetTypeInfo();
-                var scope = GetScope(concreteTypeInfo, serviceTypeInfo);
+                var serviceType = identity.ServiceType.GetTypeInfo();
+                var scope =
+                    concreteType.GetServiceScope() ??
+                    serviceType.GetServiceScope() ??
+                    ServiceScope.Default;
 
                 container.
                     Register(identity).
                     InScope(scope).
-                    UsingConcreteType(concreteTypeInfo.AsType());
+                    UsingConcreteType(concreteType.AsType());
             }
         }
 
@@ -65,19 +66,6 @@ namespace Domo.DI.Registration
                     yield return new ServiceIdentity(serviceType);
                 }
             }
-        }
-
-        private static IServiceScope GetScope(TypeInfo concreteType, TypeInfo serviceType)
-        {
-            var concreteTypeAttribute = concreteType.GetCustomAttribute<ServiceScopeAttribute>();
-            if (concreteTypeAttribute != null)
-                return concreteTypeAttribute.Scope;
-
-            var serviceTypeAttribute = serviceType.GetCustomAttribute<ServiceScopeAttribute>();
-            if (serviceTypeAttribute != null)
-                return serviceTypeAttribute.Scope;
-
-            return DefaultServiceScope;
         }
     }
 }

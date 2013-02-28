@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using Domo.DI.Caching;
 using Domo.DI.Registration;
 
 namespace Domo.Communication.DI.Registration
@@ -29,9 +30,13 @@ namespace Domo.Communication.DI.Registration
 
                 if (HandlerTypeDefinitions.Any(h => h == typeDefinition))
                 {
+                    var serviceScope =
+                        concreteType.GetServiceScope() ??
+                        ServiceScope.Default;
+
                     container.
                         Register(serviceType).
-                        AsTransient().
+                        InScope(serviceScope).
                         UsingConcreteType(concreteType.AsType());
                 }
             }
