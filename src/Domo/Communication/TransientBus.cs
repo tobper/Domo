@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Domo.DI;
 
@@ -17,10 +18,10 @@ namespace Domo.Communication
             where TMessage : IMessage
         {
             var handlers = _serviceLocator.TryResolveAll<IMessageHandler<TMessage>>();
+            var tasks = from handler in handlers
+                        select CreateTask(handler.Handle, message);
 
-            return Task.WhenAll(
-                from handler in handlers
-                select handler.Handle(message));
+            return Task.WhenAll(tasks);
         }
 
         public Task Send<TCommand>(TCommand command)
@@ -30,7 +31,12 @@ namespace Domo.Communication
             if (handler == null)
                 throw new SendCommandFailedException(typeof(TCommand));
 
-            return handler.Handle(command);
+            return CreateTask(handler.Handle, command);
+        }
+
+        private static Task CreateTask<T>(Action<T> method, T argument)
+        {
+            return Task.Run(() => method(argument));
         }
     }
 }
