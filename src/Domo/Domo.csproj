@@ -43,6 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\DI\Activation\ServiceLoaderActivator.cs" />
+    <Compile Include="Data\DI\Registration\ServiceLoaderActivatorConfiguration.cs" />
+    <Compile Include="Data\DI\Registration\ServiceLoaderScanConventionExtensions.cs" />
+    <Compile Include="Data\DI\Registration\ServiceLoaderScanConvention.cs" />
+    <Compile Include="Data\IServiceLoader.cs" />
     <Compile Include="DI\Activation\IActivatorGroup.cs" />
     <Compile Include="DI\Activation\IInjectionContext.cs" />
     <Compile Include="DI\Caching\HttpRequestScope.cs">
