@@ -7,6 +7,9 @@ namespace Domo.Communication
 {
     public class TransientBus : IBus
     {
+        [ThreadStatic]
+        private static Guid? _transactionId;
+
         private readonly IServiceLocator _serviceLocator;
 
         public TransientBus(IServiceLocator serviceLocator)
@@ -18,8 +21,14 @@ namespace Domo.Communication
             where TMessage : IMessage
         {
             var handlers = _serviceLocator.TryResolveAll<IMessageHandler<TMessage>>();
+            if (handlers.Length == 0)
+                return Task.FromResult(0);
+
+            if (message.TransactionId == Guid.Empty)
+                message.TransactionId = GetTransactionId();
+
             var tasks = from handler in handlers
-                        select CreateTask(handler.Handle, message);
+                        select CreateTask(handler.Handle, message, message.TransactionId);
 
             return Task.WhenAll(tasks);
         }
@@ -31,12 +40,33 @@ namespace Domo.Communication
             if (handler == null)
                 throw new SendCommandFailedException(typeof(TCommand));
 
-            return CreateTask(handler.Handle, command);
+            if (command.TransactionId == Guid.Empty)
+                command.TransactionId = GetTransactionId();
+
+            return CreateTask(handler.Handle, command, command.TransactionId);
         }
 
-        private static Task CreateTask<T>(Action<T> method, T argument)
+        private static Guid GetTransactionId()
         {
-            return Task.Run(() => method(argument));
+            return _transactionId ?? Guid.NewGuid();
+        }
+
+        private static Task CreateTask<T>(Action<T> method, T argument, Guid transactionId)
+        {
+            return Task.Run(() =>
+            {
+                var outerTransactionId = _transactionId;
+
+                try
+                {
+                    _transactionId = transactionId;
+                    method(argument);
+                }
+                finally
+                {
+                    _transactionId = outerTransactionId;
+                }
+            });
         }
     }
 }
