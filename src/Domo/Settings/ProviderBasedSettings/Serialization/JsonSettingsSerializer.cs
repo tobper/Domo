@@ -1,5 +1,5 @@
-using Domo.DI.Registration;
 using Domo.Extensions;
+using InjectMe.Registration;
 
 namespace Domo.Settings.ProviderBasedSettings.Serialization
 {

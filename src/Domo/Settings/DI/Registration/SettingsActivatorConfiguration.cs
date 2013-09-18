@@ -1,9 +1,9 @@
 using System;
-using Domo.DI;
-using Domo.DI.Activation;
-using Domo.DI.Construction;
-using Domo.DI.Registration;
 using Domo.Settings.DI.Activation;
+using InjectMe;
+using InjectMe.Activation;
+using InjectMe.Construction;
+using InjectMe.Registration;
 
 namespace Domo.Settings.DI.Registration
 {

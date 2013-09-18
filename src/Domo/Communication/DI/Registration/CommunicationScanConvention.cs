@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using Domo.DI.Caching;
-using Domo.DI.Registration;
+using InjectMe.Caching;
+using InjectMe.Registration;
 
 namespace Domo.Communication.DI.Registration
 {

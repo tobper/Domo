@@ -1,7 +1,7 @@
-using Domo.DI.Registration;
 using Domo.Settings.ProviderBasedSettings;
 using Domo.Settings.ProviderBasedSettings.Serialization;
 using Domo.Settings.ProviderBasedSettings.Storage;
+using InjectMe.Registration;
 
 namespace Domo.Settings.DI.Registration
 {
@@ -10,7 +10,7 @@ namespace Domo.Settings.DI.Registration
         /// <summary>
         /// The Settings conventions will automatically register all types marked with <see cref="SettingsAttribute"/>.
         /// </summary>
-        public static IAssemblyScanner UseSettingsConventions(this IAssemblyScanner assemblyScanner)
+        public static IAssemblyScanner RegisterSettings(this IAssemblyScanner assemblyScanner)
         {
             return assemblyScanner.UseConvention<SettingsScanConvention>();
         }

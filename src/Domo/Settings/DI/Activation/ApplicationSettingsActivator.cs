@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
-using Domo.DI;
-using Domo.DI.Activation;
+using InjectMe;
+using InjectMe.Activation;
 
 namespace Domo.Settings.DI.Activation
 {
@@ -20,7 +20,7 @@ namespace Domo.Settings.DI.Activation
             Identity = new ServiceIdentity(typeof(TSettings));
         }
 
-        public object ActivateService(IInjectionContext context)
+        public object ActivateService(IActivationContext context)
         {
             return LoadValue().Result;
         }

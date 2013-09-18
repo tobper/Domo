@@ -15,6 +15,8 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <BaseIntermediateOutputPath>obj\$(Platform)\netcore45\</BaseIntermediateOutputPath>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -104,66 +106,6 @@
     <Compile Include="Communication\DI\Registration\CommunicationScanConventionExtensions.cs" />
     <Compile Include="Communication\IBus.cs" />
     <Compile Include="Communication\TransientBus.cs" />
-    <Compile Include="DI\Activation\ActivatorGroup.cs" />
-    <Compile Include="DI\Activation\ArrayActivator.cs" />
-    <Compile Include="DI\Activation\FactoryActivator.cs" />
-    <Compile Include="DI\Activation\FuncActivator.cs" />
-    <Compile Include="DI\Activation\IActivator.cs" />
-    <Compile Include="DI\Activation\IActivatorGroup.cs" />
-    <Compile Include="DI\Activation\IInjectionContext.cs" />
-    <Compile Include="DI\Activation\InstanceActivator.cs" />
-    <Compile Include="DI\Activation\LazyActivator.cs" />
-    <Compile Include="DI\Caching\DictionaryServiceCache.cs" />
-    <Compile Include="DI\Caching\IServiceCache.cs" />
-    <Compile Include="DI\Caching\IServiceScope.cs" />
-    <Compile Include="DI\Caching\ServiceScope.cs" />
-    <Compile Include="DI\Caching\ServiceScopeAttribute.cs" />
-    <Compile Include="DI\Caching\SingletonScope.cs" />
-    <Compile Include="DI\Caching\SingletonScopeAttribute.cs" />
-    <Compile Include="DI\Caching\TransientScope.cs" />
-    <Compile Include="DI\Caching\TransientScopeAttribute.cs" />
-    <Compile Include="DI\Construction\ConstructionFactory.cs" />
-    <Compile Include="DI\Construction\ConstructionFactorySettings.cs" />
-    <Compile Include="DI\Construction\DelegateFactory.cs" />
-    <Compile Include="DI\Construction\IFactory.cs" />
-    <Compile Include="DI\Construction\TypeExtensions.cs" />
-    <Compile Include="DI\Container.cs" />
-    <Compile Include="DI\Exceptions\ActivatorAlreadyRegisteredException.cs" />
-    <Compile Include="DI\Exceptions\ActivatorConfigurationAlreadyRegisteredException.cs" />
-    <Compile Include="DI\Exceptions\NoValidConstructorFoundException.cs" />
-    <Compile Include="DI\Exceptions\ServiceCouldNotBeCreatedException.cs" />
-    <Compile Include="DI\Exceptions\ServiceNotRegisteredException.cs" />
-    <Compile Include="DI\IContainer.cs" />
-    <Compile Include="DI\InjectionContext.cs" />
-    <Compile Include="DI\IServiceLocator.cs" />
-    <Compile Include="DI\Registration\AssemblyScanner.cs" />
-    <Compile Include="DI\Registration\BasicScanConvention.cs">
-      <DependentUpon>IScanConvention.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DI\Registration\BasicScanConventionsExtensions.cs">
-      <DependentUpon>IScanConvention.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DI\Registration\ContainerConfiguration.cs" />
-    <Compile Include="DI\Registration\FactoryActivatorRegistration.cs" />
-    <Compile Include="DI\Registration\FactoryActivatorRegistrationExtensions.cs" />
-    <Compile Include="DI\Registration\FluentRegistration.cs" />
-    <Compile Include="DI\Registration\IActivatorConfiguration.cs" />
-    <Compile Include="DI\Registration\IActivatorRegistration.cs" />
-    <Compile Include="DI\Registration\IAssemblyScanner.cs" />
-    <Compile Include="DI\Registration\IContainerConfiguration.cs" />
-    <Compile Include="DI\Registration\IFactoryActivatorRegistration.cs" />
-    <Compile Include="DI\Registration\IFluentConfiguration.cs" />
-    <Compile Include="DI\Registration\IFluentRegistration.cs" />
-    <Compile Include="DI\Registration\IInstanceActivatorRegistration.cs" />
-    <Compile Include="DI\Registration\InstanceActivatorRegistration.cs" />
-    <Compile Include="DI\Registration\InstanceActivatorRegistrationExtensions.cs" />
-    <Compile Include="DI\Registration\IScanConvention.cs" />
-    <Compile Include="DI\Registration\PreventAutomaticRegistrationAttribute.cs" />
-    <Compile Include="DI\Registration\TypedServiceExtensions.cs" />
-    <Compile Include="DI\Registration\TypeExtensions.cs" />
-    <Compile Include="DI\ServiceExtensions.cs" />
-    <Compile Include="DI\ServiceIdentity.cs" />
-    <Compile Include="DI\ServiceLocator.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\SerializationExtensions.cs" />
@@ -201,11 +143,16 @@
     <Compile Include="Settings\ProviderBasedSettings\Storage\MemoryStorageProvider.cs" />
     <Compile Include="Settings\ProviderBasedSettings\Storage\Setting.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="InjectMe">
+      <HintPath>..\packages\InjectMe.0.9.4\lib\netcore45\InjectMe.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using Domo.DI.Registration;
 using Domo.Extensions;
 using Domo.Settings.ProviderBasedSettings.Serialization;
 using Domo.Settings.ProviderBasedSettings.Storage;
+using InjectMe.Registration;
 
 namespace Domo.Settings.ProviderBasedSettings
 {

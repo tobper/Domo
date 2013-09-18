@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
-using Domo.DI.Caching;
-using Domo.DI.Registration;
+using InjectMe.Caching;
+using InjectMe.Registration;
 
 namespace Domo.Settings.DI.Registration
 {
