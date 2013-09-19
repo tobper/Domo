@@ -7,11 +7,11 @@
     <authors>Tobias Persson</authors>
     <owners>Tobias Persson</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Library for .Net development.</description>
+    <description>A little bit of this and a little bit of that.</description>
     <copyright>Copyright 2013 © Tobias Persson. All rights reserved.</copyright>
-    <tags>Dependency Injection</tags>
+    <tags></tags>
     <dependencies>
-      <dependency id="Domo" version="[0.5,1.0)" />
+      <dependency id="Domo" version="[0.2,1.0)" />
       <dependency id="Microsoft.AspNet.Mvc" version="[4.0.20710.0, 4.1)" />
     </dependencies>
   </metadata>

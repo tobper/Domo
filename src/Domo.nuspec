@@ -7,9 +7,9 @@
     <authors>Tobias Persson</authors>
     <owners>Tobias Persson</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Library for Net/WP/WinStore development.</description>
+    <description>A little bit of this and a little bit of that.</description>
     <copyright>Copyright 2013 © Tobias Persson. All rights reserved.</copyright>
-    <tags>Dependency Injection</tags>
+    <tags></tags>
   </metadata>
   <files>
     <file src="Domo\bin\release\**\Domo.*" target="lib" />
