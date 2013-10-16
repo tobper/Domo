@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using InjectMe;
 
 namespace Domo.Communication
 {
@@ -10,9 +9,9 @@ namespace Domo.Communication
         [ThreadStatic]
         private static Guid? _transactionId;
 
-        private readonly IServiceLocator _serviceLocator;
+        private readonly IDomoServiceLocator _serviceLocator;
 
-        public TransientBus(IServiceLocator serviceLocator)
+        public TransientBus(IDomoServiceLocator serviceLocator)
         {
             _serviceLocator = serviceLocator;
         }

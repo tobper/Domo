@@ -3,7 +3,7 @@ using Domo.Settings.ProviderBasedSettings.Serialization;
 using Domo.Settings.ProviderBasedSettings.Storage;
 using InjectMe.Registration;
 
-namespace Domo.Settings.DI.Registration
+namespace Domo.Settings.Registration
 {
     public static class SettingsScanConventionExtensions
     {

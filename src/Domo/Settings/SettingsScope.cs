@@ -1,4 +1,4 @@
-namespace Domo.Settings.DI
+namespace Domo.Settings
 {
     public enum SettingsScope
     {

@@ -3,11 +3,9 @@ using System.Threading.Tasks;
 using Domo.Settings.ProviderBasedSettings.Serialization;
 using Domo.Settings.ProviderBasedSettings.Storage;
 using Domo.Extensions;
-using InjectMe.Registration;
 
 namespace Domo.Settings.ProviderBasedSettings
 {
-    [PreventAutomaticRegistration]
     public class ProviderBasedApplicationSettings : IApplicationSettings
     {
         private readonly ISettingsStorageProvider _storageProvider;

@@ -1,6 +1,6 @@
 using System;
 
-namespace Domo.Settings.DI
+namespace Domo.Settings
 {
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
     public sealed class ApplicationSettingsAttribute : SettingsAttribute

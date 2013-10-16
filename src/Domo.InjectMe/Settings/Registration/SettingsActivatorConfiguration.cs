@@ -1,11 +1,11 @@
 using System;
-using Domo.Settings.DI.Activation;
+using Domo.Settings.Activation;
 using InjectMe;
 using InjectMe.Activation;
 using InjectMe.Construction;
 using InjectMe.Registration;
 
-namespace Domo.Settings.DI.Registration
+namespace Domo.Settings.Registration
 {
     public class SettingsActivatorConfiguration : IActivatorConfiguration
     {

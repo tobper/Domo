@@ -3,7 +3,7 @@ using System.Reflection;
 using InjectMe.Caching;
 using InjectMe.Registration;
 
-namespace Domo.Settings.DI.Registration
+namespace Domo.Settings.Registration
 {
     public class SettingsScanConvention : IScanConvention
     {

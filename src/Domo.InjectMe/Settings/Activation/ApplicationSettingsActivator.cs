@@ -2,20 +2,20 @@ using System.Threading.Tasks;
 using InjectMe;
 using InjectMe.Activation;
 
-namespace Domo.Settings.DI.Activation
+namespace Domo.Settings.Activation
 {
-    public class UserSettingsActivator<TSettings> : IActivator
+    public class ApplicationSettingsActivator<TSettings> : IActivator
         where TSettings : class
     {
-        private readonly IServiceLocator _serviceLocator;
-        private readonly IUserSettings _userSettings;
+        private readonly IDomoServiceLocator _serviceLocator;
+        private readonly IApplicationSettings _applicationSettings;
 
         public ServiceIdentity Identity { get; private set; }
 
-        public UserSettingsActivator(IServiceLocator serviceLocator, IUserSettings userSettings)
+        public ApplicationSettingsActivator(IDomoServiceLocator serviceLocator, IApplicationSettings applicationSettings)
         {
             _serviceLocator = serviceLocator;
-            _userSettings = userSettings;
+            _applicationSettings = applicationSettings;
 
             Identity = new ServiceIdentity(typeof(TSettings));
         }
@@ -27,7 +27,7 @@ namespace Domo.Settings.DI.Activation
 
         private async Task<TSettings> LoadValue()
         {
-            var value = await _userSettings.Load<TSettings>();
+            var value = await _applicationSettings.Load<TSettings>();
             if (value == null)
             {
                 var settingsHandler = _serviceLocator.TryResolve<ISettingsHandler<TSettings>>();

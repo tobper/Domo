@@ -1,10 +1,10 @@
 using InjectMe.Registration;
 
-namespace Domo.Communication.DI.Registration
+namespace Domo.Communication.Registration
 {
     public static class CommunicationScanConventionExtensions
     {
-        public static IAssemblyScanner RegisterMessageHandlers(this IAssemblyScanner assemblyScanner)
+        public static IAssemblyScanner RegisterCommunicationHandlers(this IAssemblyScanner assemblyScanner)
         {
             return assemblyScanner.UseConvention<CommunicationScanConvention>();
         }

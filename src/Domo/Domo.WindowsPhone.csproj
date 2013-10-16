@@ -86,8 +86,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Communication\DI\Registration\CommunicationScanConvention.cs" />
-    <Compile Include="Communication\DI\Registration\CommunicationScanConventionExtensions.cs" />
     <Compile Include="Communication\IBus.cs" />
     <Compile Include="Communication\TransientBus.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
@@ -101,16 +99,8 @@
     <Compile Include="Communication\ICommandHandler.cs" />
     <Compile Include="Communication\IMessage.cs" />
     <Compile Include="Communication\IMessageHandler.cs" />
+    <Compile Include="IDomoServiceLocator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings\DI\Activation\ApplicationSettingsActivator.cs" />
-    <Compile Include="Settings\DI\Activation\UserSettingsActivator.cs" />
-    <Compile Include="Settings\DI\ApplicationSettingsAttribute.cs" />
-    <Compile Include="Settings\DI\Registration\SettingsActivatorConfiguration.cs" />
-    <Compile Include="Settings\DI\Registration\SettingsScanConvention.cs" />
-    <Compile Include="Settings\DI\Registration\SettingsScanConventionExtensions.cs" />
-    <Compile Include="Settings\DI\SettingsAttribute.cs" />
-    <Compile Include="Settings\DI\SettingsScope.cs" />
-    <Compile Include="Settings\DI\UserSettingsAttribute.cs" />
     <Compile Include="Settings\Exceptions\InvalidSerializationTypeException.cs" />
     <Compile Include="Settings\IApplicationSettings.cs" />
     <Compile Include="Settings\ISettingsHandler.cs" />
@@ -126,11 +116,6 @@
     <Compile Include="Settings\ProviderBasedSettings\Storage\MemoryStorageProvider.cs" />
     <Compile Include="Settings\ProviderBasedSettings\Storage\Setting.cs" />
     <Compile Include="Settings\RoamingApplicationSettings.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="InjectMe">
-      <HintPath>..\packages\InjectMe.0.9.4\lib\wp8\InjectMe.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />

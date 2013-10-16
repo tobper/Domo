@@ -23,6 +23,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domo.Web", "Domo.Web\Domo.W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domo.WebApi", "Domo.WebApi\Domo.WebApi.csproj", "{98ECEEB4-FB8F-442B-907F-F372DC23CCE7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integrations", "Integrations", "{784F9310-7822-42EC-BA46-B8DE4B1B285A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domo.InjectMe", "Domo.InjectMe\Domo.InjectMe.csproj", "{63222CAE-872E-4F64-B615-9EFC6C81AC28}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InjectMe", "InjectMe", "{621DE71B-144D-477D-B6FD-D4273F3BFFC9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,11 +111,23 @@ Global
 		{98ECEEB4-FB8F-442B-907F-F372DC23CCE7}.Release|ARM.ActiveCfg = Release|Any CPU
 		{98ECEEB4-FB8F-442B-907F-F372DC23CCE7}.Release|x64.ActiveCfg = Release|Any CPU
 		{98ECEEB4-FB8F-442B-907F-F372DC23CCE7}.Release|x86.ActiveCfg = Release|Any CPU
+		{63222CAE-872E-4F64-B615-9EFC6C81AC28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63222CAE-872E-4F64-B615-9EFC6C81AC28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63222CAE-872E-4F64-B615-9EFC6C81AC28}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{63222CAE-872E-4F64-B615-9EFC6C81AC28}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{63222CAE-872E-4F64-B615-9EFC6C81AC28}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{63222CAE-872E-4F64-B615-9EFC6C81AC28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63222CAE-872E-4F64-B615-9EFC6C81AC28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63222CAE-872E-4F64-B615-9EFC6C81AC28}.Release|ARM.ActiveCfg = Release|Any CPU
+		{63222CAE-872E-4F64-B615-9EFC6C81AC28}.Release|x64.ActiveCfg = Release|Any CPU
+		{63222CAE-872E-4F64-B615-9EFC6C81AC28}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B6C45570-889E-443C-BEEA-120C48A26B29} = {25953102-6913-4F3C-8CED-08DF890B8133}
+		{621DE71B-144D-477D-B6FD-D4273F3BFFC9} = {784F9310-7822-42EC-BA46-B8DE4B1B285A}
+		{63222CAE-872E-4F64-B615-9EFC6C81AC28} = {621DE71B-144D-477D-B6FD-D4273F3BFFC9}
 	EndGlobalSection
 EndGlobal
