@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Domo.InjectMe</id>
+    <version>0.0</version>
+    <title>Domo using InjectMe</title>
+    <authors>Tobias Persson</authors>
+    <owners>Tobias Persson</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>InjectMe support for Domo</description>
+    <copyright>Copyright 2013 © Tobias Persson. All rights reserved.</copyright>
+    <tags></tags>
+    <dependencies>
+      <dependency id="Domo" version="[0.2,1.0)" />
+      <dependency id="InjectMe" version="[0.9,1.0)" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Domo.InjectMe\bin\release\**\Domo.InjectMe.*" target="lib\Net45" />
+  </files>
+</package>
