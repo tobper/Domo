@@ -44,8 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Communication\Registration\CommunicationScanConvention.cs" />
-    <Compile Include="Communication\Registration\CommunicationScanConventionExtensions.cs" />
+    <Compile Include="Messaging\Registration\MessagingScanConvention.cs" />
+    <Compile Include="Messaging\Registration\MessagingScanConventionExtensions.cs" />
     <Compile Include="InjectMeDomoServiceLocator.cs" />
     <Compile Include="Settings\Activation\ApplicationSettingsActivator.cs" />
     <Compile Include="Settings\Activation\UserSettingsActivator.cs" />

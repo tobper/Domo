@@ -4,9 +4,9 @@ using System.Reflection;
 using InjectMe.Caching;
 using InjectMe.Registration;
 
-namespace Domo.Communication.Registration
+namespace Domo.Messaging.Registration
 {
-    public class CommunicationScanConvention : IScanConvention
+    public class MessagingScanConvention : IScanConvention
     {
         private static readonly Type[] HandlerTypeDefinitions =
         {

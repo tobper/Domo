@@ -2,16 +2,16 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Domo.Communication
+namespace Domo.Messaging
 {
-    public class TransientBus : IBus
+    public class TransientMessenger : IMessenger
     {
         [ThreadStatic]
         private static Guid? _transactionId;
 
         private readonly IDomoServiceLocator _serviceLocator;
 
-        public TransientBus(IDomoServiceLocator serviceLocator)
+        public TransientMessenger(IDomoServiceLocator serviceLocator)
         {
             _serviceLocator = serviceLocator;
         }

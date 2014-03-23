@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 
-namespace Domo.Communication
+namespace Domo.Messaging
 {
-    public interface IBus
+    public interface IMessenger
     {
         Task Post<TMessage>(TMessage message) where TMessage : IMessage;
         Task Send<TCommand>(TCommand command) where TCommand : ICommand;
