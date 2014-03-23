@@ -1,10 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domo.Tests", "Domo.Tests\Domo.Tests.csproj", "{B6C45570-889E-443C-BEEA-120C48A26B29}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{06C7B383-0658-405F-9FE7-B79A80FA2FAF}"
 	ProjectSection(SolutionItems) = preProject
+		Domo.InjectMe.nuspec = Domo.InjectMe.nuspec
 		Domo.nuspec = Domo.nuspec
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
